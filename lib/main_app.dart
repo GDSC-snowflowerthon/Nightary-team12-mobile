@@ -17,9 +17,6 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     _init(context);
 
-    // Remove splash
-    FlutterNativeSplash.remove();
-
     return GetMaterialApp(
       title: "Nightary",
       localizationsDelegates: const [
@@ -44,15 +41,22 @@ class MainApp extends StatelessWidget {
     );
   }
 
-  void _init(BuildContext context) {
-    // 깜빡임 방지를 위한 이미지 미리 로딩
-    precacheImage(
-        const AssetImage('assets/images/background_home.png'), context);
-    precacheImage(
-        const AssetImage('assets/images/background_analyze.png'), context);
-    precacheImage(
-        const AssetImage('assets/images/background_setting.png'), context);
-    precacheImage(
-        const AssetImage('assets/images/background_statistic.png'), context);
+  Future<void> _init(BuildContext context) async {
+    // 이미지 프리캐싱을 위한 Future 리스트 생성
+    final List<Future<void>> precacheFutures = [
+      precacheImage(
+          const AssetImage('assets/images/background_home.png'), context),
+      precacheImage(
+          const AssetImage('assets/images/background_analyze.png'), context),
+      precacheImage(
+          const AssetImage('assets/images/background_setting.png'), context),
+      precacheImage(
+          const AssetImage('assets/images/background_statistic.png'), context),
+    ];
+
+    // 모든 프리캐싱 Future가 완료될 때까지 대기
+    await Future.wait(precacheFutures);
+
+    FlutterNativeSplash.remove();
   }
 }
