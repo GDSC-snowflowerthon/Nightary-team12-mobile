@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:nightary/viewModels/home/home_viewmodel.dart';
+import 'package:nightary/viewModels/setting/setting_screen.dart';
 import 'package:nightary/views/base/base_screen.dart';
 
-class HomeScreen extends BaseScreen<HomeViewModel> {
-  const HomeScreen({super.key});
+class SettingScreen extends BaseScreen<SettingViewModel> {
+  const SettingScreen({super.key});
 
   @override
   Widget buildBody(BuildContext context) {
     return const Center(
       child: Text(
-        'Home Screen',
+        'Setting Screen',
         style: TextStyle(
           fontSize: 50,
           color: Colors.white,
@@ -26,5 +26,5 @@ class HomeScreen extends BaseScreen<HomeViewModel> {
   bool get wrapWithInnerSafeArea => true;
 
   @override
-  String? get backgroundSvgPath => "assets/images/background_home.png";
+  String? get backgroundSvgPath => "assets/images/background_setting.png";
 }

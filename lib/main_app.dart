@@ -15,6 +15,8 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    _init(context);
+
     // Remove splash
     FlutterNativeSplash.remove();
 
@@ -40,5 +42,17 @@ class MainApp extends StatelessWidget {
             name: '/', page: () => const RootScreen(), binding: RootBinding()),
       ],
     );
+  }
+
+  void _init(BuildContext context) {
+    // 깜빡임 방지를 위한 이미지 미리 로딩
+    precacheImage(
+        const AssetImage('assets/images/background_home.png'), context);
+    precacheImage(
+        const AssetImage('assets/images/background_analyze.png'), context);
+    precacheImage(
+        const AssetImage('assets/images/background_setting.png'), context);
+    precacheImage(
+        const AssetImage('assets/images/background_statistic.png'), context);
   }
 }

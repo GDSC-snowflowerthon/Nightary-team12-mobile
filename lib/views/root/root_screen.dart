@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:nightary/views/analyze/analyze_screen.dart';
 import 'package:nightary/views/base/base_screen.dart';
 import 'package:nightary/views/home/home_screen.dart';
 import 'package:nightary/views/root/custom_bottom_navigation_bar.dart';
+import 'package:nightary/views/setting/setting_screen.dart';
+import 'package:nightary/views/statistic/statistic_screen.dart';
 
 import '../../viewModels/root/root_viewmodel.dart';
 
@@ -17,9 +20,9 @@ class RootScreen extends BaseScreen<RootViewModel> {
         index: viewModel.selectedIndex,
         children: const [
           HomeScreen(),
-          HomeScreen(),
-          HomeScreen(),
-          HomeScreen(),
+          StatisticScreen(),
+          AnalyzeScreen(),
+          SettingScreen(),
         ],
       ),
     );
