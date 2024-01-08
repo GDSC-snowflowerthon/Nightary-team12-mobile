@@ -16,9 +16,9 @@ abstract class BaseScreen<T extends GetxController> extends GetView<T> {
     return Container(
       decoration: BoxDecoration(
         color: unSafeAreaColor,
-        image: backgroundSvgPath != null
+        image: backgroundImagePath != null
             ? DecorationImage(
-                image: AssetImage(backgroundSvgPath!),
+                image: AssetImage(backgroundImagePath!),
                 fit: BoxFit.cover,
               )
             : null,
@@ -67,7 +67,7 @@ abstract class BaseScreen<T extends GetxController> extends GetView<T> {
 
   // SafeArea의 색상을 정의하는 메서드
   @protected
-  String? get backgroundSvgPath => null;
+  String? get backgroundImagePath => null;
 
   // SafeArea의 색상을 정의하는 메서드
   @protected

@@ -26,5 +26,5 @@ class StatisticScreen extends BaseScreen<StatisticViewModel> {
   bool get wrapWithInnerSafeArea => true;
 
   @override
-  String? get backgroundSvgPath => "assets/images/background_statistic.png";
+  String? get backgroundImagePath => "assets/images/background_statistic.png";
 }

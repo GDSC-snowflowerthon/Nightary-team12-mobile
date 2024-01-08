@@ -26,5 +26,5 @@ class SettingScreen extends BaseScreen<SettingViewModel> {
   bool get wrapWithInnerSafeArea => true;
 
   @override
-  String? get backgroundSvgPath => "assets/images/background_setting.png";
+  String? get backgroundImagePath => "assets/images/background_setting.png";
 }

@@ -26,5 +26,5 @@ class AnalyzeScreen extends BaseScreen<AnalyzeViewModel> {
   bool get wrapWithInnerSafeArea => true;
 
   @override
-  String? get backgroundSvgPath => "assets/images/background_analyze.png";
+  String? get backgroundImagePath => "assets/images/background_analyze.png";
 }
