@@ -14,11 +14,19 @@ abstract class BaseScreen<T extends GetxController> extends GetView<T> {
 
     // SafeArea로 감싸거나 감싸지 않는 옵션에 따라 화면을 구성
     return Container(
-      color: unSafeAreaColor,
-      child: wrapWithSafeArea
+      decoration: BoxDecoration(
+        color: unSafeAreaColor,
+        image: backgroundImage != null
+            ? DecorationImage(
+                image: AssetImage(backgroundImage!),
+                fit: BoxFit.cover,
+              )
+            : null,
+      ),
+      child: wrapWithOuterSafeArea
           ? SafeArea(
-              top: setTopSafeArea,
-              bottom: setBottomSafeArea,
+              top: setTopOuterSafeArea,
+              bottom: setBottomOuterSafeArea,
               child: _buildScaffold(context),
             )
           : _buildScaffold(context),
@@ -34,7 +42,11 @@ abstract class BaseScreen<T extends GetxController> extends GetView<T> {
       floatingActionButtonLocation: floatingActionButtonLocation,
       floatingActionButton: buildFloatingActionButton,
       appBar: buildAppBar(context),
-      body: buildBody(context),
+      body: wrapWithInnerSafeArea
+          ? SafeArea(
+              child: buildBody(context),
+            )
+          : buildBody(context),
       bottomNavigationBar: buildBottomNavigationBar(context),
     );
   }
@@ -52,6 +64,14 @@ abstract class BaseScreen<T extends GetxController> extends GetView<T> {
   // SafeArea의 색상을 정의하는 메서드
   @protected
   Color? get unSafeAreaColor => Colors.transparent;
+
+  // SafeArea의 색상을 정의하는 메서드
+  @protected
+  String? get backgroundImage => null;
+
+  // SafeArea의 색상을 정의하는 메서드
+  @protected
+  Color? get ba => Colors.transparent;
 
   // 키보드가 나타날 때 화면을 조절할지 여부를 정의하는 메서드
   @protected
@@ -71,19 +91,23 @@ abstract class BaseScreen<T extends GetxController> extends GetView<T> {
 
   // 화면의 배경 색상을 정의하는 메서드
   @protected
-  Color? get screenBackgroundColor => Colors.white;
+  Color? get screenBackgroundColor => Colors.transparent;
 
   // SafeArea로 감싸는지 여부를 정의하는 메서드
   @protected
-  bool get wrapWithSafeArea => true;
-
-  // SafeArea의 아래 부분을 설정할지 여부를 정의하는 메서드
-  @protected
-  bool get setBottomSafeArea => true;
+  bool get wrapWithOuterSafeArea => true;
 
   // SafeArea의 위 부분을 설정할지 여부를 정의하는 메서드
   @protected
-  bool get setTopSafeArea => true;
+  bool get setTopOuterSafeArea => false;
+
+  // SafeArea의 아래 부분을 설정할지 여부를 정의하는 메서드
+  @protected
+  bool get setBottomOuterSafeArea => true;
+
+  // SafeArea로 감싸는지 여부를 정의하는 메서드
+  @protected
+  bool get wrapWithInnerSafeArea => false;
 
   // AppBar를 구성하는 메서드
   @protected

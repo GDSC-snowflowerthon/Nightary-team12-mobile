@@ -70,5 +70,5 @@ class RootScreen extends BaseScreen<RootViewModel> {
   Color? get unSafeAreaColor => const Color(0xFF0D0B26);
 
   @override
-  bool get setTopSafeArea => false;
+  bool get setTopOuterSafeArea => false;
 }

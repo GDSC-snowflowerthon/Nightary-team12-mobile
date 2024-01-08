@@ -7,11 +7,15 @@ class HomeScreen extends BaseScreen<HomeViewModel> {
 
   @override
   Widget buildBody(BuildContext context) {
-    return Container(
-      color: Colors.yellow,
-    );
+    return Text('Home Screen');
   }
 
   @override
-  bool get wrapWithSafeArea => false;
+  bool get wrapWithOuterSafeArea => true;
+
+  @override
+  bool get wrapWithInnerSafeArea => true;
+
+  @override
+  String? get backgroundImage => "assets/images/background_home.png";
 }
