@@ -51,7 +51,7 @@ abstract class BaseScreen<T extends GetxController> extends GetView<T> {
 
   // SafeArea의 색상을 정의하는 메서드
   @protected
-  Color? get unSafeAreaColor => Colors.black;
+  Color? get unSafeAreaColor => Colors.transparent;
 
   // 키보드가 나타날 때 화면을 조절할지 여부를 정의하는 메서드
   @protected

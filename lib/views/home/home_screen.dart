@@ -7,8 +7,11 @@ class HomeScreen extends BaseScreen<HomeViewModel> {
 
   @override
   Widget buildBody(BuildContext context) {
-    return const Center(
-      child: Text("Home"),
+    return Container(
+      color: Colors.yellow,
     );
   }
+
+  @override
+  bool get wrapWithSafeArea => false;
 }
