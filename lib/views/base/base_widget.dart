@@ -3,10 +3,10 @@ import 'package:get/get.dart';
 
 @immutable
 abstract class BaseWidget<T extends GetxController> extends GetView<T> {
-  const BaseWidget({Key? key}) : super(key: key);
+  const BaseWidget({super.key});
 
   // 뷰 모델을 가져오는 메서드
-  T get viewmodel => controller;
+  T get viewModel => controller;
 
   @override
   Widget build(BuildContext context) {

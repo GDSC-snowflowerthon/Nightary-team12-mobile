@@ -3,12 +3,12 @@ import 'package:get/get.dart';
 
 @immutable
 abstract class BaseScreen<T extends GetxController> extends GetView<T> {
-  const BaseScreen({Key? key}) : super(key: key);
+  const BaseScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     // 만약 뷰 모델이 초기화되지 않았다면 초기화 메서드를 호출
-    if (!vm.initialized) {
+    if (!viewModel.initialized) {
       initViewModel();
     }
 
@@ -42,12 +42,12 @@ abstract class BaseScreen<T extends GetxController> extends GetView<T> {
   // 뷰 모델을 초기화하는 메서드
   @protected
   void initViewModel() {
-    viewmodel.initialized;
+    viewModel.initialized;
   }
 
   // 뷰 모델을 가져오는 메서드
   @protected
-  T get viewmodel => controller;
+  T get viewModel => controller;
 
   // SafeArea의 색상을 정의하는 메서드
   @protected
