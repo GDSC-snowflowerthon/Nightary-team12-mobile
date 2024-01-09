@@ -5,6 +5,7 @@ import 'package:nightary/main_app.dart';
 import 'database_helper.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   /* Open .env file */
   await dotenv.load(fileName: "assets/config/.env");
   await initializeDateFormatting();
