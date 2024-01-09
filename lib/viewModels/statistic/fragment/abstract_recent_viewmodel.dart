@@ -5,4 +5,5 @@ abstract class AbstractRecentViewModel extends GetxController {
   TimeOfDay get averageSleepTime;
   int get changeAverageBattery;
   int get changeLiabilities;
+  List<DateTimeRange> get sleepTimes;
 }

@@ -20,7 +20,11 @@ dependencies:
   get: ^4.6.6
   flutter_svg: ^2.0.9
   intl: ^0.18.1
-  time_chart: ^0.5.2
+
+  # Custom Time Chart
+  path_drawing: ^1.0.1
+  touchable: ^1.0.2
+  linked_scroll_controller: ^0.2.0
 
 dev_dependencies:
   flutter_test:
