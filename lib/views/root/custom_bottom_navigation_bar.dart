@@ -15,44 +15,61 @@ class CustomBottomNavigationBar extends BaseWidget<RootViewModel> {
           highlightColor: Colors.transparent,
           splashFactory: NoSplash.splashFactory,
         ),
-        child: BottomNavigationBar(
+        child: BottomAppBar(
           elevation: 0,
-          currentIndex: viewModel.selectedIndex,
-          onTap: viewModel.changeIndex,
-
-          // 아이템의 색상
-          unselectedItemColor: Colors.grey[400],
-          selectedItemColor: const Color(0xFF7541EF),
-
-          // 탭 애니메이션 변경 (fixed: 없음)
-          type: BottomNavigationBarType.fixed,
-          backgroundColor: Colors.white,
-
-          // Bar에 보여질 요소. icon과 label로 구성.
-          items: <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-                icon: SvgPicture.asset(
-                  'assets/icons/house.svg',
-                  height: 24,
-                  colorFilter: viewModel.selectedIndex == 0
-                      ? const ColorFilter.mode(
-                          Color(0xFF7541EF), BlendMode.srcATop)
-                      : ColorFilter.mode(Colors.grey[400]!, BlendMode.srcATop),
+          shape: const CircularNotchedRectangle(),
+          notchMargin: 6.0,
+          clipBehavior: Clip.antiAlias,
+          child: Container(
+            height: 65,
+            color: const Color(0xFF0D0B26),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                _buildBottomNavigationBarItem(
+                  index: 0,
+                  size: 24,
+                  svgPath: 'assets/icons/home.svg',
                 ),
-                label: "홈"),
-            BottomNavigationBarItem(
-                icon: SvgPicture.asset(
-                  'assets/icons/house.svg',
-                  height: 24,
-                  colorFilter: viewModel.selectedIndex == 1
-                      ? const ColorFilter.mode(
-                          Color(0xFF7541EF), BlendMode.srcATop)
-                      : ColorFilter.mode(Colors.grey[400]!, BlendMode.srcATop),
+                _buildBottomNavigationBarItem(
+                  index: 1,
+                  size: 30,
+                  svgPath: 'assets/icons/chart.svg',
                 ),
-                label: "내정보"),
-          ],
+                const SizedBox(width: 70),
+                _buildBottomNavigationBarItem(
+                  index: 2,
+                  size: 24,
+                  svgPath: 'assets/icons/search.svg',
+                ),
+                _buildBottomNavigationBarItem(
+                  index: 3,
+                  size: 28,
+                  svgPath: 'assets/icons/setting.svg',
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
   }
+
+  Widget _buildBottomNavigationBarItem({
+    required int index,
+    required double size,
+    required String svgPath,
+  }) =>
+      Expanded(
+        child: InkWell(
+          onTap: () => viewModel.changeIndex(index),
+          child: SvgPicture.asset(
+            svgPath,
+            width: size,
+            colorFilter: viewModel.selectedIndex == index
+                ? const ColorFilter.mode(Color(0xFFD097F4), BlendMode.srcATop)
+                : const ColorFilter.mode(Color(0xFF67686D), BlendMode.srcATop),
+          ),
+        ),
+      );
 }

@@ -1,6 +1,9 @@
 import 'package:get/get.dart';
+import 'package:nightary/viewModels/analyze/analyze_viewmodel.dart';
 import 'package:nightary/viewModels/home/home_viewmodel.dart';
 import 'package:nightary/viewModels/root/root_viewmodel.dart';
+import 'package:nightary/viewModels/setting/setting_screen.dart';
+import 'package:nightary/viewModels/statistic/statistic_screen.dart';
 
 class RootBinding extends Bindings {
   @override
@@ -8,7 +11,9 @@ class RootBinding extends Bindings {
     // ParentViewModel is singleton
     Get.put(RootViewModel());
 
-    // ChildViewModel is singleton
-    Get.put(HomeViewModel());
+    Get.lazyPut(() => HomeViewModel());
+    Get.lazyPut(() => StatisticViewModel());
+    Get.lazyPut(() => AnalyzeViewModel());
+    Get.lazyPut(() => SettingViewModel());
   }
 }

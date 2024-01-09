@@ -15,8 +15,7 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Remove splash
-    FlutterNativeSplash.remove();
+    _init(context);
 
     return GetMaterialApp(
       title: "Nightary",
@@ -40,5 +39,24 @@ class MainApp extends StatelessWidget {
             name: '/', page: () => const RootScreen(), binding: RootBinding()),
       ],
     );
+  }
+
+  Future<void> _init(BuildContext context) async {
+    // 이미지 프리캐싱을 위한 Future 리스트 생성
+    final List<Future<void>> precacheFutures = [
+      precacheImage(
+          const AssetImage('assets/images/background_home.png'), context),
+      precacheImage(
+          const AssetImage('assets/images/background_analyze.png'), context),
+      precacheImage(
+          const AssetImage('assets/images/background_setting.png'), context),
+      precacheImage(
+          const AssetImage('assets/images/background_statistic.png'), context),
+    ];
+
+    // 모든 프리캐싱 Future가 완료될 때까지 대기
+    await Future.wait(precacheFutures);
+
+    FlutterNativeSplash.remove();
   }
 }
