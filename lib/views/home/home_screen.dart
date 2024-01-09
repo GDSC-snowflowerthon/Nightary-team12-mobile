@@ -5,6 +5,7 @@ import 'package:nightary/views/base/base_widget.dart';
 import 'package:based_battery_indicator/based_battery_indicator.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:get/get.dart';
 
 class HomeScreen extends BaseScreen<HomeViewModel> {
   const HomeScreen({super.key});
@@ -80,50 +81,53 @@ class _MiddlePart extends BaseWidget<HomeViewModel> {
 
   @override
   Widget buildView(BuildContext context) {
-    return Center(
-      child: Card(
-        color: Colors.black,
-        child: Container(
-          height: 170,
-          width: 394,
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    margin: EdgeInsets.all(20),
-                    child: Text(
-                      "오늘의 건강 브리핑",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
+    return Container(
+      margin: EdgeInsets.only(top: 10, bottom: 10),
+      child: Center(
+        child: Card(
+          color: Color(0xFF0A0A25),
+          child: Container(
+            height: 170,
+            width: 394,
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.all(20),
+                      child: Text(
+                        "오늘의 건강 브리핑",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                        ),
                       ),
                     ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.all(20),
-                    child: Row(
-                      children: [
-                        Image.asset(
-                          'assets/images/health_card_moon.png', // 이미지 파일 경로
-                          width: 16.0, // 아이콘 크기
-                          height: 16.0,
-                        ),
-                        SizedBox(width: 4),
-                        Text(
-                          "5h 32m",
-                          style: TextStyle(
-                            color: Colors.white,
+                    Container(
+                      margin: EdgeInsets.all(20),
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            'assets/images/health_card_moon.png', // 이미지 파일 경로
+                            width: 16.0, // 아이콘 크기
+                            height: 16.0,
                           ),
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-              _CarouselSlider(), // 여기에 추가적인 위젯들이 필요하면 추가
-            ],
+                          SizedBox(width: 4),
+                          Text(
+                            "5h 32m",
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+                _CarouselSlider(), // 여기에 추가적인 위젯들이 필요하면 추가
+              ],
+            ),
           ),
         ),
       ),
@@ -138,7 +142,7 @@ class _BottomPart extends BaseWidget<HomeViewModel> {
   Widget buildView(BuildContext context) {
     return Center(
       child: Card(
-        color: Colors.black,
+        color: Color(0xFF0A0A25),
         child: Container(
           height: 348,
           width: 394,
