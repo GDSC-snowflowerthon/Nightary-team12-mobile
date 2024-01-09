@@ -12,12 +12,13 @@ class RecentFragment<T extends AbstractRecentViewModel> extends BaseScreen<T> {
       child: Column(
         children: [
           averageSleepTime(),
+          const SizedBox(height: 20),
+          informationTiles(context),
         ],
       ),
     );
   }
 
-  // Widget
   Widget averageSleepTime() => Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -69,4 +70,105 @@ class RecentFragment<T extends AbstractRecentViewModel> extends BaseScreen<T> {
           ),
         ],
       );
+
+  Widget informationTiles(BuildContext context) => Row(
+        children: [
+          roundTile(
+            context: context,
+            widget: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  "${viewModel.changeAverageBattery.abs()} %",
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 55,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  "최근 ${viewModel.runtimeType.toString() == "SevenRecentViewModel" ? "7" : "30"}번의 수면 동안",
+                  style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600),
+                ),
+                Text(
+                  changeAverageBatteryText(),
+                  style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 20),
+          roundTile(
+            context: context,
+            widget: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  "${viewModel.changeLiabilities.abs()} h",
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 55,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 10),
+                Text(
+                  "최근 ${viewModel.runtimeType.toString() == "SevenRecentViewModel" ? "7" : "30"}번의 수면 동안",
+                  style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600),
+                ),
+                Text(
+                  changeLiabilitiesText(),
+                  style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600),
+                ),
+              ],
+            ),
+          ),
+        ],
+      );
+
+  Widget roundTile({required BuildContext context, required Widget widget}) =>
+      Container(
+        width: (MediaQuery.of(context).size.width - 60) * 0.5,
+        height: (MediaQuery.of(context).size.width - 60) * 0.5,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: const Color(0xFF0D0B26),
+        ),
+        child: widget,
+      );
+
+  String changeAverageBatteryText() {
+    if (viewModel.changeAverageBattery > 0) {
+      return "평균 충전량이 증가했어요";
+    } else if (viewModel.changeAverageBattery < 0) {
+      return "평균 충전량이 감소했어요";
+    } else {
+      return "평균 충전량이 변하지 않았어요";
+    }
+  }
+
+  String changeLiabilitiesText() {
+    if (viewModel.changeLiabilities > 0) {
+      return "수면 빚이 증가했어요";
+    } else if (viewModel.changeLiabilities < 0) {
+      return "수면 빚이 감소했어요";
+    } else {
+      return "수면 빚이 변하지 않았어요";
+    }
+  }
 }
