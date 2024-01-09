@@ -65,7 +65,7 @@ abstract class BaseScreen<T extends GetxController> extends GetView<T> {
   @protected
   Color? get unSafeAreaColor => Colors.transparent;
 
-  // SafeArea의 색상을 정의하는 메서드
+  /// SafeArea의 색상을 정의하는 메서드
   @protected
   String? get backgroundImagePath => null;
 
