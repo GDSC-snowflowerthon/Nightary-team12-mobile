@@ -4,6 +4,7 @@ import 'package:nightary/views/base/base_screen.dart';
 import 'package:nightary/views/base/base_widget.dart';
 import 'package:based_battery_indicator/based_battery_indicator.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:fl_chart/fl_chart.dart';
 
 class HomeScreen extends BaseScreen<HomeViewModel> {
   const HomeScreen({super.key});
@@ -97,7 +98,6 @@ class _MiddlePart extends BaseWidget<HomeViewModel> {
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 20,
-                        
                       ),
                     ),
                   ),
@@ -138,14 +138,25 @@ class _BottomPart extends BaseWidget<HomeViewModel> {
   Widget buildView(BuildContext context) {
     return Center(
       child: Card(
+        color: Colors.black,
         child: Container(
-          height: 60, // 카드의 높이를 60으로 설정
-          width: double.infinity, // 카드의 너비를 최대로 설정
-          child: Center(
-            child: Text(
-              '여기에 텍스트를 입력하세요',
-              style: TextStyle(fontSize: 20),
-            ),
+          height: 348,
+          width: 394,
+          child: Column(
+            children: [
+              Container(
+                alignment: Alignment.topLeft,
+                margin: EdgeInsets.all(20),
+                child: Text(
+                  "내가 갖고있는 수면빚",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                  ),
+                ),
+              ),
+              _MyPieChart(data: [90, 10]),
+            ],
           ),
         ),
       ),
@@ -180,7 +191,8 @@ class _CarouselSlider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CarouselSlider(
-      options: CarouselOptions(height: 64.0,
+      options: CarouselOptions(
+        height: 64.0,
         autoPlay: true,
         autoPlayInterval: Duration(seconds: 3),
         autoPlayAnimationDuration: Duration(milliseconds: 600),
@@ -192,8 +204,9 @@ class _CarouselSlider extends StatelessWidget {
             return Container(
                 width: MediaQuery.of(context).size.width,
                 margin: EdgeInsets.symmetric(horizontal: 5.0),
-                decoration: BoxDecoration(color: Color(0xFF3C3C3C),
-                borderRadius: BorderRadius.circular(15),
+                decoration: BoxDecoration(
+                  color: Color(0xFF3C3C3C),
+                  borderRadius: BorderRadius.circular(15),
                 ),
                 child: Row(
                   children: [
@@ -216,5 +229,76 @@ class _CarouselSlider extends StatelessWidget {
         );
       }).toList(),
     );
+  }
+}
+
+class _MyPieChart extends StatefulWidget {
+  final List<double> data;
+
+  const _MyPieChart({Key? key, required this.data}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => MyPieChartState();
+}
+
+class MyPieChartState extends State<_MyPieChart> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 260,
+      height: 260,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          PieChart(
+            PieChartData(
+              sections: getSections(widget.data),
+              centerSpaceRadius: 70,
+              sectionsSpace: 0,
+            ),
+          ),
+          // 아래의 Container는 중앙의 텍스트를 위한 것입니다.
+          // 원하는 텍스트와 스타일을 설정하세요.
+          Container(
+            child: Text(
+              '12h',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  List<PieChartSectionData> getSections(List<double> values) {
+    final isNotEmpty = values.isNotEmpty;
+    final total = isNotEmpty ? values.reduce((a, b) => a + b) : 1;
+    final colors = [
+      Color(0xFF3C3C3C),
+      Colors.purple,
+      Colors.orange,
+      Colors.green,
+      Colors.red,
+      // 여기에 더 많은 색상을 추가할 수 있습니다.
+    ];
+
+    return List.generate(values.length, (i) {
+      final isTouched = false;
+      final fontSize = isTouched ? 25.0 : 16.0;
+      final radius = isTouched ? 60.0 : 20.0;
+
+      return PieChartSectionData(
+        color: colors[i % colors.length],
+        value: values[i],
+        title: '',
+        radius: radius,
+        titleStyle: TextStyle(
+            fontSize: fontSize, fontWeight: FontWeight.bold, color: const Color(0xffffffff)),
+      );
+    });
   }
 }

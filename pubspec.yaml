@@ -22,6 +22,8 @@ dependencies:
   intl: ^0.18.1
   based_battery_indicator: ^1.0.3
   carousel_slider: ^4.2.1
+  syncfusion_flutter_charts: ^24.1.45
+  fl_chart: ^0.66.0
 
 dev_dependencies:
   flutter_test:
