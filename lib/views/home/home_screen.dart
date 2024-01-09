@@ -6,6 +6,7 @@ import 'package:based_battery_indicator/based_battery_indicator.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:get/get.dart';
+import 'package:nightary/repositories/temp.dart';
 
 class HomeScreen extends BaseScreen<HomeViewModel> {
   const HomeScreen({super.key});
@@ -56,24 +57,49 @@ class _TopPart extends BaseWidget<HomeViewModel> {
                 Container(
                   margin: EdgeInsets.only(left: 20, top: 20),
                   alignment: Alignment.centerLeft,
-                  child:  Obx(() =>Text(
-                    "${viewModel.userName.value}님 반가워요.",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
+                  child: Obx(
+                    () => Text(
+                      "${viewModel.userName.value}님 반가워요.",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                      ),
                     ),
-                  ),
                   ),
                 ),
                 _BatteryPart(),
-                Text(
-                  "목표한 시간보다 3시간 더 못잤어요.",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 15,
-                  ),
-                ),
+                Obx(() {
+                  String message;
+                  int minuteDifference = viewModel.minuteDifference.value;
+                  int hourDifference = viewModel.hourDifference.value;
 
+                  if (hourDifference > 0) {
+                    message = "목표한 시간보다 $hourDifference시간 $minuteDifference분 더 못잤어요.";
+                  } else if (hourDifference < 0) {
+                    // 부호를 바꾸어 음수를 양수로 만듭니다.
+                    hourDifference = hourDifference.abs();
+                    message = "목표한 시간보다 $hourDifference시간 $minuteDifference분 더 잤어요.";
+                  } else {
+                    // minuteDifference가 0인 경우
+                    message = "목표한 시간과 정확히 같은 시간을 잤어요.";
+                  }
+
+                  return Text(
+                    message,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 15,
+                    ),
+                  );
+                }),
+                // Container(
+                //   height: 5,
+                //   child: ElevatedButton(
+                //       onPressed: () {
+                //         viewModel.setSleepHour(10);
+                //       },
+                //       child: Text('zz')),
+                // )
               ],
             )),
       ),
@@ -120,7 +146,7 @@ class _MiddlePart extends BaseWidget<HomeViewModel> {
                           ),
                           SizedBox(width: 4),
                           Text(
-                            "5h 32m",
+                            "${viewModel.morningHour.value}h ${viewModel.morningMin.value}m",
                             style: TextStyle(
                               color: Colors.white,
                             ),
@@ -178,17 +204,20 @@ class _BatteryPart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = Get.find<HomeViewModel>();
     return Container(
       margin: EdgeInsets.all(20),
-      child: BasedBatteryIndicator(
-        status: BasedBatteryStatus(
-          value: 80,
-          type: BasedBatteryStatusType.normal,
+      child: Obx(
+        () => BasedBatteryIndicator(
+          status: BasedBatteryStatus(
+            value: viewModel.batteryPercentage(),
+            type: BasedBatteryStatusType.normal,
+          ),
+          trackHeight: 40.0,
+          trackAspectRatio: 2.2,
+          curve: Curves.ease,
+          duration: const Duration(seconds: 1),
         ),
-        trackHeight: 40.0,
-        trackAspectRatio: 2.2,
-        curve: Curves.ease,
-        duration: const Duration(seconds: 1),
       ),
     );
   }
@@ -227,7 +256,7 @@ class _CarouselSlider extends StatelessWidget {
                     ),
                     SizedBox(width: 8),
                     Text(
-                      "심장병확률이 2.5% 늘어났어요.",
+                      sentences[i],
                       style: TextStyle(
                         color: Colors.white,
                       ),
@@ -253,6 +282,7 @@ class _MyPieChart extends StatefulWidget {
 class MyPieChartState extends State<_MyPieChart> {
   @override
   Widget build(BuildContext context) {
+    final viewModel = Get.find<HomeViewModel>();
     return Container(
       width: 260,
       height: 260,
@@ -269,12 +299,14 @@ class MyPieChartState extends State<_MyPieChart> {
           // 아래의 Container는 중앙의 텍스트를 위한 것입니다.
           // 원하는 텍스트와 스타일을 설정하세요.
           Container(
-            child: Text(
-              '12h',
-              style: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFF755EBB),
+            child: Obx(
+              () => Text(
+                '${viewModel.sleepDebt.value}h',
+                style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF755EBB),
+                ),
               ),
             ),
           ),
@@ -294,10 +326,9 @@ class MyPieChartState extends State<_MyPieChart> {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
-        value: 50, // 차트의 절반
-        title: '',
-        radius: 15
-      ),
+          value: 50, // 차트의 절반
+          title: '',
+          radius: 15),
       PieChartSectionData(
         gradient: LinearGradient(
           colors: [Color(0xFFE742EB), Color(0xFF3D70F1)], // 그라데이션 색상
