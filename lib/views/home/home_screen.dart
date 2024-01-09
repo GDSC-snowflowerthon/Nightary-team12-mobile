@@ -152,14 +152,14 @@ class _BottomPart extends BaseWidget<HomeViewModel> {
                 alignment: Alignment.topLeft,
                 margin: EdgeInsets.all(20),
                 child: Text(
-                  "내가 갖고있는 수면빚",
+                  "내가 가진 수면빚",
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 20,
                   ),
                 ),
               ),
-              _MyPieChart(data: [90, 10]),
+              _MyPieChart(data: [30, 70]),
             ],
           ),
         ),
@@ -267,9 +267,9 @@ class MyPieChartState extends State<_MyPieChart> {
             child: Text(
               '12h',
               style: TextStyle(
-                fontSize: 24,
+                fontSize: 30,
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
+                color: Color(0xFF755EBB),
               ),
             ),
           ),
@@ -281,28 +281,28 @@ class MyPieChartState extends State<_MyPieChart> {
   List<PieChartSectionData> getSections(List<double> values) {
     final isNotEmpty = values.isNotEmpty;
     final total = isNotEmpty ? values.reduce((a, b) => a + b) : 1;
-    final colors = [
-      Color(0xFF3C3C3C),
-      Colors.purple,
-      Colors.orange,
-      Colors.green,
-      Colors.red,
-      // 여기에 더 많은 색상을 추가할 수 있습니다.
-    ];
 
-    return List.generate(values.length, (i) {
-      final isTouched = false;
-      final fontSize = isTouched ? 25.0 : 16.0;
-      final radius = isTouched ? 60.0 : 20.0;
-
-      return PieChartSectionData(
-        color: colors[i % colors.length],
-        value: values[i],
+    return [
+      PieChartSectionData(
+          gradient: LinearGradient(
+            colors: [Color(0xFF32134B), Color(0xFF131C4C)], // 그라데이션 색상
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        value: 50, // 차트의 절반
         title: '',
-        radius: radius,
-        titleStyle: TextStyle(
-            fontSize: fontSize, fontWeight: FontWeight.bold, color: const Color(0xffffffff)),
-      );
-    });
+        radius: 15
+      ),
+      PieChartSectionData(
+        gradient: LinearGradient(
+          colors: [Color(0xFFE742EB), Color(0xFF3D70F1)], // 그라데이션 색상
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+        ),
+        value: 50, // 차트의 다른 절반
+        title: '',
+        radius: 15,
+      ),
+    ];
   }
 }
