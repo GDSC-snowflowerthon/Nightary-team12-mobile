@@ -3,7 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:nightary/bindings/root_binding.dart';
-import 'views/root/root_screen.dart';
+import 'package:nightary/utilities/app_pages.dart';
 
 class MainApp extends StatelessWidget {
   final String initialRoute;
@@ -34,10 +34,8 @@ class MainApp extends StatelessWidget {
         scaffoldBackgroundColor: const Color(0xFFf6f6f8),
       ),
       initialRoute: initialRoute,
-      getPages: [
-        GetPage(
-            name: '/', page: () => const RootScreen(), binding: RootBinding()),
-      ],
+      getPages: appPages,
+      initialBinding: RootBinding(),
     );
   }
 
