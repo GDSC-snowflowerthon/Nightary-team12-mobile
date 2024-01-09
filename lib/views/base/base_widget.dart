@@ -16,3 +16,4 @@ abstract class BaseWidget<T extends GetxController> extends GetView<T> {
   /// 하위 클래스에서 반드시 구현되어야 하는 메서드, 해당 메서드에서는 화면을 실제로 구성하는 위젯을 반환해야 함
   Widget buildView(BuildContext context);
 }
+

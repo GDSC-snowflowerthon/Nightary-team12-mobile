@@ -20,6 +20,8 @@ dependencies:
   get: ^4.6.6
   flutter_svg: ^2.0.9
   intl: ^0.18.1
+  based_battery_indicator: ^1.0.3
+  carousel_slider: ^4.2.1
 
 dev_dependencies:
   flutter_test:
