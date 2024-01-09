@@ -12,6 +12,7 @@ class HomeScreen extends BaseScreen<HomeViewModel> {
 
   @override
   Widget buildBody(BuildContext context) {
+    Get.put(HomeViewModel());
     return Column(
       children: [
         _TopPart(),
@@ -36,6 +37,8 @@ class _TopPart extends BaseWidget<HomeViewModel> {
 
   @override
   Widget buildView(BuildContext context) {
+    final viewModel = Get.find<HomeViewModel>();
+
     return Center(
       child: Card(
         color: Colors.transparent,
@@ -53,12 +56,13 @@ class _TopPart extends BaseWidget<HomeViewModel> {
                 Container(
                   margin: EdgeInsets.only(left: 20, top: 20),
                   alignment: Alignment.centerLeft,
-                  child: Text(
-                    "손형준님 반가워요.",
+                  child:  Obx(() =>Text(
+                    "${viewModel.userName.value}님 반가워요.",
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 20,
                     ),
+                  ),
                   ),
                 ),
                 _BatteryPart(),
@@ -68,7 +72,8 @@ class _TopPart extends BaseWidget<HomeViewModel> {
                     color: Colors.white,
                     fontSize: 15,
                   ),
-                )
+                ),
+
               ],
             )),
       ),

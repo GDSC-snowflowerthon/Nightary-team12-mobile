@@ -2,6 +2,9 @@ import 'package:get/get.dart';
 import '../../models/User.dart';
 
 class HomeViewModel extends GetxController {
-  String name = '손형준';
+  var userName = "손형준".obs;
 
+  void setUserName(String newName) {
+    userName.value = newName;
+  }
 }
