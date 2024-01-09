@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nightary/viewModels/statistic/fragment/abstract_recent_viewmodel.dart';
 import 'package:nightary/views/base/base_screen.dart';
+import 'package:time_chart/time_chart.dart';
 
 class RecentFragment<T extends AbstractRecentViewModel> extends BaseScreen<T> {
   const RecentFragment({super.key});
@@ -14,6 +15,55 @@ class RecentFragment<T extends AbstractRecentViewModel> extends BaseScreen<T> {
           averageSleepTime(),
           const SizedBox(height: 20),
           informationTiles(context),
+          const SizedBox(height: 20),
+          Container(
+            width: MediaQuery.of(context).size.width - 40,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: const Color(0xFF0D0B26),
+            ),
+            child: TimeChart(
+              data: [
+                DateTimeRange(
+                  start: DateTime(2021, 2, 24, 23, 15),
+                  end: DateTime(2021, 2, 25, 7, 30),
+                ),
+                DateTimeRange(
+                  start: DateTime(2021, 2, 22, 1, 55),
+                  end: DateTime(2021, 2, 22, 9, 12),
+                ),
+                DateTimeRange(
+                  start: DateTime(2021, 2, 20, 0, 25),
+                  end: DateTime(2021, 2, 20, 7, 34),
+                ),
+                DateTimeRange(
+                  start: DateTime(2021, 2, 17, 21, 23),
+                  end: DateTime(2021, 2, 18, 4, 52),
+                ),
+                DateTimeRange(
+                  start: DateTime(2021, 2, 13, 6, 32),
+                  end: DateTime(2021, 2, 13, 13, 12),
+                ),
+                DateTimeRange(
+                  start: DateTime(2021, 2, 1, 9, 32),
+                  end: DateTime(2021, 2, 1, 15, 22),
+                ),
+                DateTimeRange(
+                  start: DateTime(2021, 1, 22, 12, 10),
+                  end: DateTime(2021, 1, 22, 16, 20),
+                ),
+              ],
+            ),
+          ),
+          // const SizedBox(height: 20),
+          // Container(
+          //   width: MediaQuery.of(context).size.width - 40,
+          //   height: 300,
+          //   decoration: BoxDecoration(
+          //     borderRadius: BorderRadius.circular(10),
+          //     color: const Color(0xFF0D0B26),
+          //   ),
+          // )
         ],
       ),
     );
