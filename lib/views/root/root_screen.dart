@@ -50,7 +50,7 @@ class RootScreen extends BaseScreen<RootViewModel> {
           ),
         ),
         child: FloatingActionButton.large(
-          onPressed: () {},
+          onPressed: controller.onTapBed,
           elevation: 0,
           highlightElevation: 2,
           shape: const CircleBorder(),
