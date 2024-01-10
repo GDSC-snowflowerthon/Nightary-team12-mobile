@@ -599,9 +599,11 @@ abstract class _$NightaryDatabase extends GeneratedDatabase {
   _$NightaryDatabase(QueryExecutor e) : super(e);
   late final $SleepRecordTable sleepRecord = $SleepRecordTable(this);
   late final $WhiteNoiseTable whiteNoise = $WhiteNoiseTable(this);
+  late final Index id = Index('id', 'CREATE INDEX id ON SleepRecord (id)');
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [sleepRecord, whiteNoise];
+  List<DatabaseSchemaEntity> get allSchemaEntities =>
+      [sleepRecord, whiteNoise, id];
 }

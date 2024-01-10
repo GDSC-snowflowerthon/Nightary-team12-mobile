@@ -26,10 +26,12 @@ LazyDatabase _openConnection() {
   });
 }
 
-@DriftDatabase(tables: [
-  SleepRecord,
-  WhiteNoise,
-])
+@DriftDatabase(
+  tables: [
+    SleepRecord,
+    WhiteNoise,
+  ],
+)
 class NightaryDatabase extends _$NightaryDatabase {
   NightaryDatabase() : super(_openConnection());
 
