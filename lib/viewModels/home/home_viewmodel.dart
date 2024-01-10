@@ -10,6 +10,14 @@ class HomeViewModel extends GetxController {
   RxInt sleepMin = 7.obs;//잔 분
   RxInt sleepDebt = 6.obs;
 
+  var healthSentance = [
+    '심장병 확률이 2.5% 올라갔어요.'.obs,
+    '암 확률이 3.5% 올라갔어요.'.obs,
+    '집에 보내주세요.'.obs,
+    '심장병 확률이 2.5% 올라갔어요.'.obs,
+    '암에 걸릴 확률이 3.5% 올라갔어요.'.obs,
+    '심장병 확률이 2.5% 올라갔어요.'.obs,
+  ].obs;
 
   void setUserName(String newName) {
     userName.value = newName;

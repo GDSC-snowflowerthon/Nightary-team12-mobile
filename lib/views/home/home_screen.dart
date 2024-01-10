@@ -6,7 +6,6 @@ import 'package:based_battery_indicator/based_battery_indicator.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:get/get.dart';
-import 'package:nightary/repositories/temp.dart';
 import 'package:nightary/utilities/font_system.dart';
 import 'dart:ui';
 
@@ -222,6 +221,7 @@ class _CarouselSlider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = Get.find<HomeViewModel>();
     return CarouselSlider(
       options: CarouselOptions(
         height: 64.0,
@@ -251,7 +251,7 @@ class _CarouselSlider extends StatelessWidget {
                     SizedBox(width: 8),
                     Expanded(
                       child: Text(
-                        sentences[i],
+                        viewModel.healthSentance[i].toString(),
                         style: FontSystem.KR16R.copyWith(color: Colors.white),
                         softWrap: true,
                         maxLines: 2,
