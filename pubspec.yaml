@@ -35,6 +35,14 @@ dependencies:
   just_audio: ^0.9.36
 
 
+  # Custom Time Chart
+  path_drawing: ^1.0.1
+  touchable: ^1.0.2
+  linked_scroll_controller: ^0.2.0
+
+  # Ft Chart
+  fl_chart: ^0.66.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

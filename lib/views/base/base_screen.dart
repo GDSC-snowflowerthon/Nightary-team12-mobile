@@ -44,6 +44,7 @@ abstract class BaseScreen<T extends GetxController> extends GetView<T> {
       appBar: buildAppBar(context),
       body: wrapWithInnerSafeArea
           ? SafeArea(
+              bottom: false,
               child: buildBody(context),
             )
           : buildBody(context),
