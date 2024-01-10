@@ -8,6 +8,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:get/get.dart';
 import 'package:nightary/repositories/temp.dart';
 import 'package:nightary/utilities/font_system.dart';
+import 'dart:ui';
 
 class HomeScreen extends BaseScreen<HomeViewModel> {
   const HomeScreen({super.key});
@@ -48,8 +49,9 @@ class _TopPart extends BaseWidget<HomeViewModel> {
         color: Colors.transparent,
         child: Container(
             height: 170,
-            width: 394,
+            width: Get.width-40,
             decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
               image: DecorationImage(
                 image: AssetImage('assets/images/home_head_card.png'),
                 fit: BoxFit.cover,
@@ -118,7 +120,7 @@ class _MiddlePart extends BaseWidget<HomeViewModel> {
           color: Color(0xFF0A0A25),
           child: Container(
             height: 170,
-            width: 394,
+            width: Get.width-40,
             child: Column(
               children: [
                 Row(
@@ -171,7 +173,7 @@ class _BottomPart extends BaseWidget<HomeViewModel> {
         color: Color(0xFF0A0A25),
         child: Container(
           height: 348,
-          width: 394,
+          width: Get.width - 40,
           child: Column(
             children: [
               Container(
@@ -232,7 +234,7 @@ class _CarouselSlider extends StatelessWidget {
         return Builder(
           builder: (BuildContext context) {
             return Container(
-                width: MediaQuery.of(context).size.width,
+                width: Get.width,
                 margin: EdgeInsets.symmetric(horizontal: 5.0),
                 decoration: BoxDecoration(
                   color: Color(0xFF3C3C3C),
@@ -242,14 +244,19 @@ class _CarouselSlider extends StatelessWidget {
                   children: [
                     SizedBox(width: 4),
                     Image.asset(
-                      'assets/images/health_card_icon.png', // 이미지 파일 경로
+                      'assets/images/health_card_icon.png',
                       width: 56.0, // 아이콘 크기
                       height: 56.0,
                     ),
                     SizedBox(width: 8),
-                    Text(
-                      sentences[i],
-                      style: FontSystem.KR16R.copyWith(color: Colors.white),
+                    Expanded(
+                      child: Text(
+                        sentences[i],
+                        style: FontSystem.KR16R.copyWith(color: Colors.white),
+                        softWrap: true,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                   ],
                 ));
