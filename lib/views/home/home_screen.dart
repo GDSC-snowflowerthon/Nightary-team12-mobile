@@ -15,12 +15,14 @@ class HomeScreen extends BaseScreen<HomeViewModel> {
   @override
   Widget buildBody(BuildContext context) {
     Get.put(HomeViewModel());
-    return Column(
-      children: [
-        _TopPart(),
-        _MiddlePart(),
-        _BottomPart(),
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          _TopPart(),
+          _MiddlePart(),
+          _BottomPart(),
+        ],
+      ),
     );
   }
 
@@ -222,6 +224,7 @@ class _CarouselSlider extends StatelessWidget {
         autoPlayInterval: Duration(seconds: 3),
         autoPlayAnimationDuration: Duration(milliseconds: 600),
         autoPlayCurve: Curves.fastOutSlowIn,
+
       ),
       items: [1, 2, 3, 4, 5].map((i) {
         return Builder(
