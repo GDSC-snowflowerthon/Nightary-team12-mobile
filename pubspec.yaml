@@ -37,12 +37,17 @@ dependencies:
   touchable: ^1.0.2
   linked_scroll_controller: ^0.2.0
 
+  # ft_chart
+  fl_chart: ^0.66.0
 
   # SQLite3 Database
   drift: ^2.14.1
   sqlite3_flutter_libs: ^0.5.18
   path_provider: ^2.1.2
   path: ^1.8.3
+
+  # Shared Preferences
+  shared_preferences: ^2.2.1
 
 
 dev_dependencies:
