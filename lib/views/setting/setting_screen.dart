@@ -1,14 +1,17 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:nightary/viewModels/setting/setting_screen.dart';
 import 'package:nightary/views/base/base_screen.dart';
 import 'package:nightary/utilities/font_system.dart';
 import 'package:get/get.dart';
+import 'package:nightary/viewModels/setting/setting_viewmodel.dart';
+import 'package:nightary/viewModels/home/home_viewmodel.dart';
 
 class SettingScreen extends BaseScreen<SettingViewModel> {
   const SettingScreen({super.key});
 
   @override
   Widget buildBody(BuildContext context) {
+    final homeViewModel = Get.find<HomeViewModel>();
     return Column(
       children: [
         Container(
@@ -38,10 +41,36 @@ class SettingScreen extends BaseScreen<SettingViewModel> {
                   SizedBox(
                     height: 25,
                   ),
-                  _CardButton(text: "잘 시간 설정하기"),
-                  _CardButton(text: "알림 보낼 시간 설정하기"),
-                  _CardButton(text: "이용약관"),
-                  _CardButton(text: "회원탈퇴"),
+                  _CardButton(
+                      text: "하루 목표 수면시간 설정하기",
+                      onTap: () {
+                        showCupertinoDialog(
+                          barrierDismissible: true,
+                          context: context,
+                          builder: (BuildContext context) {
+                            return Align(
+                              alignment: Alignment.bottomCenter,
+                              child: _SetSleepTime(),
+                            );
+                          },
+                        );
+                      }),
+                  _CardButton(
+                      text: "알림 보낼 시간 설정하기",
+                      onTap: () {
+                        showCupertinoDialog(
+                          barrierDismissible: true,
+                          context: context,
+                          builder: (BuildContext context) {
+                            return Align(
+                              alignment: Alignment.bottomCenter,
+                              child: _SetNoticeTime(),
+                            );
+                          },
+                        );
+                      }),
+                  _CardButton(text: "이용약관", onTap: () {}),
+                  _CardButton(text: "회원탈퇴", onTap: () {}),
                 ],
               )),
         ),
@@ -64,6 +93,7 @@ class _Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final homeViewModel = Get.find<HomeViewModel>();
     return Container(
       margin: EdgeInsets.all(25),
       child: Row(
@@ -92,9 +122,11 @@ class _Header extends StatelessWidget {
                   fit: BoxFit.cover,
                 ),
                 SizedBox(width: 4),
-                Text(
-                  "6h 00m",
-                  style: FontSystem.KR20B.copyWith(color: Colors.white),
+                Obx(
+                  () => Text(
+                    "${homeViewModel.goalHour.value}h ${homeViewModel.goalMin.value}m",
+                    style: FontSystem.KR20B.copyWith(color: Colors.white),
+                  ),
                 ),
               ],
             ),
@@ -107,24 +139,102 @@ class _Header extends StatelessWidget {
 
 class _CardButton extends StatelessWidget {
   final String text;
+  final VoidCallback onTap;
 
-  const _CardButton({super.key, required this.text});
+  _CardButton({
+    Key? key,
+    required this.text,
+    required this.onTap,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 15),
-      width: Get.width - 60,
-      height: 56,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16.0), color: Color(0xFF2B2B2B)),
+    return InkWell(
+      onTap: onTap, // 여기에서 콜백 함수를 사용
+      borderRadius: BorderRadius.circular(30),
       child: Container(
-        margin: EdgeInsets.only(top: 17,left: 20),
-        child: Text(
-          text,
-          style: FontSystem.KR16B.copyWith(color: Colors.white),
+        margin: EdgeInsets.only(bottom: 7, top: 7),
+        width: Get.width - 60,
+        height: 56,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16.0),
+            color: Color(0xFF2B2B2B)),
+        child: Container(
+          margin: EdgeInsets.only(top: 17, left: 20),
+          child: Text(
+            text,
+            style: FontSystem.KR16B.copyWith(color: Colors.white),
+          ),
         ),
       ),
     );
   }
 }
+
+class _SetSleepTime extends StatelessWidget {
+  const _SetSleepTime({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final homeViewModel = Get.find<HomeViewModel>();
+    return Container(
+      height: 300.0,
+      color: Colors.white,
+      child: CupertinoDatePicker(
+        mode: CupertinoDatePickerMode.time,
+        use24hFormat: true,
+        initialDateTime: DateTime(2020, 1, 1, 6),
+        // 오전 6시부터 선택 가능하도록 초기값 설정
+        minimumDate: DateTime(2020, 1, 1, 6),
+        // 오전 6시부터
+        maximumDate: DateTime(2020, 1, 1, 10),
+        // 오전 10시까지
+        onDateTimeChanged: (DateTime value) {
+          homeViewModel.setGoalHour(value.hour);
+          homeViewModel.setGoalMin(value.minute);
+        },
+      ),
+    );
+  }
+}
+
+class _SetNoticeTime extends StatelessWidget {
+  const _SetNoticeTime({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final homeViewModel = Get.find<HomeViewModel>();
+    final settingViewModel = Get.find<SettingViewModel>();
+    return Container(
+      height: 300.0,
+      color: Colors.white,
+      child:  CupertinoDatePicker(
+          mode: CupertinoDatePickerMode.time,
+          onDateTimeChanged: (DateTime value) {
+            settingViewModel.noticeHour = value.hour as RxInt;
+            settingViewModel.noticeMin = value.minute as RxInt;
+          },
+        ),
+    );
+  }
+}
+
+// void showSleepTimeDialog(BuildContext context) {
+//   showDialog(
+//     context: context,
+//     builder: (BuildContext context) {
+//       return AlertDialog(
+//         title: Text("수면시간 설정"),
+//         content: Text("6시간~10시간 사이 목표 수면시간을 선택해주세요"),
+//         actions: <Widget>[
+//           TextButton(
+//             child: Text("확인"),
+//             onPressed: () {
+//               Navigator.of(context).pop();
+//             },
+//           ),
+//         ],
+//       );
+//     },
+//   );
+// }
