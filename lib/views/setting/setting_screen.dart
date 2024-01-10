@@ -9,43 +9,42 @@ class SettingScreen extends BaseScreen<SettingViewModel> {
 
   @override
   Widget buildBody(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          margin: EdgeInsets.only(top: 122, bottom: 93),
-          child: Center(
-            child: Image.asset('assets/images/setting_logo.png'),
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Container(
+            margin: const EdgeInsets.only(top: 122, bottom: 93),
+            child: Center(
+              child: Image.asset('assets/images/setting_logo.png'),
+            ),
           ),
-        ),
-        Expanded(
-          child: Container(
-              width: Get.width - 30.0,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(40.0),
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Color(0xFF17191D),
-                    Color(0xFF17191D),
-                    Colors.black.withOpacity(0.0),
-                  ],
-                ),
-              ),
-              child: Column(
-                children: [
-                  _Header(),
-                  SizedBox(
-                    height: 25,
-                  ),
-                  _CardButton(text: "잘 시간 설정하기"),
-                  _CardButton(text: "알림 보낼 시간 설정하기"),
-                  _CardButton(text: "이용약관"),
-                  _CardButton(text: "회원탈퇴"),
+          Container(
+            width: Get.width - 30.0,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(40.0),
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  const Color(0xFF17191D),
+                  const Color(0xFF17191D),
+                  Colors.black.withOpacity(0.0),
                 ],
-              )),
-        ),
-      ],
+              ),
+            ),
+            child: Column(
+              children: [
+                _Header(controller.onTapProfile),
+                const SizedBox(height: 25),
+                const _CardButton(text: "잘 시간 설정하기"),
+                const _CardButton(text: "알림 보낼 시간 설정하기"),
+                const _CardButton(text: "이용약관"),
+                const _CardButton(text: "회원탈퇴"),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -60,46 +59,48 @@ class SettingScreen extends BaseScreen<SettingViewModel> {
 }
 
 class _Header extends StatelessWidget {
-  const _Header({super.key});
+  final Function() onTap;
+  const _Header(this.onTap);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.all(25),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            children: [
-              Image.asset('assets/images/setting_people.png'),
-              SizedBox(
-                width: 16,
-              ),
-              Text(
-                "손형준",
-                style: FontSystem.KR18B.copyWith(color: Colors.white),
-              ),
-            ],
-          ),
-          Container(
-            margin: EdgeInsets.all(20),
-            child: Row(
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        margin: const EdgeInsets.all(25),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
               children: [
-                Image.asset(
-                  'assets/images/setting_sun_icon.png',
-                  width: 25.0,
-                  height: 25.0,
-                  fit: BoxFit.cover,
-                ),
-                SizedBox(width: 4),
+                Image.asset('assets/images/setting_people.png'),
+                const SizedBox(width: 16),
                 Text(
-                  "6h 00m",
-                  style: FontSystem.KR20B.copyWith(color: Colors.white),
+                  "손형준",
+                  style: FontSystem.KR18B.copyWith(color: Colors.white),
                 ),
               ],
             ),
-          ),
-        ],
+            Container(
+              margin: const EdgeInsets.all(20),
+              child: Row(
+                children: [
+                  Image.asset(
+                    'assets/images/setting_sun_icon.png',
+                    width: 25.0,
+                    height: 25.0,
+                    fit: BoxFit.cover,
+                  ),
+                  const SizedBox(width: 4),
+                  Text(
+                    "6h 00m",
+                    style: FontSystem.KR20B.copyWith(color: Colors.white),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -108,18 +109,19 @@ class _Header extends StatelessWidget {
 class _CardButton extends StatelessWidget {
   final String text;
 
-  const _CardButton({super.key, required this.text});
+  const _CardButton({required this.text});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 15),
+      margin: const EdgeInsets.only(bottom: 15),
       width: Get.width - 60,
       height: 56,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16.0), color: Color(0xFF2B2B2B)),
+          borderRadius: BorderRadius.circular(16.0),
+          color: const Color(0xFF2B2B2B)),
       child: Container(
-        margin: EdgeInsets.only(top: 17,left: 20),
+        margin: const EdgeInsets.only(top: 17, left: 20),
         child: Text(
           text,
           style: FontSystem.KR16B.copyWith(color: Colors.white),

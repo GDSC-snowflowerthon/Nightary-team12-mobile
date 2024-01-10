@@ -17,8 +17,8 @@ class CustomScrollPhysics extends ScrollPhysics {
     required this.blockWidth,
     required this.viewMode,
     required this.scrollPhysicsState,
-    ScrollPhysics? parent,
-  }) : super(parent: parent);
+    super.parent,
+  });
 
   final double blockWidth;
   final ViewMode viewMode;

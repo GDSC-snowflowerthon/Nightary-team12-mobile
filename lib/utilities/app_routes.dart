@@ -3,4 +3,6 @@
 abstract class Routes {
   static const ROOT = '/';
   static const WHITE_NOISE = '/white-noise';
+  static const SETTING = '/setting';
+  static const ONBOARDING = '/onboarding';
 }

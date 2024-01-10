@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:nightary/viewModels/analyze/analyze_viewmodel.dart';
+import 'package:nightary/viewModels/onboarding/onboarding_viewmodel.dart';
 import 'package:nightary/views/base/base_screen.dart';
 import 'package:nightary/utilities/font_system.dart';
 
-class OnboardingScreen extends BaseScreen<AnalyzeViewModel> {
+class OnboardingScreen extends BaseScreen<OnboardingViewModel> {
   const OnboardingScreen({super.key});
 
   @override
@@ -12,17 +11,17 @@ class OnboardingScreen extends BaseScreen<AnalyzeViewModel> {
     return Column(
       children: [
         Container(
-          padding: EdgeInsets.only(bottom: 0),
-          margin: EdgeInsets.only(top: 110, left: 20, right: 20, bottom: 0),
+          padding: const EdgeInsets.only(bottom: 0),
+          margin:
+              const EdgeInsets.only(top: 110, left: 20, right: 20, bottom: 0),
           child: Image.asset('assets/images/text_onboarding.png'),
         ),
         Text(
           "어떤 이름으로 불러드릴까요?",
           style: FontSystem.KR18B.copyWith(color: Colors.white),
         ),
-        InputSample(),
-        _Button(),
-
+        const InputSample(),
+        _Button(controller.onTapContinue),
       ],
     );
   }
@@ -38,6 +37,8 @@ class OnboardingScreen extends BaseScreen<AnalyzeViewModel> {
 }
 
 class InputSample extends StatefulWidget {
+  const InputSample({super.key});
+
   @override
   State createState() => InputSampleState();
 }
@@ -47,23 +48,24 @@ class InputSampleState extends State<InputSample> {
   TextEditingController textController = TextEditingController();
   String textContent = "";
 
-
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Column(
-        children: <Widget>[
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
           Container(
+            padding: const EdgeInsets.only(top: 10, bottom: 10),
+            width: 300,
             child: TextField(
               cursorColor: Colors.white,
               cursorWidth: 0.5,
               cursorHeight: 20,
-
               keyboardType: TextInputType.text,
-              style: TextStyle(fontSize: 18, color: Colors.white),
+              style: const TextStyle(fontSize: 18, color: Colors.white),
               textAlign: TextAlign.center,
-              decoration: InputDecoration(hintText: '',
-
+              decoration: const InputDecoration(
+                hintText: '',
                 border: UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.white),
                 ),
@@ -78,27 +80,25 @@ class InputSampleState extends State<InputSample> {
                 setState(() => textContent = textController.text);
               },
             ),
-            padding: EdgeInsets.only(top: 10, bottom: 10),
-            width: 300,
           ),
           Container(
+            padding: const EdgeInsets.only(top: 10, bottom: 10),
+            width: 300,
             child: Text(
               inputs,
-              style: TextStyle(fontSize: 32),
+              style: const TextStyle(fontSize: 32),
               textAlign: TextAlign.center,
             ),
-            padding: EdgeInsets.only(top: 10, bottom: 10),
-            width: 300,
           ),
         ],
-        mainAxisAlignment: MainAxisAlignment.center,
       ),
     );
   }
 }
 
 class _Button extends StatelessWidget {
-  const _Button({super.key});
+  final Function() onTap;
+  const _Button(this.onTap);
 
   @override
   Widget build(BuildContext context) {
@@ -124,9 +124,7 @@ class _Button extends StatelessWidget {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: () {
-            print('hell');
-          },
+          onTap: onTap,
           borderRadius: BorderRadius.circular(30),
           child: const Center(
             child: Text(
@@ -140,6 +138,5 @@ class _Button extends StatelessWidget {
         ),
       ),
     );
-
   }
 }
