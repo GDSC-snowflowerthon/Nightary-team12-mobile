@@ -31,6 +31,9 @@ class HomeViewModel extends GetxController {
     sleepDebt.value += hour;
     if(sleepDebt.value < 0)sleepDebt.value = 0;
   }
+  void setSleepDebt(int hour){//수면빚 재계산
+    sleepDebt.value = hour;
+  }
 
 
   RxInt get hourDifference {
@@ -47,5 +50,13 @@ class HomeViewModel extends GetxController {
     return ((sleepHour.value * 60 + sleepMin.value)/1440 * 100).toInt();
   }
 
+  RxInt get sleepDebtPercent {
+    RxInt percent = 0.obs;
+    if(sleepDebt.value >= 24) percent = 100.obs;
+    else {
+      percent = ((sleepDebt.value / 24) * 100).toInt().obs;
+    }
+    return percent;
+  }
 
 }

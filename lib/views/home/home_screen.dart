@@ -74,11 +74,13 @@ class _TopPart extends BaseWidget<HomeViewModel> {
                   int hourDifference = viewModel.hourDifference.value;
 
                   if (hourDifference > 0) {
-                    message = "목표한 시간보다 $hourDifference시간 $minuteDifference분 더 못잤어요.";
+                    message =
+                        "목표한 시간보다 $hourDifference시간 $minuteDifference분 더 못잤어요.";
                   } else if (hourDifference < 0) {
                     // 부호를 바꾸어 음수를 양수로 만듭니다.
                     hourDifference = hourDifference.abs();
-                    message = "목표한 시간보다 $hourDifference시간 $minuteDifference분 더 잤어요.";
+                    message =
+                        "목표한 시간보다 $hourDifference시간 $minuteDifference분 더 잤어요.";
                   } else {
                     // minuteDifference가 0인 경우
                     message = "목표한 시간과 정확히 같은 시간을 잤어요.";
@@ -89,14 +91,14 @@ class _TopPart extends BaseWidget<HomeViewModel> {
                     style: FontSystem.KR16R.copyWith(color: Colors.white),
                   );
                 }),
-                // Container(
-                //   height: 5,
-                //   child: ElevatedButton(
-                //       onPressed: () {
-                //         viewModel.setSleepHour(10);
-                //       },
-                //       child: Text('zz')),
-                // )
+                Container(
+                  height: 5,
+                  child: ElevatedButton(
+                      onPressed: () {
+                        viewModel.addSleepDebt(10);
+                      },
+                      child: Text('zz')),
+                )
               ],
             )),
       ),
@@ -141,7 +143,8 @@ class _MiddlePart extends BaseWidget<HomeViewModel> {
                           SizedBox(width: 4),
                           Text(
                             "${viewModel.sleepHour.value}h ${viewModel.sleepMin.value}m",
-                            style: FontSystem.KR20B.copyWith(color: Colors.white),
+                            style:
+                                FontSystem.KR20B.copyWith(color: Colors.white),
                           ),
                         ],
                       ),
@@ -224,7 +227,6 @@ class _CarouselSlider extends StatelessWidget {
         autoPlayInterval: Duration(seconds: 3),
         autoPlayAnimationDuration: Duration(milliseconds: 600),
         autoPlayCurve: Curves.fastOutSlowIn,
-
       ),
       items: [1, 2, 3, 4, 5].map((i) {
         return Builder(
@@ -277,11 +279,13 @@ class MyPieChartState extends State<_MyPieChart> {
       child: Stack(
         alignment: Alignment.center,
         children: [
-          PieChart(
-            PieChartData(
-              sections: getSections(widget.data),
-              centerSpaceRadius: 100,
-              sectionsSpace: 0,
+          Obx(
+            () => PieChart(
+              PieChartData(
+                sections: getSections(widget.data),
+                centerSpaceRadius: 100,
+                sectionsSpace: 0,
+              ),
             ),
           ),
           Container(
@@ -298,6 +302,7 @@ class MyPieChartState extends State<_MyPieChart> {
   }
 
   List<PieChartSectionData> getSections(List<double> values) {
+    final viewModel = Get.find<HomeViewModel>();
     final isNotEmpty = values.isNotEmpty;
     final total = isNotEmpty ? values.reduce((a, b) => a + b) : 1;
 
@@ -308,7 +313,7 @@ class MyPieChartState extends State<_MyPieChart> {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
-          value: 50, // 차트의 절반
+          value: 100 - viewModel.sleepDebtPercent.toDouble(), // 차트의 절반
           title: '',
           radius: 15),
       PieChartSectionData(
@@ -317,7 +322,7 @@ class MyPieChartState extends State<_MyPieChart> {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
         ),
-        value: 50, // 차트의 다른 절반
+        value: viewModel.sleepDebtPercent.toDouble(), // 차트의 다른 절반
         title: '',
         radius: 15,
       ),
