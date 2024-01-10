@@ -22,7 +22,13 @@ dependencies:
   get: ^4.6.6
   flutter_svg: ^2.0.9
   intl: ^0.18.1
-  based_battery_indicator: ^1.0.3
+  #based_battery_indicator: ^1.0.3
+  based_battery_indicator:
+    git:
+      url: https://github.com/bunju20/based_widget.git
+      path: packages/based_battery_indicator
+      ref: master
+
   carousel_slider: ^4.2.1
   syncfusion_flutter_charts: ^24.1.45
   fl_chart: ^0.66.0
