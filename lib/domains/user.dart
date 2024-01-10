@@ -1,16 +1,18 @@
-class User {
-  int userID;
-  String nickname;
-  int targetSleepTime;
-  TimeOfDay notificationAt;
-  DateTime createdAt;
+import 'package:flutter/material.dart';
 
-  User({
-    this.userID,
-    this.nickname, 
-    this.targetSleepTime, 
-    this.notificationAt, 
-    this.createdAt
+class User {
+  final int userID;
+  final String nickname;
+  final int targetSleepTime;
+  final TimeOfDay notificationAt;
+  final DateTime createdAt;
+
+  const User({
+    required this.userID,
+    required this.nickname,
+    required this.targetSleepTime,
+    required this.notificationAt,
+    required this.createdAt,
   });
 
   Map<String, dynamic> toMap() {
@@ -23,8 +25,8 @@ class User {
     };
   }
 
- // 직렬화에만 추가 로직이 사용될 수 있다길래, toMap()이랑 toJson()이랑 구분함. 현재 코드상으로는 toMap과 같은 기능을 수행하긴함.
- // 객체를 JSON으로 변환
+  // 직렬화에만 추가 로직이 사용될 수 있다길래, toMap()이랑 toJson()이랑 구분함. 현재 코드상으로는 toMap과 같은 기능을 수행하긴함.
+  // 객체를 JSON으로 변환
   Map<String, dynamic> toJson() {
     return toMap();
   }
@@ -47,7 +49,7 @@ class User {
     return '$hour:$minute';
   }
 
-  // 'HH:mm' 형식 문자열 -> TimeOfDay 
+  // 'HH:mm' 형식 문자열 -> TimeOfDay
   static TimeOfDay parseTimeOfDay(String timeString) {
     final parts = timeString.split(':');
     return TimeOfDay(hour: int.parse(parts[0]), minute: int.parse(parts[1]));
