@@ -1,12 +1,12 @@
 import 'package:drift/drift.dart';
 
 /// Select 시점
-/// 1. [통계 화면] 최근 N번의 수면 차트, 수면 빚 추이 표시할 때 조회 쿼리문 필요
+/// 1. [백색 소음 화면] 백색 소음 목록 조회 쿼리문 필요
 ///
 /// Table Column 설명
-/// 1. id: 수면 기록의 고유 ID
-/// 2. startSleepDate: 수면 시작 시간
-/// 3. endSleepDate: 수면 종료 시간
+/// 1. id: 백색 소음 기록의 고유 ID
+/// 2. imgUrl: 백색 소음 이미지 URL
+/// 3. fileLocation: 백색 소음 파일 위치
 @TableIndex(name: 'id', columns: {#id})
 class WhiteNoise extends Table {
   @override
