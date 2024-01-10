@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nightary/viewModels/analyze/analyze_viewmodel.dart';
 import 'package:nightary/views/base/base_screen.dart';
+import 'package:nightary/utilities/font_system.dart';
 
 class OnboardingScreen extends BaseScreen<AnalyzeViewModel> {
   const OnboardingScreen({super.key});
@@ -17,10 +18,7 @@ class OnboardingScreen extends BaseScreen<AnalyzeViewModel> {
         ),
         Text(
           "어떤 이름으로 불러드릴까요?",
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 18,
-          ),
+          style: FontSystem.KR18B.copyWith(color: Colors.white),
         ),
         InputSample(),
         _Button(),
@@ -66,13 +64,13 @@ class InputSampleState extends State<InputSample> {
               textAlign: TextAlign.center,
               decoration: InputDecoration(hintText: '',
 
-                border: UnderlineInputBorder( // 하단에 직선 테두리를 설정합니다.
-                  borderSide: BorderSide(color: Colors.white), // 테두리 색상을 하얀색으로 지정합니다.
-                ),
-                enabledBorder: UnderlineInputBorder( // 텍스트 필드가 활성화되었을 때의 하단 테두리 스타일.
+                border: UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.white),
                 ),
-                focusedBorder: UnderlineInputBorder( // 텍스트 필드에 포커스가 맞춰졌을 때의 하단 테두리 스타일.
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white),
+                ),
+                focusedBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.white),
                 ),
               ),
