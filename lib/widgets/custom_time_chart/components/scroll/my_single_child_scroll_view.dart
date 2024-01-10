@@ -8,7 +8,7 @@ import 'package:flutter/gestures.dart' show DragStartBehavior;
 class MySingleChildScrollView extends StatelessWidget {
   /// Creates a box in which a single widget can be scrolled.
   const MySingleChildScrollView({
-    Key? key,
+    super.key,
     this.scrollDirection = Axis.vertical,
     this.reverse = false,
     this.padding,
@@ -22,8 +22,7 @@ class MySingleChildScrollView extends StatelessWidget {
             'Primary ScrollViews obtain their ScrollController via inheritance from a PrimaryScrollController widget. '
             'You cannot both set primary to true and pass an explicit controller.'),
         primary = primary ??
-            controller == null && identical(scrollDirection, Axis.vertical),
-        super(key: key);
+            controller == null && identical(scrollDirection, Axis.vertical);
 
   /// The axis along which the scroll view scrolls.
   ///
@@ -120,11 +119,10 @@ class MySingleChildScrollView extends StatelessWidget {
 
 class _SingleChildViewport extends SingleChildRenderObjectWidget {
   const _SingleChildViewport({
-    Key? key,
     this.axisDirection = AxisDirection.down,
     this.offset,
-    Widget? child,
-  }) : super(key: key, child: child);
+    super.child,
+  });
 
   final AxisDirection axisDirection;
   final ViewportOffset? offset;

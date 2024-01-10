@@ -7,7 +7,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:get/get.dart';
 import 'package:nightary/utilities/font_system.dart';
-import 'dart:ui';
 
 class HomeScreen extends BaseScreen<HomeViewModel> {
   const HomeScreen({super.key});
@@ -15,7 +14,7 @@ class HomeScreen extends BaseScreen<HomeViewModel> {
   @override
   Widget buildBody(BuildContext context) {
     Get.put(HomeViewModel());
-    return SingleChildScrollView(
+    return const SingleChildScrollView(
       child: Column(
         children: [
           _TopPart(),
@@ -37,7 +36,7 @@ class HomeScreen extends BaseScreen<HomeViewModel> {
 }
 
 class _TopPart extends BaseWidget<HomeViewModel> {
-  const _TopPart({Key? key}) : super(key: key);
+  const _TopPart();
 
   @override
   Widget buildView(BuildContext context) {
@@ -48,10 +47,10 @@ class _TopPart extends BaseWidget<HomeViewModel> {
         color: Colors.transparent,
         child: Container(
             height: 170,
-            width: Get.width-40,
+            width: Get.width - 40,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
-              image: DecorationImage(
+              image: const DecorationImage(
                 image: AssetImage('assets/images/home_head_card.png'),
                 fit: BoxFit.cover,
               ),
@@ -59,7 +58,7 @@ class _TopPart extends BaseWidget<HomeViewModel> {
             child: Column(
               children: [
                 Container(
-                  margin: EdgeInsets.only(left: 20, top: 20),
+                  margin: const EdgeInsets.only(left: 20, top: 20),
                   alignment: Alignment.centerLeft,
                   child: Obx(
                     () => Text(
@@ -68,7 +67,7 @@ class _TopPart extends BaseWidget<HomeViewModel> {
                     ),
                   ),
                 ),
-                _BatteryPart(),
+                const _BatteryPart(),
                 Obx(() {
                   String message;
                   int minuteDifference = viewModel.minuteDifference.value;
@@ -108,32 +107,32 @@ class _TopPart extends BaseWidget<HomeViewModel> {
 }
 
 class _MiddlePart extends BaseWidget<HomeViewModel> {
-  const _MiddlePart({Key? key}) : super(key: key);
+  const _MiddlePart();
 
   @override
   Widget buildView(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 10, bottom: 10),
+      margin: const EdgeInsets.only(top: 10, bottom: 10),
       child: Center(
         child: Card(
-          color: Color(0xFF0A0A25),
-          child: Container(
+          color: const Color(0xFF0A0A25),
+          child: SizedBox(
             height: 170,
-            width: Get.width-40,
+            width: Get.width - 40,
             child: Column(
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
-                      margin: EdgeInsets.all(20),
+                      margin: const EdgeInsets.all(20),
                       child: Text(
                         "오늘의 건강 브리핑",
                         style: FontSystem.KR20B.copyWith(color: Colors.white),
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.all(20),
+                      margin: const EdgeInsets.all(20),
                       child: Row(
                         children: [
                           Image.asset(
@@ -141,7 +140,7 @@ class _MiddlePart extends BaseWidget<HomeViewModel> {
                             width: 16.0, // 아이콘 크기
                             height: 16.0,
                           ),
-                          SizedBox(width: 4),
+                          const SizedBox(width: 4),
                           Text(
                             "${viewModel.sleepHour.value}h ${viewModel.sleepMin.value}m",
                             style:
@@ -152,7 +151,7 @@ class _MiddlePart extends BaseWidget<HomeViewModel> {
                     )
                   ],
                 ),
-                _CarouselSlider(), // 여기에 추가적인 위젯들이 필요하면 추가
+                const _CarouselSlider(), // 여기에 추가적인 위젯들이 필요하면 추가
               ],
             ),
           ),
@@ -163,27 +162,27 @@ class _MiddlePart extends BaseWidget<HomeViewModel> {
 }
 
 class _BottomPart extends BaseWidget<HomeViewModel> {
-  const _BottomPart({Key? key}) : super(key: key);
+  const _BottomPart();
 
   @override
   Widget buildView(BuildContext context) {
     return Center(
       child: Card(
-        color: Color(0xFF0A0A25),
-        child: Container(
+        color: const Color(0xFF0A0A25),
+        child: SizedBox(
           height: 348,
           width: Get.width - 40,
           child: Column(
             children: [
               Container(
                 alignment: Alignment.topLeft,
-                margin: EdgeInsets.all(20),
+                margin: const EdgeInsets.all(20),
                 child: Text(
                   "내가 가진 수면빚",
                   style: FontSystem.KR20B.copyWith(color: Colors.white),
                 ),
               ),
-              _MyPieChart(data: [30, 70]),
+              const _MyPieChart(data: [30, 70]),
             ],
           ),
         ),
@@ -193,13 +192,13 @@ class _BottomPart extends BaseWidget<HomeViewModel> {
 }
 
 class _BatteryPart extends StatelessWidget {
-  const _BatteryPart({super.key});
+  const _BatteryPart();
 
   @override
   Widget build(BuildContext context) {
     final viewModel = Get.find<HomeViewModel>();
     return Container(
-      margin: EdgeInsets.all(20),
+      margin: const EdgeInsets.all(20),
       child: Obx(
         () => BasedBatteryIndicator(
           status: BasedBatteryStatus(
@@ -217,7 +216,7 @@ class _BatteryPart extends StatelessWidget {
 }
 
 class _CarouselSlider extends StatelessWidget {
-  const _CarouselSlider({super.key});
+  const _CarouselSlider();
 
   @override
   Widget build(BuildContext context) {
@@ -226,8 +225,8 @@ class _CarouselSlider extends StatelessWidget {
       options: CarouselOptions(
         height: 64.0,
         autoPlay: true,
-        autoPlayInterval: Duration(seconds: 3),
-        autoPlayAnimationDuration: Duration(milliseconds: 600),
+        autoPlayInterval: const Duration(seconds: 3),
+        autoPlayAnimationDuration: const Duration(milliseconds: 600),
         autoPlayCurve: Curves.fastOutSlowIn,
       ),
       items: [1, 2, 3, 4, 5].map((i) {
@@ -235,20 +234,20 @@ class _CarouselSlider extends StatelessWidget {
           builder: (BuildContext context) {
             return Container(
                 width: Get.width,
-                margin: EdgeInsets.symmetric(horizontal: 5.0),
+                margin: const EdgeInsets.symmetric(horizontal: 5.0),
                 decoration: BoxDecoration(
-                  color: Color(0xFF3C3C3C),
+                  color: const Color(0xFF3C3C3C),
                   borderRadius: BorderRadius.circular(15),
                 ),
                 child: Row(
                   children: [
-                    SizedBox(width: 4),
+                    const SizedBox(width: 4),
                     Image.asset(
                       'assets/images/health_card_icon.png',
                       width: 56.0, // 아이콘 크기
                       height: 56.0,
                     ),
-                    SizedBox(width: 8),
+                    const SizedBox(width: 8),
                     Expanded(
                       child: Text(
                         viewModel.healthSentance[i].toString(),
@@ -270,7 +269,7 @@ class _CarouselSlider extends StatelessWidget {
 class _MyPieChart extends StatefulWidget {
   final List<double> data;
 
-  const _MyPieChart({Key? key, required this.data}) : super(key: key);
+  const _MyPieChart({required this.data});
 
   @override
   State<StatefulWidget> createState() => MyPieChartState();
@@ -280,7 +279,7 @@ class MyPieChartState extends State<_MyPieChart> {
   @override
   Widget build(BuildContext context) {
     final viewModel = Get.find<HomeViewModel>();
-    return Container(
+    return SizedBox(
       width: 260,
       height: 260,
       child: Stack(
@@ -295,11 +294,12 @@ class MyPieChartState extends State<_MyPieChart> {
               ),
             ),
           ),
-          Container(
+          SizedBox(
             child: Obx(
               () => Text(
                 '${viewModel.sleepDebt.value}h',
-                style: FontSystem.KR50R.copyWith(color: Color(0xFF755EBB)),
+                style:
+                    FontSystem.KR50R.copyWith(color: const Color(0xFF755EBB)),
               ),
             ),
           ),
@@ -310,12 +310,12 @@ class MyPieChartState extends State<_MyPieChart> {
 
   List<PieChartSectionData> getSections(List<double> values) {
     final viewModel = Get.find<HomeViewModel>();
-    final isNotEmpty = values.isNotEmpty;
-    final total = isNotEmpty ? values.reduce((a, b) => a + b) : 1;
+    // final isNotEmpty = values.isNotEmpty;
+    // final total = isNotEmpty ? values.reduce((a, b) => a + b) : 1;
 
     return [
       PieChartSectionData(
-          gradient: LinearGradient(
+          gradient: const LinearGradient(
             colors: [Color(0xFF32134B), Color(0xFF131C4C)], // 그라데이션 색상
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -324,7 +324,7 @@ class MyPieChartState extends State<_MyPieChart> {
           title: '',
           radius: 15),
       PieChartSectionData(
-        gradient: LinearGradient(
+        gradient: const LinearGradient(
           colors: [Color(0xFFE742EB), Color(0xFF3D70F1)], // 그라데이션 색상
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,

@@ -98,7 +98,6 @@ class TooltipOverlay extends StatelessWidget {
 @immutable
 class _TimeTooltipOverlay extends StatelessWidget {
   const _TimeTooltipOverlay({
-    super.key,
     required this.timeRange,
     required this.start,
     required this.end,
@@ -192,10 +191,9 @@ class _TimeTooltipOverlay extends StatelessWidget {
 @immutable
 class _AmountTooltipOverlay extends StatelessWidget {
   const _AmountTooltipOverlay({
-    Key? key,
     required this.durationHour,
     required this.durationDate,
-  }) : super(key: key);
+  });
 
   final double durationHour;
   final DateTime durationDate;
