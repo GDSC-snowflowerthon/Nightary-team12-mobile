@@ -91,14 +91,14 @@ class _TopPart extends BaseWidget<HomeViewModel> {
                     style: FontSystem.KR16R.copyWith(color: Colors.white),
                   );
                 }),
-                Container(
-                  height: 5,
-                  child: ElevatedButton(
-                      onPressed: () {
-                        viewModel.addSleepDebt(10);
-                      },
-                      child: Text('zz')),
-                )
+                // Container(
+                //   height: 5,
+                //   child: ElevatedButton(
+                //       onPressed: () {
+                //         viewModel.addSleepDebt(10);
+                //       },
+                //       child: Text('zz')),
+                // )
               ],
             )),
       ),
