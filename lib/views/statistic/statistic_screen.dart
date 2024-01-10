@@ -10,17 +10,25 @@ class StatisticScreen extends BaseScreen<StatisticViewModel> {
 
   @override
   Widget buildBody(BuildContext context) {
-    return DefaultTabController(
-      animationDuration: const Duration(milliseconds: 300),
-      length: 2,
-      child: Column(
-        children: [
-          SizedBox.fromSize(size: const Size.fromHeight(20)),
-          _tabBar(context),
-          SizedBox.fromSize(size: const Size.fromHeight(20)),
-          _tabBarView(),
-        ],
-      ),
+    return CustomScrollView(
+      slivers: [
+        SliverFillRemaining(
+          hasScrollBody: true,
+          child: DefaultTabController(
+            animationDuration: const Duration(milliseconds: 300),
+            length: 2,
+            child: Column(
+              children: [
+                SizedBox.fromSize(size: const Size.fromHeight(20)),
+                _tabBar(context),
+                SizedBox.fromSize(size: const Size.fromHeight(20)),
+                _tabBarView(),
+                SizedBox.fromSize(size: const Size.fromHeight(20)),
+              ],
+            ),
+          ),
+        )
+      ],
     );
   }
 
