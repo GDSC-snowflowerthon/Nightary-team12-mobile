@@ -11,7 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
   sqflite: ^2.3.0
-  path: ^1.9.0
+  path: ^1.8.3
   flutter_localizations:
     sdk: flutter
   collection: any
@@ -22,6 +22,8 @@ dependencies:
   get: ^4.6.6
   flutter_svg: ^2.0.9
   intl: ^0.18.1
+  just_audio: ^0.9.36
+  carousel_slider: ^4.2.1
 
 dev_dependencies:
   flutter_test:
