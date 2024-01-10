@@ -7,6 +7,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:get/get.dart';
 import 'package:nightary/repositories/temp.dart';
+import 'package:nightary/utilities/font_system.dart';
 
 class HomeScreen extends BaseScreen<HomeViewModel> {
   const HomeScreen({super.key});
@@ -60,10 +61,7 @@ class _TopPart extends BaseWidget<HomeViewModel> {
                   child: Obx(
                     () => Text(
                       "${viewModel.userName.value}님 반가워요.",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                      ),
+                      style: FontSystem.KR20B.copyWith(color: Colors.white),
                     ),
                   ),
                 ),
@@ -86,10 +84,7 @@ class _TopPart extends BaseWidget<HomeViewModel> {
 
                   return Text(
                     message,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 15,
-                    ),
+                    style: FontSystem.KR16R.copyWith(color: Colors.white),
                   );
                 }),
                 // Container(
@@ -129,10 +124,7 @@ class _MiddlePart extends BaseWidget<HomeViewModel> {
                       margin: EdgeInsets.all(20),
                       child: Text(
                         "오늘의 건강 브리핑",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                        ),
+                        style: FontSystem.KR20B.copyWith(color: Colors.white),
                       ),
                     ),
                     Container(
@@ -146,10 +138,8 @@ class _MiddlePart extends BaseWidget<HomeViewModel> {
                           ),
                           SizedBox(width: 4),
                           Text(
-                            "${viewModel.morningHour.value}h ${viewModel.morningMin.value}m",
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
+                            "${viewModel.sleepHour.value}h ${viewModel.sleepMin.value}m",
+                            style: FontSystem.KR20B.copyWith(color: Colors.white),
                           ),
                         ],
                       ),
@@ -184,10 +174,7 @@ class _BottomPart extends BaseWidget<HomeViewModel> {
                 margin: EdgeInsets.all(20),
                 child: Text(
                   "내가 가진 수면빚",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                  ),
+                  style: FontSystem.KR20B.copyWith(color: Colors.white),
                 ),
               ),
               _MyPieChart(data: [30, 70]),
@@ -257,9 +244,7 @@ class _CarouselSlider extends StatelessWidget {
                     SizedBox(width: 8),
                     Text(
                       sentences[i],
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
+                      style: FontSystem.KR16R.copyWith(color: Colors.white),
                     ),
                   ],
                 ));
@@ -292,21 +277,15 @@ class MyPieChartState extends State<_MyPieChart> {
           PieChart(
             PieChartData(
               sections: getSections(widget.data),
-              centerSpaceRadius: 70,
+              centerSpaceRadius: 100,
               sectionsSpace: 0,
             ),
           ),
-          // 아래의 Container는 중앙의 텍스트를 위한 것입니다.
-          // 원하는 텍스트와 스타일을 설정하세요.
           Container(
             child: Obx(
               () => Text(
                 '${viewModel.sleepDebt.value}h',
-                style: TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF755EBB),
-                ),
+                style: FontSystem.KR50R.copyWith(color: Color(0xFF755EBB)),
               ),
             ),
           ),
