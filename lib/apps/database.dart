@@ -1,4 +1,6 @@
 import 'package:drift/native.dart';
+import 'package:nightary/domains/dao/sleep_record_dao.dart';
+import 'package:nightary/domains/dao/white_noise_dao.dart';
 import 'package:nightary/domains/entities/sleep_record.dart';
 import 'package:nightary/domains/entities/white_noise.dart';
 import 'package:path_provider/path_provider.dart';
@@ -30,6 +32,10 @@ LazyDatabase _openConnection() {
   tables: [
     SleepRecord,
     WhiteNoise,
+  ],
+  daos: [
+    SleepRecordDao,
+    WhiteNoiseDao,
   ],
 )
 class NightaryDatabase extends _$NightaryDatabase {
