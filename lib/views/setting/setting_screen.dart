@@ -72,9 +72,21 @@ class SettingScreen extends BaseScreen<SettingViewModel> {
                   _CardButton(text: "이용약관", onTap: () {}),
                   _CardButton(text: "회원탈퇴", onTap: () {}),
                 ],
-              )),
-        ),
-      ],
+              ),
+            ),
+            child: Column(
+              children: [
+                _Header(controller.onTapProfile),
+                const SizedBox(height: 25),
+                const _CardButton(text: "잘 시간 설정하기"),
+                const _CardButton(text: "알림 보낼 시간 설정하기"),
+                const _CardButton(text: "이용약관"),
+                const _CardButton(text: "회원탈퇴"),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -89,7 +101,8 @@ class SettingScreen extends BaseScreen<SettingViewModel> {
 }
 
 class _Header extends StatelessWidget {
-  const _Header({super.key});
+  final Function() onTap;
+  const _Header(this.onTap);
 
   @override
   Widget build(BuildContext context) {
@@ -130,8 +143,26 @@ class _Header extends StatelessWidget {
                 ),
               ],
             ),
-          ),
-        ],
+            Container(
+              margin: const EdgeInsets.all(20),
+              child: Row(
+                children: [
+                  Image.asset(
+                    'assets/images/setting_sun_icon.png',
+                    width: 25.0,
+                    height: 25.0,
+                    fit: BoxFit.cover,
+                  ),
+                  const SizedBox(width: 4),
+                  Text(
+                    "6h 00m",
+                    style: FontSystem.KR20B.copyWith(color: Colors.white),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

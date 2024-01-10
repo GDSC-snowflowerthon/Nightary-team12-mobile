@@ -33,6 +33,12 @@ dependencies:
   syncfusion_flutter_charts: ^24.1.45
   fl_chart: ^0.66.0
   just_audio: ^0.9.36
+  health: ^8.1.0
+
+  # Custom Time Chart
+  path_drawing: ^1.0.1
+  touchable: ^1.0.2
+  linked_scroll_controller: ^0.2.0
 
 
 dev_dependencies:

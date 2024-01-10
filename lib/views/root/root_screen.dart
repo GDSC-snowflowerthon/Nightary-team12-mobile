@@ -7,7 +7,6 @@ import 'package:nightary/views/home/home_screen.dart';
 import 'package:nightary/views/root/custom_bottom_navigation_bar.dart';
 import 'package:nightary/views/setting/setting_screen.dart';
 import 'package:nightary/views/statistic/statistic_screen.dart';
-import 'package:nightary/views/onboarding/onboarding_screen.dart';
 
 import '../../viewModels/root/root_viewmodel.dart';
 
