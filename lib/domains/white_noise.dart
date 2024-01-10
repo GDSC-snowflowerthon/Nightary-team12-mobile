@@ -1,9 +1,13 @@
 class WhiteNoise {
-  int whiteNoiseID;
-  String imgUrl;
-  String fileLocation;
+  final int whiteNoiseID;
+  final String imgUrl;
+  final String fileLocation;
 
-  WhiteNoise({this.whiteNoiseID, this.imgUrl, this.fileLocation});
+  const WhiteNoise({
+    required this.whiteNoiseID,
+    required this.imgUrl,
+    required this.fileLocation,
+  });
 
   Map<String, dynamic> toMap() {
     return {
@@ -12,9 +16,11 @@ class WhiteNoise {
       'fileLocation': fileLocation,
     };
   }
+
   Map<String, dynamic> toJson() {
     return toMap();
   }
+
   factory WhiteNoise.fromJson(Map<String, dynamic> json) {
     return WhiteNoise(
       whiteNoiseID: json['whiteNoiseID'],
