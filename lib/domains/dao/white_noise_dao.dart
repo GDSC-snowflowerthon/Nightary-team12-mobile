@@ -13,7 +13,7 @@ part 'white_noise_dao.g.dart';
 /// 3. SleepRecordData.fromJson(json) 형태로 사용 가능
 /// 4. SleepRecordData.toJson() 형태로 사용 가능
 @DriftAccessor(tables: [WhiteNoise])
-abstract class WhiteNoiseDao extends DatabaseAccessor<NightaryDatabase>
+class WhiteNoiseDao extends DatabaseAccessor<NightaryDatabase>
     with _$WhiteNoiseDaoMixin {
   WhiteNoiseDao(super.db);
 

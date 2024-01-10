@@ -13,7 +13,7 @@ part 'sleep_record_dao.g.dart';
 /// 3. SleepRecordData.fromJson(json) 형태로 사용 가능
 /// 4. SleepRecordData.toJson() 형태로 사용 가능
 @DriftAccessor(tables: [SleepRecord])
-abstract class SleepRecordDao extends DatabaseAccessor<NightaryDatabase>
+class SleepRecordDao extends DatabaseAccessor<NightaryDatabase>
     with _$SleepRecordDaoMixin {
   SleepRecordDao(super.db);
 
