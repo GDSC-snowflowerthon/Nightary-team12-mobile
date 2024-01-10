@@ -18,10 +18,16 @@ class WhiteNoiseViewModel extends GetxController {
     player.dispose();
   }
 
+  /// carousel에서 선택한 index
   RxInt index = 0.obs;
 
+  /// 현재 음악 재생 상태
   RxBool isPlaying = false.obs;
 
+  /// 음악 재생 상태 보여줄 지 여부, 일시 정지 상태일 경우에는 현재 데이터와 상관 없이 보여짐
+  RxBool isShowIndicator = true.obs;
+
+  /// 음악 재생 상태 변경
   void onChangePlayStatus(bool isPlaying) async {
     this.isPlaying.value = isPlaying;
     if (isPlaying) {
@@ -37,8 +43,6 @@ class WhiteNoiseViewModel extends GetxController {
     });
   }
 
-  RxBool isShowIndicator = true.obs;
-
   final musics = [
     'assets/data/music_1.mp3',
     'assets/data/music_1.mp3',
@@ -47,8 +51,8 @@ class WhiteNoiseViewModel extends GetxController {
     'assets/data/music_1.mp3',
   ];
 
-  RxInt currentIndex = 0.obs;
-
+  /* 음악 재생 관련 데이터 */
+  /// 재생바 색상
   final colors = [
     Colors.white,
     Colors.white,
@@ -56,9 +60,8 @@ class WhiteNoiseViewModel extends GetxController {
     Colors.white,
   ];
 
+  /// 각 재생바 애니메이션 시간
   final List<int> duration = [900, 700, 600, 800, 900];
-
-  final List<int> stopDuration = [1, 1, 1, 1, 1];
 
   void onTapBack() {
     Get.back();
