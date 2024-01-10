@@ -7,6 +7,7 @@ import 'package:drift/drift.dart';
 /// 1. id: 수면 기록의 고유 ID
 /// 2. startSleepDate: 수면 시작 시간
 /// 3. endSleepDate: 수면 종료 시간
+@DataClassName('WhiteNoise')
 class WhiteNoise extends Table {
   @override
   String get tableName => 'SleepRecord';

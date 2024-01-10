@@ -19,6 +19,7 @@ import 'package:nightary/domains/types/e_source.dart';
 /// 5. todaySleepDebt: 수면 부족량
 /// 6. totalSleepDebt: 총 수면 부족량
 /// 7. createdAt: 수면 기록 생성 시간
+@DataClassName('SleepRecord')
 class SleepRecord extends Table {
   @override
   String get tableName => 'SleepRecord';
