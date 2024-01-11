@@ -22,8 +22,8 @@ class AnalyzeScreen extends BaseScreen<AnalyzeViewModel> {
             Container(
               padding: const EdgeInsets.all(16.0),
               decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.7), // 반투명 흰색 배경
-                borderRadius: BorderRadius.circular(40), // 모서리 둥글게
+                color: Colors.black.withOpacity(0.7),
+                borderRadius: BorderRadius.circular(40),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,7 +62,7 @@ class AnalyzeScreen extends BaseScreen<AnalyzeViewModel> {
     return Container(
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
-        color: Colors.blueAccent.withOpacity(0.2), // 사용자 정의 색상
+        color: Colors.blueAccent.withOpacity(0.2),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Text(
@@ -79,7 +79,7 @@ class AnalyzeScreen extends BaseScreen<AnalyzeViewModel> {
     return Container(
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
-        color: Colors.blueAccent.withOpacity(0.2), // 사용자 정의 색상
+        color: Colors.blueAccent.withOpacity(0.2),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
@@ -91,8 +91,6 @@ class AnalyzeScreen extends BaseScreen<AnalyzeViewModel> {
               color: Colors.white,
             ),
           ),
-          // 이미지 추가, 필요에 따라 주석 해제 및 경로 수정
-          // Image.asset('assets/images/feedback_image.png'),
         ],
       ),
     );
