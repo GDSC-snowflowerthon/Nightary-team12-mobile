@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:nightary/utilities/app_routes.dart';
 import 'package:nightary/viewModels/onboarding/onboarding_viewmodel.dart';
 import 'package:nightary/views/base/base_screen.dart';
 import 'package:nightary/utilities/font_system.dart';
+import 'package:nightary/views/base/base_widget.dart';
 
 class OnboardingScreen extends BaseScreen<OnboardingViewModel> {
   const OnboardingScreen({super.key});
@@ -20,8 +23,9 @@ class OnboardingScreen extends BaseScreen<OnboardingViewModel> {
           "어떤 이름으로 불러드릴까요?",
           style: FontSystem.KR18B.copyWith(color: Colors.white),
         ),
-        const InputSample(),
-        _Button(controller.onTapContinue),
+        _InputSample(),
+        const SizedBox(height: 80),
+        _ContinueButton(),
       ],
     );
   }
@@ -36,75 +40,45 @@ class OnboardingScreen extends BaseScreen<OnboardingViewModel> {
   String? get backgroundImagePath => "assets/images/background_analyze.png";
 }
 
-class InputSample extends StatefulWidget {
-  const InputSample({super.key});
-
+class _InputSample extends BaseWidget<OnboardingViewModel> {
   @override
-  State createState() => InputSampleState();
-}
-
-class InputSampleState extends State<InputSample> {
-  String inputs = '';
-  TextEditingController textController = TextEditingController();
-  String textContent = "";
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            padding: const EdgeInsets.only(top: 10, bottom: 10),
-            width: 300,
-            child: TextField(
-              cursorColor: Colors.white,
-              cursorWidth: 0.5,
-              cursorHeight: 20,
-              keyboardType: TextInputType.text,
-              style: const TextStyle(fontSize: 18, color: Colors.white),
-              textAlign: TextAlign.center,
-              decoration: const InputDecoration(
-                hintText: '',
-                border: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white),
-                ),
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white),
-                ),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white),
-                ),
-              ),
-              onChanged: (String str) {
-                setState(() => textContent = textController.text);
-              },
+  Widget buildView(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.only(top: 10, bottom: 10),
+      width: Get.width * 0.7,
+      child: Center(
+        child: TextFormField(
+          cursorColor: Colors.white,
+          cursorWidth: 0.5,
+          cursorHeight: 20,
+          keyboardType: TextInputType.text,
+          style: const TextStyle(fontSize: 18, color: Colors.white),
+          textAlign: TextAlign.center,
+          controller: viewModel.nicknameController,
+          decoration: const InputDecoration(
+            hintText: '',
+            border: UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.white),
+            ),
+            enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.white),
+            ),
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.white),
             ),
           ),
-          Container(
-            padding: const EdgeInsets.only(top: 10, bottom: 10),
-            width: 300,
-            child: Text(
-              inputs,
-              style: const TextStyle(fontSize: 32),
-              textAlign: TextAlign.center,
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
 }
 
-class _Button extends StatelessWidget {
-  final Function() onTap;
-  const _Button(this.onTap);
-
+class _ContinueButton extends BaseWidget<OnboardingViewModel> {
   @override
-  Widget build(BuildContext context) {
+  Widget buildView(BuildContext context) {
     return Container(
-      width: 338,
-      height: 54,
+      width: Get.width * 0.75,
+      height: 60,
       decoration: BoxDecoration(
         gradient: const LinearGradient(
           begin: Alignment.topLeft,
@@ -124,7 +98,25 @@ class _Button extends StatelessWidget {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: onTap,
+          onTap: () => {
+            viewModel.onTapContinue().then(
+                  (value) => {
+                    if (value)
+                      {Get.offAllNamed(Routes.ROOT)}
+                    else
+                      {
+                        Get.snackbar(
+                          "부적절한 이름",
+                          "이름을 입력해주세요",
+                          snackPosition: SnackPosition.TOP,
+                          colorText: Colors.white,
+                          duration:
+                              const Duration(seconds: 1, milliseconds: 500),
+                        )
+                      }
+                  },
+                ),
+          },
           borderRadius: BorderRadius.circular(30),
           child: const Center(
             child: Text(

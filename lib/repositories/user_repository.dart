@@ -9,4 +9,12 @@ class UserRepository extends GetxService {
     super.onInit();
     _provider = Get.find<UserLocalProvider>();
   }
+
+  String? readNickname() {
+    return _provider.findNickname();
+  }
+
+  void writeNickname(String nickname) {
+    _provider.writeNickname(nickname);
+  }
 }

@@ -13,7 +13,6 @@ class HomeScreen extends BaseScreen<HomeViewModel> {
 
   @override
   Widget buildBody(BuildContext context) {
-    Get.put(HomeViewModel());
     return const SingleChildScrollView(
       child: Column(
         children: [
