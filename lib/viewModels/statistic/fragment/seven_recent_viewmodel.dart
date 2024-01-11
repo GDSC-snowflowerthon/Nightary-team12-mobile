@@ -1,9 +1,13 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:nightary/repositories/sleep_record_repository.dart';
 import 'package:nightary/viewModels/statistic/fragment/abstract_recent_viewmodel.dart';
 
 class SevenRecentViewModel extends AbstractRecentViewModel {
+  late final SleepRecordRepository _sleepRecordRepository;
+
+  late final RxBool _isLoading;
   late final Rx<TimeOfDay> _averageSleepTime;
   late final RxInt _changeAverageBattery;
   late final RxInt _changeLiabilities;
@@ -51,6 +55,14 @@ class SevenRecentViewModel extends AbstractRecentViewModel {
   @override
   void onInit() {
     super.onInit();
+    // Dependency Injection
+    _sleepRecordRepository = Get.find<SleepRecordRepository>();
+
+    // Initialize Loading State
+    _isLoading = true.obs;
+    _sleepRecordRepository
+        .readSleepRecords()
+        .then((value) => _isLoading.value = false);
 
     _averageSleepTime = const TimeOfDay(hour: 5, minute: 0).obs;
     _changeAverageBattery = 12.obs;
@@ -95,5 +107,12 @@ class SevenRecentViewModel extends AbstractRecentViewModel {
       FlSpot(9.5, 6),
       FlSpot(10.5, 2),
     ].obs;
+  }
+
+  void fetchSleepRecords() {
+    _isLoading = true.obs;
+    _sleepRecordRepository
+        .readSleepRecords()
+        .then((value) => _isLoading = false.obs);
   }
 }
