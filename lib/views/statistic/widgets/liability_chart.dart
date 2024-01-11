@@ -115,7 +115,8 @@ class LiabilityChart<T extends AbstractRecentViewModel> extends BaseWidget<T> {
 
                         // 차트 데이터 설정
                         minX: 0,
-                        maxX: viewModel.chartRange["xLabelRange"]!.toDouble(),
+                        maxX: viewModel.chartRange["xLabelRange"]!.toDouble() -
+                            0.7,
                         minY: viewModel.chartRange["firstYLabel"]!.toDouble(),
                         maxY: viewModel.chartRange["firstYLabel"]!.toDouble() +
                             viewModel.chartRange["yLabelRange"]!.toDouble(),
@@ -185,7 +186,8 @@ class LiabilityChart<T extends AbstractRecentViewModel> extends BaseWidget<T> {
     int currentPoint =
         viewModel.chartRange["xLabelRange"]!.toInt() - value.toInt() + 1;
 
-    if (currentPoint % term != 0) {
+    if (currentPoint % term != 0 ||
+        (viewModel.chartRange["xLabelRange"]!.toDouble() - 0.7 == value)) {
       return const SizedBox();
     }
 
