@@ -13,7 +13,6 @@ PODS:
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
-  - sqflite (0.0.3):
   - shared_preferences_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
@@ -82,4 +81,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 3f3697c847c52bb2f1c7146b71ef2faef67d110f
 
-COCOAPODS: 1.13.0
+COCOAPODS: 1.14.3
