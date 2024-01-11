@@ -22,71 +22,60 @@ class SettingScreen extends BaseScreen<SettingViewModel> {
         ),
         Expanded(
           child: Container(
-              width: Get.width - 30.0,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(40.0),
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Color(0xFF17191D),
-                    Color(0xFF17191D),
-                    Colors.black.withOpacity(0.0),
-                  ],
-                ),
-              ),
-              child: Column(
-                children: [
-                  _Header(),
-                  SizedBox(
-                    height: 25,
-                  ),
-                  _CardButton(
-                      text: "하루 목표 수면시간 설정하기",
-                      onTap: () {
-                        showCupertinoDialog(
-                          barrierDismissible: true,
-                          context: context,
-                          builder: (BuildContext context) {
-                            return Align(
-                              alignment: Alignment.bottomCenter,
-                              child: _SetSleepTime(),
-                            );
-                          },
-                        );
-                      }),
-                  _CardButton(
-                      text: "알림 보낼 시간 설정하기",
-                      onTap: () {
-                        showCupertinoDialog(
-                          barrierDismissible: true,
-                          context: context,
-                          builder: (BuildContext context) {
-                            return Align(
-                              alignment: Alignment.bottomCenter,
-                              child: _SetNoticeTime(),
-                            );
-                          },
-                        );
-                      }),
-                  _CardButton(text: "이용약관", onTap: () {}),
-                  _CardButton(text: "회원탈퇴", onTap: () {}),
+            width: Get.width - 30.0,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(40.0),
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Color(0xFF17191D),
+                  Color(0xFF17191D),
+                  Colors.black.withOpacity(0.0),
                 ],
               ),
             ),
             child: Column(
               children: [
-                _Header(controller.onTapProfile),
-                const SizedBox(height: 25),
-                const _CardButton(text: "잘 시간 설정하기"),
-                const _CardButton(text: "알림 보낼 시간 설정하기"),
-                const _CardButton(text: "이용약관"),
-                const _CardButton(text: "회원탈퇴"),
+                _Header(),
+                SizedBox(
+                  height: 25,
+                ),
+                _CardButton(
+                    text: "하루 목표 수면시간 설정하기",
+                    onTap: () {
+                      showCupertinoDialog(
+                        barrierDismissible: true,
+                        context: context,
+                        builder: (BuildContext context) {
+                          return Align(
+                            alignment: Alignment.bottomCenter,
+                            child: _SetSleepTime(),
+                          );
+                        },
+                      );
+                    }),
+                _CardButton(
+                    text: "알림 보낼 시간 설정하기",
+                    onTap: () {
+                      showCupertinoDialog(
+                        barrierDismissible: true,
+                        context: context,
+                        builder: (BuildContext context) {
+                          return Align(
+                            alignment: Alignment.bottomCenter,
+                            child: _SetNoticeTime(),
+                          );
+                        },
+                      );
+                    }),
+                _CardButton(text: "이용약관", onTap: () {}),
+                _CardButton(text: "회원탈퇴", onTap: () {}),
               ],
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -101,8 +90,9 @@ class SettingScreen extends BaseScreen<SettingViewModel> {
 }
 
 class _Header extends StatelessWidget {
-  final Function() onTap;
-  const _Header(this.onTap);
+  //final Function() onTap;
+
+  const _Header();
 
   @override
   Widget build(BuildContext context) {
@@ -143,26 +133,8 @@ class _Header extends StatelessWidget {
                 ),
               ],
             ),
-            Container(
-              margin: const EdgeInsets.all(20),
-              child: Row(
-                children: [
-                  Image.asset(
-                    'assets/images/setting_sun_icon.png',
-                    width: 25.0,
-                    height: 25.0,
-                    fit: BoxFit.cover,
-                  ),
-                  const SizedBox(width: 4),
-                  Text(
-                    "6h 00m",
-                    style: FontSystem.KR20B.copyWith(color: Colors.white),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -239,13 +211,13 @@ class _SetNoticeTime extends StatelessWidget {
     return Container(
       height: 300.0,
       color: Colors.white,
-      child:  CupertinoDatePicker(
-          mode: CupertinoDatePickerMode.time,
-          onDateTimeChanged: (DateTime value) {
-            settingViewModel.noticeHour = value.hour as RxInt;
-            settingViewModel.noticeMin = value.minute as RxInt;
-          },
-        ),
+      child: CupertinoDatePicker(
+        mode: CupertinoDatePickerMode.time,
+        onDateTimeChanged: (DateTime value) {
+          settingViewModel.noticeHour = value.hour as RxInt;
+          settingViewModel.noticeMin = value.minute as RxInt;
+        },
+      ),
     );
   }
 }
