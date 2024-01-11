@@ -20,6 +20,8 @@ dependencies:
   get: ^4.6.6
   flutter_svg: ^2.0.9
   intl: ^0.18.1
+  logger: ^2.0.2+1
+
   #based_battery_indicator: ^1.0.3
   based_battery_indicator:
     git:
