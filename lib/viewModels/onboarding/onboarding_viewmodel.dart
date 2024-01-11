@@ -1,9 +1,29 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:health/health.dart';
-import 'package:nightary/utilities/app_routes.dart';
+import 'package:nightary/repositories/user_repository.dart';
 
 class OnboardingViewModel extends GetxController {
-  void onTapContinue() async {
+  late final UserRepository _repository;
+
+  late final TextEditingController _nicknameController;
+
+  TextEditingController get nicknameController => _nicknameController;
+
+  @override
+  void onInit() {
+    super.onInit();
+    _repository = Get.find<UserRepository>();
+    _nicknameController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _nicknameController.dispose();
+  }
+
+  Future<bool> onTapContinue() async {
     final now = DateTime.now();
     HealthFactory health = HealthFactory(useHealthConnectIfAvailable: true);
 
@@ -17,7 +37,7 @@ class OnboardingViewModel extends GetxController {
 
     bool requested = await health.requestAuthorization(types);
     if (!requested) {
-      return;
+      return false;
     }
 
     List<HealthDataPoint> healthData = await health.getHealthDataFromTypes(
@@ -25,10 +45,20 @@ class OnboardingViewModel extends GetxController {
       now,
       types,
     );
+
+    // text 검증 로직
+    // 추가 해야함
+    if (_nicknameController.text.isEmpty) {
+      return false;
+    }
+
+    // text 저장
+    _repository.writeNickname(_nicknameController.text);
+
     for (var data in healthData) {
       print(data);
     }
 
-    Get.offAllNamed(Routes.ROOT);
+    return true;
   }
 }

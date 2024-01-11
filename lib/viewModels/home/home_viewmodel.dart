@@ -1,7 +1,10 @@
 import 'package:get/get.dart';
+import 'package:nightary/repositories/user_repository.dart';
 
 class HomeViewModel extends GetxController {
-  RxString userName = "손형준".obs;
+  late final UserRepository _repository;
+
+  late final RxString userName;
 
   RxInt goalHour = 8.obs; //목표자는시간
   RxInt goalMin = 30.obs; //목표자는 분
@@ -18,6 +21,14 @@ class HomeViewModel extends GetxController {
     '암에 걸릴 확률이 3.5% 올라갔어요.'.obs,
     '심장병 확률이 2.5% 올라갔어요.'.obs,
   ].obs;
+
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    _repository = Get.find<UserRepository>();
+    userName = _repository.readNickname()!.obs;
+  }
 
   void setUserName(String newName) {
     userName.value = newName;
