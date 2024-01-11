@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:nightary/repositories/user_repository.dart';
+import 'package:health/health.dart';
 
 class HomeViewModel extends GetxController {
   late final UserRepository _repository;
@@ -9,8 +10,8 @@ class HomeViewModel extends GetxController {
   RxInt goalHour = 8.obs; //목표자는시간
   RxInt goalMin = 30.obs; //목표자는 분
 
-  RxInt sleepHour = 8.obs; //잔 시간
-  RxInt sleepMin = 7.obs; //잔 분
+  RxInt todaySleep = 0.obs;
+
   RxInt sleepDebt = 6.obs;
 
   var healthSentance = [
@@ -28,6 +29,7 @@ class HomeViewModel extends GetxController {
     super.onInit();
     _repository = Get.find<UserRepository>();
     userName = _repository.readNickname()!.obs;
+    fetchLatestSleepData();
   }
 
   void setUserName(String newName) {
@@ -42,13 +44,11 @@ class HomeViewModel extends GetxController {
     goalMin.value = minute;
   }
 
-  void setSleepHour(int hour) {
-    sleepHour.value = hour;
+  int getTodaySleep(){
+    return todaySleep.value;
   }
 
-  void setSleepMin(int minute) {
-    sleepMin.value = minute;
-  }
+
 
   void addSleepDebt(int hour) {
     //쌓인 수면 빚
@@ -62,19 +62,17 @@ class HomeViewModel extends GetxController {
   }
 
   RxInt get hourDifference {
-    int totalDiff = (goalHour.value * 60 + goalMin.value) -
-        (sleepHour.value * 60 + sleepMin.value);
+    int totalDiff = (goalHour.value * 60 + goalMin.value) - (todaySleep.value);
     return (totalDiff / 60).floor().obs;
   }
 
   RxInt get minuteDifference {
-    int totalDiff = (goalHour.value * 60 + goalMin.value) -
-        (sleepHour.value * 60 + sleepMin.value);
+    int totalDiff = (goalHour.value * 60 + goalMin.value) - (todaySleep.value);
     return (totalDiff % 60).abs().obs;
   }
 
   int batteryPercentage() {
-    return ((sleepHour.value * 60 + sleepMin.value) / 1440 * 100).toInt();
+    return (todaySleep / 480 * 100).toInt(); //8시간자야 꽉차게
   }
 
   RxInt get sleepDebtPercent {
@@ -85,5 +83,33 @@ class HomeViewModel extends GetxController {
       percent = ((sleepDebt.value / 24) * 100).toInt().obs;
     }
     return percent;
+
+  }
+  //오늘 잔 시간 받아오기
+  void fetchLatestSleepData() async {
+    HealthFactory health = HealthFactory();
+    bool accessGranted = await health.requestAuthorization([
+      HealthDataType.SLEEP_IN_BED,
+      HealthDataType.SLEEP_ASLEEP,
+    ]);
+
+    if (accessGranted) {
+      try {
+        List<HealthDataPoint> healthData = await health.getHealthDataFromTypes(
+          DateTime.now().subtract(Duration(days: 7)),
+          DateTime.now(),
+          [HealthDataType.SLEEP_IN_BED, HealthDataType.SLEEP_ASLEEP],
+        );
+        HealthDataPoint latestSleepData = healthData
+            .where((data) => data.type == HealthDataType.SLEEP_IN_BED || data.type == HealthDataType.SLEEP_ASLEEP)
+            .reduce((a, b) => a.dateTo.isAfter(b.dateTo) ? a : b);
+        print("가장 최근의 수면 데이터: ${latestSleepData.value}분");
+        todaySleep.value = double.parse(latestSleepData.value.toString()).toInt();
+      } catch (error) {
+        print("에러 발생: $error");
+      }
+    }
+
   }
 }
+

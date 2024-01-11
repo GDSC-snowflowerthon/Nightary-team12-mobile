@@ -7,6 +7,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:get/get.dart';
 import 'package:nightary/utilities/font_system.dart';
+import 'package:health/health.dart';
 
 class HomeScreen extends BaseScreen<HomeViewModel> {
   const HomeScreen({super.key});
@@ -56,6 +57,11 @@ class _TopPart extends BaseWidget<HomeViewModel> {
             ),
             child: Column(
               children: [
+                Container(
+                  height: 5,
+                  child: ElevatedButton(onPressed: (){
+                  }, child: Text('')),
+                ),
                 Container(
                   margin: const EdgeInsets.only(left: 20, top: 20),
                   alignment: Alignment.centerLeft,
@@ -141,7 +147,7 @@ class _MiddlePart extends BaseWidget<HomeViewModel> {
                           ),
                           const SizedBox(width: 4),
                           Text(
-                            "${viewModel.sleepHour.value}h ${viewModel.sleepMin.value}m",
+                            "${(viewModel.todaySleep.value / 60).toInt()}h ${viewModel.todaySleep.value % 60}m",
                             style:
                                 FontSystem.KR20B.copyWith(color: Colors.white),
                           ),
@@ -335,3 +341,9 @@ class MyPieChartState extends State<_MyPieChart> {
     ];
   }
 }
+
+
+//건강 그래프 출력
+
+
+//내가 가진 수면 빚
