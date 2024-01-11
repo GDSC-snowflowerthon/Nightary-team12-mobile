@@ -15,12 +15,12 @@ class AnalyzeScreen extends BaseScreen<AnalyzeViewModel> {
     Uint8List bytes = base64Decode(base64Image);
     return SingleChildScrollView(
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(15),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Container(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
                 color: Colors.black.withOpacity(0.7),
                 borderRadius: BorderRadius.circular(40),
@@ -28,24 +28,32 @@ class AnalyzeScreen extends BaseScreen<AnalyzeViewModel> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    '손형준 님의 수면 패턴', // 사용자 이름으로 변경
+                  Container(
+                    padding:EdgeInsets.only(left:10,top:0,right:0,bottom:15),
+                  child: Text(
+                    '수면 패턴 분석', 
                     style: TextStyle(
                       fontSize: 22,
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                     ),
+                  )
                   ),
                   Container(
-                    padding: EdgeInsets.all(1),
+                    padding: EdgeInsets.all(0),
                     decoration: BoxDecoration(
                       color: Colors.black,
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.only(topLeft:Radius.circular(20),topRight:Radius.circular(20),bottomLeft:Radius.circular(40),bottomRight:Radius.circular(40))
                     ),
-                    child: Image.memory(bytes),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: Image.memory(bytes),
+                    ),
                   ),
                   SizedBox(height: 16),
                   _buildAnalysisBox(),
+                  SizedBox(height: 16),
+                  _buildImageBox(),
                   SizedBox(height: 16),
                   _buildFeedbackBox(),
 
@@ -60,10 +68,10 @@ class AnalyzeScreen extends BaseScreen<AnalyzeViewModel> {
 
   Widget _buildAnalysisBox() {
     return Container(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.only(left:15,top:20,right:15,bottom:20),
       decoration: BoxDecoration(
         color: Colors.blueAccent.withOpacity(0.2),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(20),
       ),
       child: Text(
         '당신의 수면 패턴을 분석해보겠습니다.\n\n1. 수면 시간:\n당신은 대부분 14:00 ~ 16:00 사이에 수면을 시작하며, 20:00 ~ 23:00 사이에 일어나는 것으로 보입니다. 수면 시간은 약 6 ~ 7시간 정도로 유지되고 있습니다.\n\n2. 수면 일관성:\n당신은 대부분 주중과 주말 모두 비슷한 수면 패턴을 보이고 있습니다. 주중과 주말 모두 대체로 비슷한 시간에 수면하고 일어나고 있으며, 수면 시간의 변동이 크지 않은 것으로 보입니다. 이는 수면 일관성이 높은 것으로 평가할 수 있습니다.\n\n3. 예측된 수면 시간:\n다음 5일 동안의 예측된 수면 시간은 대부분 15:58 ~ 16:01 사이에 시작하여 23:41 ~ 23:47 사이에 일어나는 것으로 보입니다. 수면 시간은 약 6시간 40분에서 6시간 50분 정도로 예측됩니다.',
@@ -74,13 +82,26 @@ class AnalyzeScreen extends BaseScreen<AnalyzeViewModel> {
       ),
     );
   }
+  Widget _buildImageBox() {
+    return Container(
+      padding: const EdgeInsets.all(0),
+      decoration: BoxDecoration(
+        color: Colors.blueAccent.withOpacity(0.2),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(20),
+        child:Image.asset('assets/images/analyze.png'),
+          )
+      );
+  }
 
   Widget _buildFeedbackBox() {
     return Container(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.only(left:15,top:20,right:15,bottom:20),
       decoration: BoxDecoration(
         color: Colors.blueAccent.withOpacity(0.2),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(20),
       ),
       child: Column(
         children: [
