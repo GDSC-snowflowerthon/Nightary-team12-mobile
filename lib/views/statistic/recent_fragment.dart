@@ -11,6 +11,12 @@ class RecentFragment<T extends AbstractRecentViewModel> extends BaseScreen<T> {
   const RecentFragment({super.key});
 
   @override
+  bool get wrapWithOuterSafeArea => false;
+
+  @override
+  bool get wrapWithInnerSafeArea => false;
+
+  @override
   Widget buildBody(BuildContext context) {
     return SingleChildScrollView(
       physics: const ClampingScrollPhysics(),
@@ -25,7 +31,7 @@ class RecentFragment<T extends AbstractRecentViewModel> extends BaseScreen<T> {
             SleepTimeChart<T>(),
             const SizedBox(height: 20),
             LiabilityChart<T>(),
-            const SizedBox(height: 50),
+            const SizedBox(height: 130),
           ],
         ),
       ),

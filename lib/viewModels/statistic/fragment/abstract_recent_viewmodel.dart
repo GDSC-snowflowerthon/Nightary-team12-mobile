@@ -8,10 +8,11 @@ abstract class AbstractRecentViewModel extends GetxController {
     Color(0xFF39AFFD),
   ];
 
+  bool get isLoading;
   TimeOfDay get averageSleepTime;
   int get changeAverageBattery;
   int get changeLiabilities;
   List<DateTimeRange> get sleepTimes;
   List<FlSpot> get liabilities;
-  Map<String, double> get liabilityChartRange;
+  Map<String, dynamic> get chartRange;
 }

@@ -13,35 +13,45 @@ class StatisticTile<T extends AbstractRecentViewModel> extends BaseWidget<T> {
 
   @override
   Widget buildView(BuildContext context) {
-    return roundTile(
-      context: context,
-      widget: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text(
-            isBattery
-                ? "${viewModel.changeAverageBattery.abs()} %"
-                : "${viewModel.changeLiabilities.abs()} h",
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 55,
-              fontWeight: FontWeight.bold,
+    return Obx(
+      () => viewModel.isLoading
+          ? Container()
+          : roundTile(
+              context: context,
+              widget: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    isBattery
+                        ? "${viewModel.changeAverageBattery.abs()} %"
+                        : "${viewModel.changeLiabilities.abs()} h",
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 55,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    "최근 ${viewModel.runtimeType.toString() == "SevenRecentViewModel" ? "7" : "30"}번의 수면 동안",
+                    style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600),
+                  ),
+                  Text(
+                    isBattery
+                        ? changeAverageBatteryText()
+                        : changeLiabilitiesText(),
+                    style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600),
+                  ),
+                ],
+              ),
             ),
-          ),
-          const SizedBox(height: 10),
-          Text(
-            "최근 ${viewModel.runtimeType.toString() == "SevenRecentViewModel" ? "7" : "30"}번의 수면 동안",
-            style: const TextStyle(
-                color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600),
-          ),
-          Text(
-            isBattery ? changeAverageBatteryText() : changeLiabilitiesText(),
-            style: const TextStyle(
-                color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600),
-          ),
-        ],
-      ),
     );
   }
 

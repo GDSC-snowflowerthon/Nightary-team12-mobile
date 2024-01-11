@@ -16,7 +16,7 @@ void main() async {
 
   /* Initialize Factory */
   await SharedPreferenceFactory.init();
-  DatabaseFactory.init();
+  await DatabaseFactory.init();
 
   // Splash Screen Duration 1.0s
   await Future.delayed(const Duration(seconds: 1));
