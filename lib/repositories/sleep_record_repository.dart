@@ -66,8 +66,6 @@ class SleepRecordRepository extends GetxService {
             e.totalSleepDebt.toDouble()))
         .toList();
 
-    LogSystem.logger.d("liabilities: $liabilities");
-
     /**
      * 수면 빚 그래프에 대한 범위 계산
      */
@@ -88,9 +86,7 @@ class SleepRecordRepository extends GetxService {
             .reduce((value, element) => value > element ? value : element) +
         1;
 
-    LogSystem.logger.d("firstHour: $firstHour, lastHour: $lastHour");
-
-    int graphRangeX = lastDate.difference(firstDate).inDays;
+    int graphRangeX = lastDate.difference(firstDate).inDays + 1;
     int graphRangeY = lastHour - firstHour;
 
     Map<String, dynamic> graphRange = {

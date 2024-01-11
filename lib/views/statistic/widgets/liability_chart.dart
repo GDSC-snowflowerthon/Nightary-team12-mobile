@@ -161,10 +161,15 @@ class LiabilityChart<T extends AbstractRecentViewModel> extends BaseWidget<T> {
 
   FlLine drawingVerticalLine(double value) {
     int term =
-        viewModel.runtimeType.toString() == "SevenRecentViewModel" ? 1 : 5;
+        viewModel.runtimeType.toString() == "SevenRecentViewModel" ? 1 : 7;
+
+    int currentPoint =
+        viewModel.chartRange["xLabelRange"]!.toInt() - value.toInt() + 1;
 
     return FlLine(
-      color: value % term != 0 ? Colors.transparent : const Color(0x44757575),
+      color: currentPoint % term != 0
+          ? Colors.transparent
+          : const Color(0x44757575),
       strokeWidth: 1,
       dashArray: [4],
     );
@@ -172,14 +177,17 @@ class LiabilityChart<T extends AbstractRecentViewModel> extends BaseWidget<T> {
 
   Widget bottomTitleWidgets(double value, TitleMeta meta) {
     int term =
-        viewModel.runtimeType.toString() == "SevenRecentViewModel" ? 1 : 5;
-
-    if (value % term != 0) {
-      return const SizedBox();
-    }
+        viewModel.runtimeType.toString() == "SevenRecentViewModel" ? 1 : 7;
 
     DateTime currentDate =
         viewModel.chartRange["firstXLabel"]!.add(Duration(days: value.toInt()));
+
+    int currentPoint =
+        viewModel.chartRange["xLabelRange"]!.toInt() - value.toInt() + 1;
+
+    if (currentPoint % term != 0) {
+      return const SizedBox();
+    }
 
     return SideTitleWidget(
       axisSide: meta.axisSide,
