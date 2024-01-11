@@ -234,7 +234,7 @@ class _CarouselSlider extends StatelessWidget {
         autoPlayAnimationDuration: const Duration(milliseconds: 600),
         autoPlayCurve: Curves.fastOutSlowIn,
       ),
-      items: [1, 2, 3, 4, 5].map((i) {
+      items: [0, 1, 2].map((i) {
         return Builder(
           builder: (BuildContext context) {
             return Container(
@@ -255,7 +255,7 @@ class _CarouselSlider extends StatelessWidget {
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
-                        viewModel.healthSentance[i].toString(),
+                        viewModel.healthSentance[i].toString()+" 확률이 ${viewModel.healthPercent[i]}% 늘었어요.",
                         style: FontSystem.KR16R.copyWith(color: Colors.white),
                         softWrap: true,
                         maxLines: 2,

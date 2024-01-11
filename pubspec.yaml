@@ -48,6 +48,7 @@ dependencies:
 
   # Shared Preferences
   shared_preferences: ^2.2.1
+  time_range_picker: ^2.2.0
 
 
 dev_dependencies:
