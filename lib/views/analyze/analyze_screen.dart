@@ -31,7 +31,7 @@ class AnalyzeScreen extends BaseScreen<AnalyzeViewModel> {
                   Container(
                     padding:EdgeInsets.only(left:10,top:0,right:0,bottom:15),
                   child: Text(
-                    '수면 패턴 분석', 
+                    '수면 패턴 분석',
                     style: TextStyle(
                       fontSize: 22,
                       color: Colors.white,
@@ -43,7 +43,7 @@ class AnalyzeScreen extends BaseScreen<AnalyzeViewModel> {
                     padding: EdgeInsets.all(0),
                     decoration: BoxDecoration(
                       color: Colors.black,
-                      borderRadius: BorderRadius.only(topLeft:Radius.circular(20),topRight:Radius.circular(20),bottomLeft:Radius.circular(40),bottomRight:Radius.circular(40))
+                      borderRadius: BorderRadius.circular(40)
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(20),
@@ -101,7 +101,7 @@ class AnalyzeScreen extends BaseScreen<AnalyzeViewModel> {
       padding: const EdgeInsets.only(left:15,top:20,right:15,bottom:20),
       decoration: BoxDecoration(
         color: Colors.blueAccent.withOpacity(0.2),
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.only(topLeft:Radius.circular(20),topRight:Radius.circular(20),bottomLeft:Radius.circular(40),bottomRight:Radius.circular(40) ),
       ),
       child: Column(
         children: [
