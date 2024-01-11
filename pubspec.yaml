@@ -10,8 +10,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  sqflite: ^2.3.0
-  path: ^1.8.3
   flutter_localizations:
     sdk: flutter
   collection: any
@@ -31,8 +29,25 @@ dependencies:
 
   carousel_slider: ^4.2.1
   syncfusion_flutter_charts: ^24.1.45
-  fl_chart: ^0.66.0
   just_audio: ^0.9.36
+  health: ^8.1.0
+
+  # Custom Time Chart
+  path_drawing: ^1.0.1
+  touchable: ^1.0.2
+  linked_scroll_controller: ^0.2.0
+
+  # ft_chart
+  fl_chart: ^0.66.0
+
+  # SQLite3 Database
+  drift: ^2.14.1
+  sqlite3_flutter_libs: ^0.5.18
+  path_provider: ^2.1.2
+  path: ^1.8.3
+
+  # Shared Preferences
+  shared_preferences: ^2.2.1
 
 
 dev_dependencies:
@@ -41,6 +56,11 @@ dev_dependencies:
 
   flutter_lints: ^3.0.1
   intl_translation: ^0.18.1
+
+  # SQLite3 Database
+  drift_dev: ^2.14.1
+  build_runner: ^2.4.7
+
 
 flutter:
   uses-material-design: true
