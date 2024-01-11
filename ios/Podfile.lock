@@ -13,6 +13,7 @@ PODS:
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
+  - sqflite (0.0.3):
   - shared_preferences_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
