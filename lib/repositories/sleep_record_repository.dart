@@ -125,4 +125,21 @@ class SleepRecordRepository extends GetxService {
       "liabilities": liabilities
     };
   }
+  Future<List<DateTimeRange>> getPredictedSleepByLastTwentySleeps() async {
+    // 최근 20개의 수면 기록을 가져온다.
+    List<SleepRecordData> sleepRecords =
+        await _provider.readSleepRecordsLimit(20);
+    String endpoint = "http://localhost:8000/analyze/sleepdata/";
+    final startSleepDateList = [];
+    final endSleepDateList = [];
+    sleepRecords.forEach((element) {
+      startSleepDateList.add(element.startSleepDate.toString());
+      endSleepDateList.add(element.endSleepDate.toString());
+    });
+    final requestBody = {
+      "startSleepDate": startSleepDateList,
+      "endSleepDate": endSleepDateList
+    };
+    return await _provider.getPredictedSleepByLastTwentySleeps(endpoint, requestBody);
+  }
 }

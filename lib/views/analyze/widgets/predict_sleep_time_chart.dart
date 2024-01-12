@@ -11,36 +11,43 @@ class PredictSleepTimeChart extends BaseWidget<AnalyzeViewModel> {
 
   @override
   Widget buildView(BuildContext context) {
-    return Container(
-      width: Get.width - 40,
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: const Color(0xFF0D0B26),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            "수면 패턴을 지키기 위한 이번주의 시간",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 20),
-          CustomTimeChart(
-            height: 250,
-            viewMode: ViewMode.weekly,
-            tooltipStart: "취침시간",
-            tooltipEnd: "기상시간",
-            barColor: const Color(0xFF3D4C70),
-            data: viewModel.sleepTimes,
-          ),
-        ],
-      ),
-    );
+    return Obx(() {
+      return viewModel.isLoading
+          ? SizedBox(
+              width: Get.width - 40,
+              height: 250,
+              child: const Center(child: CircularProgressIndicator()))
+          : Container(
+              width: Get.width - 40,
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: const Color(0xFF0D0B26),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "수면 패턴을 지키기 위한 취침 시간",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  CustomTimeChart(
+                    height: 250,
+                    viewMode: ViewMode.weekly,
+                    tooltipStart: "취침시간",
+                    tooltipEnd: "기상시간",
+                    barColor: const Color(0xFF3D4C70),
+                    data: viewModel.sleepTimes,
+                  ),
+                ],
+              ),
+            );
+    });
   }
 }
