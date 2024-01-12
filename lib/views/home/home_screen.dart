@@ -32,6 +32,9 @@ class HomeScreen extends BaseScreen<HomeViewModel> {
   bool get wrapWithInnerSafeArea => true;
 
   @override
+  bool get setBottomOuterSafeArea => true;
+
+  @override
   String? get backgroundImagePath => "assets/images/background_home.png";
 }
 

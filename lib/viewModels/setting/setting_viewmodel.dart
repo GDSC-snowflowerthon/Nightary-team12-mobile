@@ -1,11 +1,16 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_widgetkit/flutter_widgetkit.dart';
 import 'package:get/get.dart';
+import 'package:nightary/apps/factory/database_factory.dart';
 import 'package:nightary/apps/factory/shared_preference_factory.dart';
 import 'package:nightary/repositories/user_repository.dart';
 import 'package:nightary/utilities/app_routes.dart';
 import 'package:nightary/utilities/debouncer.dart';
 import 'package:nightary/views/setting/setting_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:timezone/data/latest_all.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 
 class SettingViewModel extends GetxController {
   RxInt alarmHour = 8.obs;
@@ -19,21 +24,21 @@ class SettingViewModel extends GetxController {
   Debouncer debouncer = Debouncer(milliseconds: 100);
 
   RxInt get goalHour => () {
-    int hour = endGoalHour.value - startGoalHour.value;
-    int min = endGoalMinute.value - startGoalMinute.value;
-    if (min < 0) {
-      hour -= 1;
-      min += 60;
-    }
-    if (hour < 0) hour += 24;
-    return hour.obs;
-  }();
+        int hour = endGoalHour.value - startGoalHour.value;
+        int min = endGoalMinute.value - startGoalMinute.value;
+        if (min < 0) {
+          hour -= 1;
+          min += 60;
+        }
+        if (hour < 0) hour += 24;
+        return hour.obs;
+      }();
 
   RxInt get goalMinute => () {
-    int min = endGoalMinute.value - startGoalMinute.value;
-    if (min < 0) min += 60;
-    return min.obs;
-  }();
+        int min = endGoalMinute.value - startGoalMinute.value;
+        if (min < 0) min += 60;
+        return min.obs;
+      }();
 
   RxString nickname = "".obs;
 
@@ -43,12 +48,16 @@ class SettingViewModel extends GetxController {
     nickname.value = Get.find<UserRepository>().readNickname() ?? "";
     updateGoalTime();
     updateAlarmTime();
+    showNotification();
+    showNotification2();
   }
 
   void onChangeAlarmTime(int hour, int minute) {
     debouncer.run(() {
       alarmHour.value = hour;
       alarmMinute.value = minute;
+      showNotification();
+      showNotification2();
       SharedPreferenceFactory.setAlarmTime(hour, minute);
     });
   }
@@ -75,18 +84,43 @@ class SettingViewModel extends GetxController {
 
   void updateGoalTime() {
     Map<TargetSleepTime, int> targetSleepTime =
-    SharedPreferenceFactory.getTargetSleepTime();
-    startGoalHour.value = targetSleepTime[TargetSleepTime.startHour] ?? 0;
+        SharedPreferenceFactory.getTargetSleepTime();
+    startGoalHour.value = targetSleepTime[TargetSleepTime.startHour] ?? 23;
     startGoalMinute.value = targetSleepTime[TargetSleepTime.startMinute] ?? 0;
-    endGoalHour.value = targetSleepTime[TargetSleepTime.endHour] ?? 0;
+    endGoalHour.value = targetSleepTime[TargetSleepTime.endHour] ?? 7;
     endGoalMinute.value = targetSleepTime[TargetSleepTime.endMinute] ?? 0;
   }
 
   void updateAlarmTime() {
     Map<AlarmTime, int> alarmTime = SharedPreferenceFactory.getAlarmTime();
-    alarmHour.value = alarmTime[AlarmTime.hour] ?? 0;
+    alarmHour.value = alarmTime[AlarmTime.hour] ?? 8;
     alarmMinute.value = alarmTime[AlarmTime.minute] ?? 0;
   }
+
+  // void onTapSetDateSleepTime(BuildContext context) async {
+  //   DateTime selectedTime = DateTime.now();
+  //   final result = await showCupertinoDialog(
+  //     context: context,
+  //     builder: (_) => SleepTimeDatePicker(onSubmitDate: (date) {
+  //       selectedTime = date;
+  //     }),
+  //   );
+  //   if (result == null) {
+  //     return;
+  //   }
+
+  //   // ignore: use_build_context_synchronously
+  //   showCupertinoDialog(
+  //     context: context,
+  //     builder: (_) => SetSpecificDateSleepTime(
+  //       startTime: selectedTime.copyWith(hour: 23, minute: 0),
+  //       endTime: selectedTime.copyWith(hour: 7, minute: 0),
+  //       onSubmitDate: (start, end) {
+  //         // save time
+  //       },
+  //     ),
+  //   );
+  // }
 
   void onChangeStartTime(int hour, int minute) {
     debouncer.run(() {
@@ -126,6 +160,62 @@ class SettingViewModel extends GetxController {
   }
 
   void onTapWithdrawal() {
+    DatabaseFactory.deleteDummyDataInSleepRecord();
+    SharedPreferenceFactory.removeNickname();
+    WidgetKit.removeItem("widgetData", "group.nightary");
+    WidgetKit.reloadAllTimelines();
     Get.offAllNamed(Routes.ONBOARDING);
+  }
+
+  showNotification() async {
+    final notifications = FlutterLocalNotificationsPlugin();
+    tz.initializeTimeZones();
+
+    var iosDetails = const DarwinNotificationDetails(
+      presentAlert: true,
+      presentBadge: true,
+      presentSound: true,
+    );
+
+    notifications.zonedSchedule(
+        1,
+        '오늘의 배터리 양을 확인하세요!',
+        '',
+        makeDate(alarmHour.value, alarmMinute.value, 0),
+        NotificationDetails(iOS: iosDetails),
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.absoluteTime);
+  }
+
+  showNotification2() async {
+    final notifications = FlutterLocalNotificationsPlugin();
+    tz.initializeTimeZones();
+
+    var iosDetails = const DarwinNotificationDetails(
+      presentAlert: true,
+      presentBadge: true,
+      presentSound: true,
+    );
+    notifications.zonedSchedule(
+      2,
+      '오늘의 배터리 양을 확인하세요!',
+      '',
+      makeDate(alarmHour.value, alarmMinute.value, 0),
+      NotificationDetails(iOS: iosDetails),
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
+      matchDateTimeComponents: DateTimeComponents.time,
+    );
+  }
+
+  makeDate(int hour, int min, int sec) {
+    var now = tz.TZDateTime.now(tz.local);
+    var when =
+        tz.TZDateTime(tz.local, now.year, now.month, now.day, hour, min, sec);
+    if (when.isBefore(now)) {
+      return when.add(const Duration(days: 1));
+    } else {
+      return when;
+    }
   }
 }

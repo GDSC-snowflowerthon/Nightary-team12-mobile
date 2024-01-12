@@ -14,6 +14,10 @@ class SharedPreferenceFactory {
     await _instance!.setInt("sleepDebt", value);
   }
 
+  static void removeNickname() async {
+    _instance!.remove("nickname");
+  }
+
   static int getSleepDebt() {
     return _instance!.getInt("sleepDebt") ?? 0;
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:nightary/main_app.dart';
 import 'package:nightary/utilities/app_routes.dart';
@@ -24,7 +25,22 @@ void main() async {
 
   /* Add Duration 1.0s In Splash Screen */
   await Future.delayed(const Duration(seconds: 1));
+  await initNotification();
 
   /* Run App */
   runApp(const MainApp(initialRoute: Routes.ROOT));
+}
+
+initNotification() async {
+  final notifications = FlutterLocalNotificationsPlugin();
+
+  //ios에서 앱 로드시 유저에게 권한요청하려면
+  const iosSetting = DarwinInitializationSettings(
+    requestAlertPermission: true,
+    requestBadgePermission: true,
+    requestSoundPermission: true,
+  );
+
+  const initializationSettings = InitializationSettings(iOS: iosSetting);
+  await notifications.initialize(initializationSettings);
 }
