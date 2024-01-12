@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_widgetkit/flutter_widgetkit.dart';
 import 'package:get/get.dart';
 import 'package:nightary/apps/factory/database_factory.dart';
@@ -9,6 +9,8 @@ import 'package:nightary/utilities/app_routes.dart';
 import 'package:nightary/utilities/debouncer.dart';
 import 'package:nightary/views/setting/setting_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:timezone/data/latest_all.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 
 class SettingViewModel extends GetxController {
   RxInt alarmHour = 8.obs;
@@ -46,12 +48,16 @@ class SettingViewModel extends GetxController {
     nickname.value = Get.find<UserRepository>().readNickname() ?? "";
     updateGoalTime();
     updateAlarmTime();
+    showNotification();
+    showNotification2();
   }
 
   void onChangeAlarmTime(int hour, int minute) {
     debouncer.run(() {
       alarmHour.value = hour;
       alarmMinute.value = minute;
+      showNotification();
+      showNotification2();
       SharedPreferenceFactory.setAlarmTime(hour, minute);
     });
   }
@@ -159,5 +165,57 @@ class SettingViewModel extends GetxController {
     WidgetKit.removeItem("widgetData", "group.nightary");
     WidgetKit.reloadAllTimelines();
     Get.offAllNamed(Routes.ONBOARDING);
+  }
+
+  showNotification() async {
+    final notifications = FlutterLocalNotificationsPlugin();
+    tz.initializeTimeZones();
+
+    var iosDetails = const DarwinNotificationDetails(
+      presentAlert: true,
+      presentBadge: true,
+      presentSound: true,
+    );
+
+    notifications.zonedSchedule(
+        1,
+        '오늘의 배터리 양을 확인하세요!',
+        '',
+        makeDate(alarmHour.value, alarmMinute.value, 30),
+        NotificationDetails(iOS: iosDetails),
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.absoluteTime);
+  }
+
+  showNotification2() async {
+    final notifications = FlutterLocalNotificationsPlugin();
+    tz.initializeTimeZones();
+
+    var iosDetails = const DarwinNotificationDetails(
+      presentAlert: true,
+      presentBadge: true,
+      presentSound: true,
+    );
+    notifications.zonedSchedule(
+      2,
+      '오늘의 배터리 양을 확인하세요!',
+      '',
+      makeDate(alarmHour.value, alarmMinute.value, 0),
+      NotificationDetails(iOS: iosDetails),
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
+      matchDateTimeComponents: DateTimeComponents.time,
+    );
+  }
+
+  makeDate(int hour, int min, int sec) {
+    var now = tz.TZDateTime.now(tz.local);
+    var when =
+        tz.TZDateTime(tz.local, now.year, now.month, now.day, hour, min, sec);
+    if (when.isBefore(now)) {
+      return when.add(const Duration(days: 1));
+    } else {
+      return when;
+    }
   }
 }
