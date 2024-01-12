@@ -10,7 +10,6 @@ import 'package:url_launcher/url_launcher.dart';
 class SettingViewModel extends GetxController {
   RxInt alarmHour = 8.obs;
   RxInt alarmMinute = 0.obs;
-
   RxInt startGoalHour = 23.obs;
   RxInt startGoalMinute = 0.obs;
   RxInt endGoalHour = 7.obs;
