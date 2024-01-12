@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_widgetkit/flutter_widgetkit.dart';
 import 'package:get/get.dart';
 import 'package:nightary/apps/factory/database_factory.dart';
 import 'package:nightary/apps/factory/shared_preference_factory.dart';
@@ -155,6 +156,8 @@ class SettingViewModel extends GetxController {
   void onTapWithdrawal() {
     DatabaseFactory.deleteDummyDataInSleepRecord();
     SharedPreferenceFactory.removeNickname();
+    WidgetKit.removeItem("widgetData", "group.nightary");
+    WidgetKit.reloadAllTimelines();
     Get.offAllNamed(Routes.ONBOARDING);
   }
 }
