@@ -50,9 +50,11 @@ dependencies:
 
   # Shared Preferences
   shared_preferences: ^2.2.1
-
   time_range_picker: ^2.2.0
+
   url_launcher: ^6.2.3
+  flutter_widgetkit: ^1.0.3
+  flutter_local_notifications: ^16.3.0
 
   # Extended Nested Scroll View
   extended_nested_scroll_view: ^6.2.1

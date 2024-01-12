@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:nightary/apps/factory/shared_preference_factory.dart';
+import 'package:flutter/services.dart';
 import 'package:nightary/views/base/base_screen.dart';
 import 'package:nightary/utilities/font_system.dart';
 import 'package:get/get.dart';
@@ -18,6 +18,7 @@ class SettingScreen extends BaseScreen<SettingViewModel> {
   Widget buildBody(BuildContext context) {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(10),
+      physics: const AlwaysScrollableScrollPhysics(),
       child: Column(
         children: [
           Container(
@@ -55,10 +56,18 @@ class SettingScreen extends BaseScreen<SettingViewModel> {
                   onTap: () => controller.onTapSetSleepTime(context),
                 ),
                 const SizedBox(height: 14),
-                CardButton(
-                  text: "알림 보낼 시간 설정하기",
-                  onTap: () => controller.onTapSetAlarm(context),
+                Obx(
+                  () => CardButton(
+                    text: "알림 보낼 시간 설정하기",
+                    onTap: () => controller.onTapSetAlarm(context),
+                    subText:
+                        "${controller.alarmHour.value}시 ${controller.alarmMinute.value}분",
+                  ),
                 ),
+                // CardButton(
+                //   text: "수면 시간 재설정하기",
+                //   onTap: () => controller.onTapSetDateSleepTime(context),
+                // ),
                 const SizedBox(height: 14),
                 CardButton(text: "이용약관", onTap: controller.onTapTerm),
                 const SizedBox(height: 14),

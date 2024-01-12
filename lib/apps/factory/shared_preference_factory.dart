@@ -10,6 +10,18 @@ class SharedPreferenceFactory {
 
   static SharedPreferences get instance => _instance!;
 
+  static Future<void> setSleepDebt(int value) async {
+    await _instance!.setInt("sleepDebt", value);
+  }
+
+  static void removeNickname() async {
+    _instance!.remove("nickname");
+  }
+
+  static int getSleepDebt() {
+    return _instance!.getInt("sleepDebt") ?? 0;
+  }
+
   static void setAlarmTime(int hour, int minute) async {
     _instance!.setInt(AlarmTime.hour.name, hour);
     _instance!.setInt(AlarmTime.minute.name, minute);
@@ -42,6 +54,23 @@ class SharedPreferenceFactory {
           _instance!.getInt(TargetSleepTime.endMinute.name) ?? 0,
     };
   }
+
+  static void setTodaySleepTime(int hour, int minute) async {
+    _instance!.setInt(TodaySleepTime.hour.name, hour);
+    _instance!.setInt(TodaySleepTime.minute.name, minute);
+  }
+
+  static Map<TodaySleepTime, int> getTodaySleepTime() {
+    return {
+      TodaySleepTime.hour: _instance!.getInt(TodaySleepTime.hour.name) ?? 0,
+      TodaySleepTime.minute: _instance!.getInt(TodaySleepTime.minute.name) ?? 0,
+    };
+  }
+}
+
+enum AlarmTime {
+  hour,
+  minute,
 }
 
 enum TargetSleepTime {
@@ -51,7 +80,7 @@ enum TargetSleepTime {
   endMinute,
 }
 
-enum AlarmTime {
+enum TodaySleepTime {
   hour,
   minute,
 }

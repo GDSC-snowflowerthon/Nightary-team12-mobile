@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:nightary/providers/sleep_record_local_provider.dart';
+import 'package:nightary/providers/time_slice_local_provider.dart';
 import 'package:nightary/providers/user_local_provider.dart';
 import 'package:nightary/providers/white_noise_local_provider.dart';
 import 'package:nightary/repositories/sleep_record_repository.dart';
@@ -13,6 +14,7 @@ class InitBinding extends Bindings {
     Get.lazyPut<UserLocalProvider>(() => UserLocalProvider());
     Get.lazyPut<WhiteNoiseLocalProvider>(() => WhiteNoiseLocalProvider());
     Get.lazyPut<SleepRecordLocalProvider>(() => SleepRecordLocalProvider());
+    Get.lazyPut<TimeSliceLocalProvider>(() => TimeSliceLocalProvider());
 
     // Repositories
     Get.lazyPut<UserRepository>(() => UserRepository());

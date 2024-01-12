@@ -1,5 +1,6 @@
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:nightary/viewModels/statistic/fragment/seven_recent_viewmodel.dart';
 import 'package:nightary/viewModels/statistic/fragment/thirty_recent_viewmodel.dart';
 import 'package:nightary/viewModels/statistic/statistic_screen.dart';
@@ -18,36 +19,6 @@ class StatisticScreen extends BaseScreen<StatisticViewModel> {
         const SliverToBoxAdapter(child: SizedBox(height: 20))
       ],
       body: _tabBarView(),
-      // child: SizedBox(
-      //   child: Column(
-      //     children: [
-      //       _tabBar(context),
-      //       _tabBarView(),
-      //       // SliverToBoxAdapter(
-      //       //   child:
-      //       // ),
-      //       // SliverFillRemaining(
-      //       //   child:
-      //       // ),
-      //       // SliverFillRemaining(
-      //       //   hasScrollBody: true,
-      //       //   child: DefaultTabController(
-      //       //     animationDuration: const Duration(milliseconds: 300),
-      //       //     length: 2,
-      //       //     child: Column(
-      //       //       children: [
-      //       //         SizedBox.fromSize(size: const Size.fromHeight(20)),
-      //       //         _tabBar(context),
-      //       //         SizedBox.fromSize(size: const Size.fromHeight(20)),
-      //       //         _tabBarView(),
-      //       //         SizedBox.fromSize(size: const Size.fromHeight(20)),
-      //       //       ],
-      //       //     ),
-      //       //   ),
-      //       // )
-      //     ],
-      //   ),
-      // ),
     );
   }
 
@@ -61,9 +32,9 @@ class StatisticScreen extends BaseScreen<StatisticViewModel> {
   String? get backgroundImagePath => "assets/images/background_statistic.png";
 
   Widget _tabBar(BuildContext context) => Container(
-        margin: const EdgeInsets.symmetric(horizontal: 20),
+        margin: const EdgeInsets.symmetric(horizontal: 15),
         // 탭의 너비와 높이
-        width: MediaQuery.of(context).size.width - 40,
+        width: Get.width - 30,
         height: 60,
 
         // 탭의 배경색과 모서리 둥글기

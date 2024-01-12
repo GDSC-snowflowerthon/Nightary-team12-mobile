@@ -4,21 +4,125 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nightary/apps/database.dart';
+import 'package:nightary/domains/types/e_source.dart';
 import 'package:nightary/providers/sleep_record_local_provider.dart';
+import 'package:nightary/providers/time_slice_local_provider.dart';
 import 'package:nightary/utilities/log_system.dart';
 
 class SleepRecordRepository extends GetxService {
-  late final SleepRecordLocalProvider _provider;
+  late final SleepRecordLocalProvider _sleepRecordProvider;
+  late final TimeSliceLocalProvider _timeSliceProvider;
 
   @override
   void onInit() {
     super.onInit();
-    _provider = Get.find<SleepRecordLocalProvider>();
+    _sleepRecordProvider = Get.find<SleepRecordLocalProvider>();
+    _timeSliceProvider = Get.find<TimeSliceLocalProvider>();
+  }
+
+  Future<void> saveSleepRecordsByHealthData(
+      List<Map<String, dynamic>> reversedHealthData,
+      int userTargetSleepTime) async {
+    List<SleepRecordModel> sleepRecordList = [];
+    List<TimeSliceModel> timeSliceList = [];
+
+    Map<String, dynamic> currentHealthData, nextHealthData;
+    for (int i = 0; i < reversedHealthData.length - 1; i++) {
+      currentHealthData = reversedHealthData[i];
+      nextHealthData = reversedHealthData[i + 1];
+
+      timeSliceList.add(
+        TimeSliceModel(
+          DateTime.parse(currentHealthData["date_from"]),
+          DateTime.parse(currentHealthData["date_to"]),
+        ),
+      );
+
+      int timeTerm = DateTime.parse(currentHealthData["date_to"])
+          .difference(DateTime.parse(nextHealthData["date_from"]))
+          .inMinutes;
+
+      if (timeTerm.abs() > 120) {
+        int targetSleepTime = userTargetSleepTime;
+        int currentSleepTime = timeSliceList.last.end
+            .difference(timeSliceList.first.start)
+            .inMinutes;
+
+        if (currentSleepTime < 10) {
+          timeSliceList.clear();
+          continue;
+        }
+
+        int todaySleepDebt = targetSleepTime - currentSleepTime;
+        int totalSleepDebt = sleepRecordList.isNotEmpty
+            ? sleepRecordList.last.totalSleepDebt
+            : 0;
+
+        sleepRecordList.add(
+          SleepRecordModel(
+            DateTime.parse(timeSliceList.first.start.toString()),
+            DateTime.parse(timeSliceList.last.end.toString()),
+            ESource.watch,
+            todaySleepDebt,
+            totalSleepDebt + todaySleepDebt,
+            timeSliceList,
+          ),
+        );
+
+        timeSliceList.clear();
+      }
+    }
+
+    for (var record in sleepRecordList) {
+      LogSystem.logger.d(record);
+    }
+    LogSystem.logger.d("sleepRecordList length: ${sleepRecordList.length}");
+
+    List<int> recordIds = await _sleepRecordProvider.saveAll(sleepRecordList
+        .map((e) => SleepRecordCompanion.insert(
+              startSleepDate: e.start,
+              endSleepDate: e.end,
+              source: e.source,
+              todaySleepDebt: e.todaySleepDebt,
+              totalSleepDebt: e.totalSleepDebt,
+              createdAt: DateTime.now(),
+            ))
+        .toList());
+
+    // for (var recordId in recordIds) {
+    //   await _timeSliceProvider.saveAll(timeSliceList
+    //       .map((e) => TimeSliceCompanion.insert(
+    //             recordId: recordId,
+    //             startSleepDate: e.start,
+    //             endSleepDate: e.end,
+    //           ))
+    //       .toList());
+    // }
+  }
+
+  Future<Map<String, dynamic>> readRecentSleepRecord() async {
+    SleepRecordData? sleepRecord = await _sleepRecordProvider.findRecentOne();
+
+    print("sleepRecord: $sleepRecord");
+
+    if (sleepRecord == null) {
+      return {
+        "todaySleepTime": 490,
+        "totalDept": 23,
+      };
+    } else {
+      return {
+        "todaySleepTime": sleepRecord.endSleepDate
+            .difference(sleepRecord.startSleepDate)
+            .inMinutes,
+        "totalDept": sleepRecord.totalSleepDebt ~/ 60,
+      };
+    }
   }
 
   Future<Map<String, dynamic>> loadSleepTimesLimit(int limitCnt) async {
     List<SleepRecordData> totalRecords =
-        await _provider.readSleepRecordsLimit(limitCnt);
+        await _sleepRecordProvider.readSleepRecordsLimit(limitCnt);
 
     LogSystem.logger.d("${totalRecords.length} sleep records found");
 
@@ -44,8 +148,9 @@ class SleepRecordRepository extends GetxService {
     /**
      * 최근 7개와 그 이전 7개의 수면 빚 변화량 계산
      */
-    int changeLiabilities = totalRecords.first.totalSleepDebt -
-        totalRecords[totalRecords.length ~/ 2].totalSleepDebt;
+    int changeLiabilities = (totalRecords.first.totalSleepDebt -
+            totalRecords[totalRecords.length ~/ 2].totalSleepDebt) ~/
+        60;
 
     /**
      * 최근 7개에 대한 수면 빚 변화량 및 그래프용 데이터(시간 역순)
@@ -62,7 +167,7 @@ class SleepRecordRepository extends GetxService {
                 .map((e) =>
                     e.endSleepDate.difference(e.startSleepDate).inMinutes)
                 .reduce((value, element) => value + element) /
-            totalRecords.length)
+            recentRecords.length)
         .floor();
 
     TimeOfDay averageSleepTimeOfDay = TimeOfDay(
@@ -82,7 +187,7 @@ class SleepRecordRepository extends GetxService {
         .map((e) => FlSpot(
             reversedRecentRecords.indexOf(e).toDouble() +
                 (e.endSleepDate.difference(e.startSleepDate).inDays / 2),
-            e.totalSleepDebt.toDouble()))
+            (e.totalSleepDebt ~/ 60).toDouble()))
         .toList();
 
     /**
@@ -95,15 +200,15 @@ class SleepRecordRepository extends GetxService {
         .map((e) => e.endSleepDate)
         .reduce((value, element) => value.isAfter(element) ? value : element);
     int firstHour = min(
-        recentRecords
-                .map((e) => e.totalSleepDebt)
-                .reduce((value, element) => value < element ? value : element) -
-            5,
+        (recentRecords.map((e) => e.totalSleepDebt).reduce(
+                    (value, element) => value < element ? value : element)) ~/
+                60 -
+            2,
         0);
-    int lastHour = recentRecords
-            .map((e) => e.totalSleepDebt)
-            .reduce((value, element) => value > element ? value : element) +
-        1;
+    int lastHour = (recentRecords.map((e) => e.totalSleepDebt).reduce(
+                (value, element) => value > element ? value : element)) ~/
+            60 +
+        2;
 
     int graphRangeX = lastDate.difference(firstDate).inDays + 1;
     int graphRangeY = lastHour - firstHour;
@@ -159,5 +264,40 @@ class SleepRecordRepository extends GetxService {
       "endSleepDate": endSleepDateList
     };
     return await _provider.getAnalysisSleepByLastTwentySleeps(endpoint, requestBody);
+  }
+}
+
+class SleepRecordModel {
+  final DateTime start;
+  final DateTime end;
+  final ESource source;
+  final int todaySleepDebt;
+  final int totalSleepDebt;
+  final List<TimeSliceModel> timeSliceList;
+
+  SleepRecordModel(
+    this.start,
+    this.end,
+    this.source,
+    this.todaySleepDebt,
+    this.totalSleepDebt,
+    this.timeSliceList,
+  );
+
+  @override
+  String toString() {
+    return "start: $start\nend: $end\nsource: $source\ntodaySleepDebt: ${todaySleepDebt / 60}\ntotalSleepDebt: ${totalSleepDebt / 60}";
+  }
+}
+
+class TimeSliceModel {
+  final DateTime start;
+  final DateTime end;
+
+  TimeSliceModel(this.start, this.end);
+
+  @override
+  String toString() {
+    return "time: $start ~ $end";
   }
 }

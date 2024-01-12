@@ -16,19 +16,24 @@ class HomeScreen extends BaseScreen<HomeViewModel> {
     return const SingleChildScrollView(
       child: Column(
         children: [
+          SizedBox(height: 20),
           _TopPart(),
           _MiddlePart(),
           _BottomPart(),
+          SizedBox(height: 130),
         ],
       ),
     );
   }
 
   @override
-  bool get wrapWithOuterSafeArea => true;
+  bool get wrapWithOuterSafeArea => false;
 
   @override
   bool get wrapWithInnerSafeArea => true;
+
+  @override
+  bool get setBottomOuterSafeArea => true;
 
   @override
   String? get backgroundImagePath => "assets/images/background_home.png";
@@ -45,61 +50,54 @@ class _TopPart extends BaseWidget<HomeViewModel> {
       child: Card(
         color: Colors.transparent,
         child: Container(
-            height: 170,
-            width: Get.width - 40,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-              image: const DecorationImage(
-                image: AssetImage('assets/images/home_head_card.png'),
-                fit: BoxFit.cover,
-              ),
+          height: 170,
+          width: Get.width - 30,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+            image: const DecorationImage(
+              image: AssetImage('assets/images/home_head_card.png'),
+              fit: BoxFit.cover,
             ),
-            child: Column(
-              children: [
-                Container(
-                  margin: const EdgeInsets.only(left: 20, top: 20),
-                  alignment: Alignment.centerLeft,
-                  child: Obx(
-                    () => Text(
-                      "${viewModel.userName.value}님 반가워요.",
-                      style: FontSystem.KR20B.copyWith(color: Colors.white),
-                    ),
+          ),
+          child: Column(
+            children: [
+              Container(
+                margin: const EdgeInsets.only(left: 20, top: 20),
+                alignment: Alignment.centerLeft,
+                child: Obx(
+                  () => Text(
+                    "${viewModel.userName}님 반가워요.",
+                    style: FontSystem.KR20B.copyWith(color: Colors.white),
                   ),
                 ),
-                const _BatteryPart(),
-                Obx(() {
-                  String message;
-                  int minuteDifference = viewModel.minuteDifference.value;
-                  int hourDifference = viewModel.hourDifference.value;
+              ),
+              const _BatteryPart(),
+              Obx(() {
+                String message;
+                int hourDifference = viewModel.differenceSleepTime.abs() ~/ 60;
+                int minuteDifference = viewModel.differenceSleepTime.abs() % 60;
 
-                  if (hourDifference > 0) {
-                    message =
-                        "목표한 시간보다 $hourDifference시간 $minuteDifference분 더 못잤어요.";
-                  } else if (hourDifference < 0) {
-                    // 부호를 바꾸어 음수를 양수로 만듭니다.
-                    hourDifference = hourDifference.abs();
-                    message =
-                        "목표한 시간보다 $hourDifference시간 $minuteDifference분 더 잤어요.";
-                  } else {
-                    // minuteDifference가 0인 경우
-                    message = "목표한 시간과 정확히 같은 시간을 잤어요.";
-                  }
+                if (viewModel.differenceSleepTime > 0) {
+                  message =
+                      "목표한 시간보다 $hourDifference시간 $minuteDifference분 더 못잤어요.";
+                } else if (viewModel.differenceSleepTime < 0) {
+                  // 부호를 바꾸어 음수를 양수로 만듭니다.
+                  hourDifference = hourDifference.abs();
+                  message =
+                      "목표한 시간보다 $hourDifference시간 $minuteDifference분 더 잤어요.";
+                } else {
+                  // minuteDifference가 0인 경우
+                  message = "목표한 시간과 정확히 같은 시간을 잤어요.";
+                }
 
-                  return Text(
-                    message,
-                    style: FontSystem.KR16R.copyWith(color: Colors.white),
-                  );
-                }),
-                // Container(
-                //   height: 5,
-                //   child: ElevatedButton(
-                //       onPressed: () {
-                //         viewModel.addSleepDebt(10);
-                //       },
-                //       child: Text('zz')),
-                // )
-              ],
-            )),
+                return Text(
+                  message,
+                  style: FontSystem.KR16R.copyWith(color: Colors.white),
+                );
+              }),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -108,52 +106,65 @@ class _TopPart extends BaseWidget<HomeViewModel> {
 class _MiddlePart extends BaseWidget<HomeViewModel> {
   const _MiddlePart();
 
+  // margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+  // decoration: BoxDecoration(
+  // color: const Color(0xFF3C3C3C),
+  // borderRadius: BorderRadius.circular(15),
+  // ),
+  // const Color(0xFF0A0A25),
   @override
   Widget buildView(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(top: 10, bottom: 10),
+      margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+      decoration: BoxDecoration(
+        color: const Color(0xFF0A0A25),
+        borderRadius: BorderRadius.circular(15),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.3),
+            spreadRadius: 0,
+            blurRadius: 10,
+            offset: const Offset(0, 4), // changes position of shadow
+          ),
+        ],
+      ),
       child: Center(
-        child: Card(
-          color: const Color(0xFF0A0A25),
-          child: SizedBox(
-            height: 170,
-            width: Get.width - 40,
-            child: Column(
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.all(20),
-                      child: Text(
-                        "오늘의 건강 브리핑",
-                        style: FontSystem.KR20B.copyWith(color: Colors.white),
-                      ),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.all(20),
-                      child: Row(
-                        children: [
-                          Image.asset(
-                            'assets/images/health_card_moon.png', // 이미지 파일 경로
-                            width: 16.0, // 아이콘 크기
-                            height: 16.0,
-                          ),
-                          const SizedBox(width: 4),
-                          Text(
-                            "${viewModel.sleepHour.value}h ${viewModel.sleepMin.value}m",
-                            style:
-                                FontSystem.KR20B.copyWith(color: Colors.white),
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
+                Container(
+                  margin: const EdgeInsets.all(20),
+                  child: Text(
+                    "오늘의 건강 브리핑",
+                    style: FontSystem.KR20B.copyWith(color: Colors.white),
+                  ),
                 ),
-                const _CarouselSlider(), // 여기에 추가적인 위젯들이 필요하면 추가
+                Container(
+                  margin: const EdgeInsets.all(20),
+                  child: Row(
+                    children: [
+                      Image.asset(
+                        'assets/images/health_card_moon.png', // 이미지 파일 경로
+                        width: 16.0, // 아이콘 크기
+                        height: 16.0,
+                      ),
+                      const SizedBox(width: 4),
+                      Obx(
+                        () => Text(
+                          "${viewModel.todaySleep.value ~/ 60}h ${viewModel.todaySleep.value % 60}m",
+                          style: FontSystem.KR20B.copyWith(color: Colors.white),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
               ],
             ),
-          ),
+            const _CarouselSlider(), // 여기에 추가적인 위젯들이 필요하면 추가
+            const SizedBox(height: 20),
+          ],
         ),
       ),
     );
@@ -170,7 +181,7 @@ class _BottomPart extends BaseWidget<HomeViewModel> {
         color: const Color(0xFF0A0A25),
         child: SizedBox(
           height: 348,
-          width: Get.width - 40,
+          width: Get.width - 30,
           child: Column(
             children: [
               Container(
@@ -201,7 +212,7 @@ class _BatteryPart extends StatelessWidget {
       child: Obx(
         () => BasedBatteryIndicator(
           status: BasedBatteryStatus(
-            value: viewModel.batteryPercentage(),
+            value: viewModel.todaySleep.value * 480 ~/ 100,
             type: BasedBatteryStatusType.normal,
           ),
           trackHeight: 40.0,
@@ -224,40 +235,44 @@ class _CarouselSlider extends StatelessWidget {
       options: CarouselOptions(
         height: 64.0,
         autoPlay: true,
+        viewportFraction: 0.9,
         autoPlayInterval: const Duration(seconds: 3),
         autoPlayAnimationDuration: const Duration(milliseconds: 600),
         autoPlayCurve: Curves.fastOutSlowIn,
       ),
-      items: [1, 2, 3, 4, 5].map((i) {
+      items: [0, 1, 2].map((i) {
         return Builder(
           builder: (BuildContext context) {
             return Container(
-                width: Get.width,
-                margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF3C3C3C),
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: Row(
-                  children: [
-                    const SizedBox(width: 4),
-                    Image.asset(
-                      'assets/images/health_card_icon.png',
-                      width: 56.0, // 아이콘 크기
-                      height: 56.0,
-                    ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Text(
-                        viewModel.healthSentance[i].toString(),
+              width: Get.width,
+              margin: const EdgeInsets.symmetric(horizontal: 5.0),
+              decoration: BoxDecoration(
+                color: const Color(0xFF3C3C3C),
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Row(
+                children: [
+                  const SizedBox(width: 4),
+                  Image.asset(
+                    'assets/images/health_card_icon.png',
+                    width: 56.0, // 아이콘 크기
+                    height: 56.0,
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Obx(
+                      () => Text(
+                        "${viewModel.healthSentance[i]} 확률이 ${viewModel.healthPercent[i]}% 늘었어요.",
                         style: FontSystem.KR16R.copyWith(color: Colors.white),
                         softWrap: true,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                  ],
-                ));
+                  ),
+                ],
+              ),
+            );
           },
         );
       }).toList(),
@@ -265,19 +280,13 @@ class _CarouselSlider extends StatelessWidget {
   }
 }
 
-class _MyPieChart extends StatefulWidget {
+class _MyPieChart extends BaseWidget<HomeViewModel> {
   final List<double> data;
 
   const _MyPieChart({required this.data});
 
   @override
-  State<StatefulWidget> createState() => MyPieChartState();
-}
-
-class MyPieChartState extends State<_MyPieChart> {
-  @override
-  Widget build(BuildContext context) {
-    final viewModel = Get.find<HomeViewModel>();
+  Widget buildView(BuildContext context) {
     return SizedBox(
       width: 260,
       height: 260,
@@ -287,7 +296,7 @@ class MyPieChartState extends State<_MyPieChart> {
           Obx(
             () => PieChart(
               PieChartData(
-                sections: getSections(widget.data),
+                sections: getSections(data),
                 centerSpaceRadius: 100,
                 sectionsSpace: 0,
               ),
@@ -296,7 +305,7 @@ class MyPieChartState extends State<_MyPieChart> {
           SizedBox(
             child: Obx(
               () => Text(
-                '${viewModel.sleepDebt.value}h',
+                '${viewModel.sleepDebt.value > 0 ? viewModel.sleepDebt.value : 0}h',
                 style:
                     FontSystem.KR50R.copyWith(color: const Color(0xFF755EBB)),
               ),
@@ -308,10 +317,6 @@ class MyPieChartState extends State<_MyPieChart> {
   }
 
   List<PieChartSectionData> getSections(List<double> values) {
-    final viewModel = Get.find<HomeViewModel>();
-    // final isNotEmpty = values.isNotEmpty;
-    // final total = isNotEmpty ? values.reduce((a, b) => a + b) : 1;
-
     return [
       PieChartSectionData(
           gradient: const LinearGradient(
@@ -335,3 +340,7 @@ class MyPieChartState extends State<_MyPieChart> {
     ];
   }
 }
+
+//건강 그래프 출력
+
+//내가 가진 수면 빚

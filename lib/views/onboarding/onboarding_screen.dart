@@ -55,6 +55,7 @@ class _InputSample extends BaseWidget<OnboardingViewModel> {
           style: const TextStyle(fontSize: 18, color: Colors.white),
           textAlign: TextAlign.center,
           controller: viewModel.nicknameController,
+          focusNode: viewModel.focusNode,
           decoration: const InputDecoration(
             hintText: '',
             border: UnderlineInputBorder(
@@ -99,6 +100,7 @@ class _ContinueButton extends BaseWidget<OnboardingViewModel> {
         color: Colors.transparent,
         child: InkWell(
           onTap: () => {
+            FocusScope.of(context).unfocus(),
             viewModel.onTapContinue().then(
                   (value) => {
                     if (value)

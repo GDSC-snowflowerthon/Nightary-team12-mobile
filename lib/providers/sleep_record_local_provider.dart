@@ -29,6 +29,19 @@ class SleepRecordLocalProvider extends GetConnect {
 
       return response;
     });
+
+  Future<SleepRecordData?> findRecentOne() async {
+    try {
+      return await _sleepRecordDao.findRecentOne();
+    } catch (e) {
+      LogSystem.logger.e(e.toString());
+      return null;
+    }
+  }
+
+  Future<List<int>> saveAll(List<SleepRecordCompanion> entities) async {
+    return await _sleepRecordDao.saveAll(entities);
+
   }
 
   Future<List<SleepRecordData>> readSleepRecordsLimit(int limitCnt) async {
@@ -52,6 +65,7 @@ class SleepRecordLocalProvider extends GetConnect {
     }
     return predictedSleep;
   }
+    
   Future<List<String>> getAnalysisSleepByLastTwentySleeps(endpoint, final requestBody) async{
     final Response response =
         await post(endpoint, requestBody, contentType: "application/json");

@@ -18,11 +18,18 @@ class SleepRecordDao extends DatabaseAccessor<NightaryDatabase>
   SleepRecordDao(super.db);
 
   // Create
-  Future<void> save(SleepRecordCompanion entity) =>
+  Future<int> save(SleepRecordCompanion entity) =>
       into(sleepRecord).insertOnConflictUpdate(entity);
 
-  Future<void> saveAll(List<SleepRecordCompanion> entities) =>
-      batch((batch) => batch.insertAllOnConflictUpdate(sleepRecord, entities));
+  Future<List<int>> saveAll(List<SleepRecordCompanion> entities) async {
+    List<int> ids = [];
+
+    for (var entity in entities) {
+      ids.add(await into(sleepRecord).insertOnConflictUpdate(entity));
+    }
+
+    return ids;
+  }
 
   Future<List<SleepRecordData>> findAllOrderByEndSleepDateLimit(int limitCnt) =>
       (select(sleepRecord)
@@ -33,6 +40,11 @@ class SleepRecordDao extends DatabaseAccessor<NightaryDatabase>
   // Read One
   Future<List<SleepRecordData>> findById(int id) =>
       (select(sleepRecord)..where((tbl) => tbl.id.equals(id))).get();
+
+  Future<SleepRecordData> findRecentOne() => (select(sleepRecord)
+        ..orderBy([(tbl) => OrderingTerm.desc(tbl.endSleepDate)])
+        ..limit(1))
+      .getSingle();
 
   // Read All
   Future<List<SleepRecordData>> findAll() => select(sleepRecord).get();
