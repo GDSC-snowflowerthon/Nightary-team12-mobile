@@ -19,21 +19,21 @@ class SettingViewModel extends GetxController {
   Debouncer debouncer = Debouncer(milliseconds: 100);
 
   RxInt get goalHour => () {
-    int hour = endGoalHour.value - startGoalHour.value;
-    int min = endGoalMinute.value - startGoalMinute.value;
-    if (min < 0) {
-      hour -= 1;
-      min += 60;
-    }
-    if (hour < 0) hour += 24;
-    return hour.obs;
-  }();
+        int hour = endGoalHour.value - startGoalHour.value;
+        int min = endGoalMinute.value - startGoalMinute.value;
+        if (min < 0) {
+          hour -= 1;
+          min += 60;
+        }
+        if (hour < 0) hour += 24;
+        return hour.obs;
+      }();
 
   RxInt get goalMinute => () {
-    int min = endGoalMinute.value - startGoalMinute.value;
-    if (min < 0) min += 60;
-    return min.obs;
-  }();
+        int min = endGoalMinute.value - startGoalMinute.value;
+        if (min < 0) min += 60;
+        return min.obs;
+      }();
 
   RxString nickname = "".obs;
 
@@ -75,18 +75,43 @@ class SettingViewModel extends GetxController {
 
   void updateGoalTime() {
     Map<TargetSleepTime, int> targetSleepTime =
-    SharedPreferenceFactory.getTargetSleepTime();
-    startGoalHour.value = targetSleepTime[TargetSleepTime.startHour] ?? 0;
+        SharedPreferenceFactory.getTargetSleepTime();
+    startGoalHour.value = targetSleepTime[TargetSleepTime.startHour] ?? 23;
     startGoalMinute.value = targetSleepTime[TargetSleepTime.startMinute] ?? 0;
-    endGoalHour.value = targetSleepTime[TargetSleepTime.endHour] ?? 0;
+    endGoalHour.value = targetSleepTime[TargetSleepTime.endHour] ?? 7;
     endGoalMinute.value = targetSleepTime[TargetSleepTime.endMinute] ?? 0;
   }
 
   void updateAlarmTime() {
     Map<AlarmTime, int> alarmTime = SharedPreferenceFactory.getAlarmTime();
-    alarmHour.value = alarmTime[AlarmTime.hour] ?? 0;
+    alarmHour.value = alarmTime[AlarmTime.hour] ?? 8;
     alarmMinute.value = alarmTime[AlarmTime.minute] ?? 0;
   }
+
+  // void onTapSetDateSleepTime(BuildContext context) async {
+  //   DateTime selectedTime = DateTime.now();
+  //   final result = await showCupertinoDialog(
+  //     context: context,
+  //     builder: (_) => SleepTimeDatePicker(onSubmitDate: (date) {
+  //       selectedTime = date;
+  //     }),
+  //   );
+  //   if (result == null) {
+  //     return;
+  //   }
+
+  //   // ignore: use_build_context_synchronously
+  //   showCupertinoDialog(
+  //     context: context,
+  //     builder: (_) => SetSpecificDateSleepTime(
+  //       startTime: selectedTime.copyWith(hour: 23, minute: 0),
+  //       endTime: selectedTime.copyWith(hour: 7, minute: 0),
+  //       onSubmitDate: (start, end) {
+  //         // save time
+  //       },
+  //     ),
+  //   );
+  // }
 
   void onChangeStartTime(int hour, int minute) {
     debouncer.run(() {
