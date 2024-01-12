@@ -181,7 +181,7 @@ class SettingViewModel extends GetxController {
         1,
         '오늘의 배터리 양을 확인하세요!',
         '',
-        makeDate(alarmHour.value, alarmMinute.value, 30),
+        makeDate(alarmHour.value, alarmMinute.value, 0),
         NotificationDetails(iOS: iosDetails),
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime);
