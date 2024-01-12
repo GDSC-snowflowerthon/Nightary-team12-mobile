@@ -3,10 +3,33 @@ import 'package:get/get.dart';
 import 'package:nightary/apps/database.dart';
 import 'package:nightary/apps/factory/database_factory.dart';
 import 'package:nightary/domains/dao/sleep_record_dao.dart';
+import 'package:nightary/utilities/log_system.dart';
 
-class SleepRecordLocalProvider extends GetConnect implements GetxService {
+class SleepRecordLocalProvider extends GetConnect {
   static final SleepRecordDao _sleepRecordDao =
       DatabaseFactory.instance.sleepRecordDao;
+
+  @override
+  void onInit() {
+    super.onInit();
+    httpClient
+      ..baseUrl = "https://nightary.dcs-hyungjoon.com/"
+      ..timeout = const Duration(seconds: 60)
+    ..addRequestModifier<dynamic>((request) {
+      LogSystem.logger.d("Request: ${request.method} ${request.url}");
+
+      return request;
+    })
+    ..addResponseModifier((request, response) {
+      if(response.status.hasError){
+        LogSystem.logger.e("Response: ${response.statusCode} ${response.statusCode} ${response.statusText}");
+      } else {
+        LogSystem.logger.d("Response: ${response.statusCode} ${response.body}");
+      }
+
+      return response;
+    });
+  }
 
   Future<List<SleepRecordData>> readSleepRecordsLimit(int limitCnt) async {
     List<SleepRecordData> sleepRecords =
@@ -28,5 +51,15 @@ class SleepRecordLocalProvider extends GetConnect implements GetxService {
           end: DateTime.parse(endTimeList[i])));
     }
     return predictedSleep;
+  }
+  Future<List<String>> getAnalysisSleepByLastTwentySleeps(endpoint, final requestBody) async{
+    final Response response =
+        await post(endpoint, requestBody, contentType: "application/json");
+    print(response.body);
+    final data = response.body as Map<String, dynamic>;
+    final String chatGptAnalysis = data["chat_gpt_analysis"];
+    final String chatGptFeedback = data["chat_gpt_feedback"];
+    final List<String> analysisText = [chatGptAnalysis, chatGptFeedback];
+    return analysisText;
   }
 }
