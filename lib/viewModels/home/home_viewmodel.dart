@@ -1,109 +1,26 @@
 import 'package:get/get.dart';
+import 'package:nightary/repositories/sleep_record_repository.dart';
 import 'package:nightary/repositories/user_repository.dart';
 import 'package:health/health.dart';
 import 'package:nightary/apps/factory/shared_preference_factory.dart';
 
 class HomeViewModel extends GetxController {
-  late final UserRepository _repository;
+  late final UserRepository _userRepository;
+  late final SleepRecordRepository _sleepRecordRepository;
 
-  late final RxString userName;
-
+  late final RxString _userName;
   RxInt goalHour = 8.obs; //목표자는시간
   RxInt goalMin = 30.obs; //목표자는 분
 
   RxInt todaySleep = 0.obs;
   RxInt sleepDebt = 5.obs;
-  var healthPercent = [0.0,0.0,0.0
+  var healthPercent = [0.0,0.0,0.0].obs;
 
-  ].obs;
-
-  var healthSentance = [
-    '심장병'.obs,
-    '조기사망'.obs,
-    '고혈압'.obs,
-  ].obs;
-
-  void makeSentence(int hour){
-    double mind = mindPercent(hour);
-    double die = diePercent(hour);
-    double highblood = highBloodPressure(hour);
-    healthPercent[0] = mind;
-    healthPercent[1] = die;
-    healthPercent[2] = highblood;
-  }
-
-
-
-  @override
-  void onInit() {
-    // TODO: implement onInit
-    super.onInit();
-    _repository = Get.find<UserRepository>();
-    userName = _repository.readNickname()!.obs;
-    updateGoalTime();
-    ever(todaySleep, handleSleepDataChange);
-    makeSentence(getTodaySleep());
-    updateTodaySleep();
-  }
-  void handleSleepDataChange(_) {
-    if (todaySleep.value >= 180) {
-      int sleepDiff = (todaySleep.value/60).toInt() - (goalHour.value * 60);
-      addSleepDebt(sleepDiff);
-    }
-  }
-  void updateGoalTime() {
-    Map<TargetSleepTime, int> targetSleepTime =
-    SharedPreferenceFactory.getTargetSleepTime();
-    goalHour.value = targetSleepTime[TargetSleepTime.startHour] ?? 0;
-    goalMin.value = targetSleepTime[TargetSleepTime.startMinute] ?? 0;
-  }
-
-  void setUserName(String newName) {
-    userName.value = newName;
-  }
-
-  void setGoalHour(int hour) {
-    goalHour.value = hour;
-  }
-
-  void setGoalMin(int minute) {
-    goalMin.value = minute;
-  }
-
-
-  int getTodaySleep(){
-    return todaySleep.value;
-  }
-
-  void updateTodaySleep() {
-    fetchLatestSleepData();
-    Map<TodaySleepTime, int> todaySleepTime =
-    SharedPreferenceFactory.getTodaySleepTime();
-    todaySleep.value = todaySleepTime[TodaySleepTime.hour]! * 60 + todaySleepTime[TodaySleepTime.minute]!;
-  }
-
-  void addSleepDebt(int hour) {
-    //쌓인 수면 빚
-    sleepDebt.value += hour;
-    if (sleepDebt.value < 0) sleepDebt.value = 0;
-    print(sleepDebt.value);
-    updateSleepDebt(sleepDebt.value);
-  }
-
-
-  RxInt get hourDifference {
-    int totalDiff = (goalHour.value * 60 + goalMin.value) - (todaySleep.value);
-    return (totalDiff / 60).floor().obs;
-  }
-
-  RxInt get minuteDifference {
-    int totalDiff = (goalHour.value * 60 + goalMin.value) - (todaySleep.value);
-    return (totalDiff % 60).abs().obs;
-  }
-
-  int batteryPercentage() {
-    return (todaySleep / 480 * 100).toInt(); //8시간자야 꽉차게
-  }
+  final List<String> healthSentance = [
+    '심장병',
+    '조기사망',
+    '고혈압',
+  ];
 
   RxInt get sleepDebtPercent {
     RxInt percent = 0.obs;
@@ -115,6 +32,62 @@ class HomeViewModel extends GetxController {
     return percent;
 
   }
+
+  String get userName => _userName.value;
+
+  int get hourDifference {
+    int totalDiff = (goalHour.value * 60 + goalMin.value) - (todaySleep.value);
+    return (totalDiff / 60).floor();
+  }
+
+  int get minuteDifference {
+    int totalDiff = (goalHour.value * 60 + goalMin.value) - (todaySleep.value);
+    return (totalDiff % 60).abs();
+  }
+
+  void makeSentence(int hour){
+    double mind = mindPercent(hour);
+    double die = diePercent(hour);
+    double highblood = highBloodPressure(hour);
+    healthPercent[0] = mind;
+    healthPercent[1] = die;
+    healthPercent[2] = highblood;
+  }
+
+  @override
+  void onInit() {
+    super.onInit();
+    // DI
+    _userRepository = Get.find<UserRepository>();
+    _sleepRecordRepository = Get.find<SleepRecordRepository>();
+
+    // Init Fetch
+    _userName = _userRepository.readNickname()!.obs;
+
+    Map<TargetSleepTime, int> targetSleepTime = SharedPreferenceFactory.getTargetSleepTime();
+    goalHour.value = targetSleepTime[TargetSleepTime.startHour] ?? 0;
+    goalMin.value = targetSleepTime[TargetSleepTime.startMinute] ?? 0;
+
+    _sleepRecordRepository.readRecentSleepRecord().then((value) => {
+      todaySleep.value = value["sleepHour"]! * 60 + value["sleepMinutes"]!,
+      sleepDebt.value = value["totalDept"]!,
+    }).then((value) =>
+      makeSentence(todaySleep.value)
+    );
+  }
+
+  void setGoalHour(int hour) {
+    goalHour.value = hour;
+  }
+
+  void setGoalMin(int minute) {
+    goalMin.value = minute;
+  }
+
+  int batteryPercentage() {
+    return (todaySleep / 480 * 100).toInt(); //8시간자야 꽉차게
+  }
+
   //오늘 잔 시간 받아오기
   void fetchLatestSleepData() async {
     HealthFactory health = HealthFactory();
@@ -135,18 +108,12 @@ class HomeViewModel extends GetxController {
             .reduce((a, b) => a.dateTo.isAfter(b.dateTo) ? a : b);
         print("가장 최근의 수면 데이터: ${latestSleepData.value}분");
         todaySleep.value = double.parse(latestSleepData.value.toString()).toInt();
+
       } catch (error) {
         print("에러 발생: $error");
       }
     }
 
-  }
-  void updateSleepDebt(int hour){
-    sleepDebt.value = SharedPreferenceFactory.setSleepDebt(hour) as int;
-  }
-
-  int getSleepDebt(){
-    return SharedPreferenceFactory.getSleepDebt();
   }
 
   double mindPercent(int hour){
@@ -204,8 +171,6 @@ class HomeViewModel extends GetxController {
       return 0;
     }
   }
-
-
 }
 
 
