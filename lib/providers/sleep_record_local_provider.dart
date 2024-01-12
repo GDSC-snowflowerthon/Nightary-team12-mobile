@@ -15,20 +15,23 @@ class SleepRecordLocalProvider extends GetConnect {
     httpClient
       ..baseUrl = "https://nightary.dcs-hyungjoon.com/"
       ..timeout = const Duration(seconds: 60)
-    ..addRequestModifier<dynamic>((request) {
-      LogSystem.logger.d("Request: ${request.method} ${request.url}");
+      ..addRequestModifier<dynamic>((request) {
+        LogSystem.logger.d("Request: ${request.method} ${request.url}");
 
-      return request;
-    })
-    ..addResponseModifier((request, response) {
-      if(response.status.hasError){
-        LogSystem.logger.e("Response: ${response.statusCode} ${response.statusCode} ${response.statusText}");
-      } else {
-        LogSystem.logger.d("Response: ${response.statusCode} ${response.body}");
-      }
+        return request;
+      })
+      ..addResponseModifier((request, response) {
+        if (response.status.hasError) {
+          LogSystem.logger.e(
+              "Response: ${response.statusCode} ${response.statusCode} ${response.statusText}");
+        } else {
+          LogSystem.logger
+              .d("Response: ${response.statusCode} ${response.body}");
+        }
 
-      return response;
-    });
+        return response;
+      });
+  }
 
   Future<SleepRecordData?> findRecentOne() async {
     try {
@@ -41,7 +44,6 @@ class SleepRecordLocalProvider extends GetConnect {
 
   Future<List<int>> saveAll(List<SleepRecordCompanion> entities) async {
     return await _sleepRecordDao.saveAll(entities);
-
   }
 
   Future<List<SleepRecordData>> readSleepRecordsLimit(int limitCnt) async {
@@ -51,7 +53,8 @@ class SleepRecordLocalProvider extends GetConnect {
     return sleepRecords;
   }
 
-  Future<List<DateTimeRange>> getPredictedSleepByLastTwentySleeps(String endpoint, final requestBody) async {
+  Future<List<DateTimeRange>> getPredictedSleepByLastTwentySleeps(
+      String endpoint, final requestBody) async {
     final response =
         await post(endpoint, requestBody, contentType: "application/json");
     final data = response.body as Map<String, dynamic>;
@@ -65,8 +68,9 @@ class SleepRecordLocalProvider extends GetConnect {
     }
     return predictedSleep;
   }
-    
-  Future<List<String>> getAnalysisSleepByLastTwentySleeps(endpoint, final requestBody) async{
+
+  Future<List<String>> getAnalysisSleepByLastTwentySleeps(
+      endpoint, final requestBody) async {
     final Response response =
         await post(endpoint, requestBody, contentType: "application/json");
     print(response.body);
