@@ -1,16 +1,6 @@
 # nightary
-d
 Sleep and Liver Care Management Application
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+# Pictures
+<img width="1446" alt="스크린샷 2024-01-13 오전 5 55 08" src="https://github.com/GDSC-snowflowerthon/Nightary-team12-mobile/assets/62001944/d4f68d32-c4bb-4fef-855d-e52caaeec395">
+<img width="1438" alt="스크린샷 2024-01-13 오전 5 55 20" src="https://github.com/GDSC-snowflowerthon/Nightary-team12-mobile/assets/62001944/f24d017f-2b3f-4298-86f0-66b47ec80f50">
