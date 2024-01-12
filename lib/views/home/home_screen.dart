@@ -16,6 +16,7 @@ class HomeScreen extends BaseScreen<HomeViewModel> {
     return const SingleChildScrollView(
       child: Column(
         children: [
+          SizedBox(height: 20),
           _TopPart(),
           _MiddlePart(),
           _BottomPart(),
@@ -50,7 +51,7 @@ class _TopPart extends BaseWidget<HomeViewModel> {
         color: Colors.transparent,
         child: Container(
           height: 170,
-          width: Get.width - 40,
+          width: Get.width - 30,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
             image: const DecorationImage(
@@ -105,54 +106,65 @@ class _TopPart extends BaseWidget<HomeViewModel> {
 class _MiddlePart extends BaseWidget<HomeViewModel> {
   const _MiddlePart();
 
+  // margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+  // decoration: BoxDecoration(
+  // color: const Color(0xFF3C3C3C),
+  // borderRadius: BorderRadius.circular(15),
+  // ),
+  // const Color(0xFF0A0A25),
   @override
   Widget buildView(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(top: 10, bottom: 10),
+      margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+      decoration: BoxDecoration(
+        color: const Color(0xFF0A0A25),
+        borderRadius: BorderRadius.circular(15),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.3),
+            spreadRadius: 0,
+            blurRadius: 10,
+            offset: const Offset(0, 4), // changes position of shadow
+          ),
+        ],
+      ),
       child: Center(
-        child: Card(
-          color: const Color(0xFF0A0A25),
-          child: SizedBox(
-            height: 170,
-            width: Get.width - 40,
-            child: Column(
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.all(20),
-                      child: Text(
-                        "오늘의 건강 브리핑",
-                        style: FontSystem.KR20B.copyWith(color: Colors.white),
-                      ),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.all(20),
-                      child: Row(
-                        children: [
-                          Image.asset(
-                            'assets/images/health_card_moon.png', // 이미지 파일 경로
-                            width: 16.0, // 아이콘 크기
-                            height: 16.0,
-                          ),
-                          const SizedBox(width: 4),
-                          Obx(
-                            () => Text(
-                              "${viewModel.todaySleep.value ~/ 60}h ${viewModel.todaySleep.value % 60}m",
-                              style: FontSystem.KR20B
-                                  .copyWith(color: Colors.white),
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
+                Container(
+                  margin: const EdgeInsets.all(20),
+                  child: Text(
+                    "오늘의 건강 브리핑",
+                    style: FontSystem.KR20B.copyWith(color: Colors.white),
+                  ),
                 ),
-                const _CarouselSlider(), // 여기에 추가적인 위젯들이 필요하면 추가
+                Container(
+                  margin: const EdgeInsets.all(20),
+                  child: Row(
+                    children: [
+                      Image.asset(
+                        'assets/images/health_card_moon.png', // 이미지 파일 경로
+                        width: 16.0, // 아이콘 크기
+                        height: 16.0,
+                      ),
+                      const SizedBox(width: 4),
+                      Obx(
+                        () => Text(
+                          "${viewModel.todaySleep.value ~/ 60}h ${viewModel.todaySleep.value % 60}m",
+                          style: FontSystem.KR20B.copyWith(color: Colors.white),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
               ],
             ),
-          ),
+            const _CarouselSlider(), // 여기에 추가적인 위젯들이 필요하면 추가
+            const SizedBox(height: 20),
+          ],
         ),
       ),
     );
@@ -169,7 +181,7 @@ class _BottomPart extends BaseWidget<HomeViewModel> {
         color: const Color(0xFF0A0A25),
         child: SizedBox(
           height: 348,
-          width: Get.width - 40,
+          width: Get.width - 30,
           child: Column(
             children: [
               Container(
@@ -223,6 +235,7 @@ class _CarouselSlider extends StatelessWidget {
       options: CarouselOptions(
         height: 64.0,
         autoPlay: true,
+        viewportFraction: 0.9,
         autoPlayInterval: const Duration(seconds: 3),
         autoPlayAnimationDuration: const Duration(milliseconds: 600),
         autoPlayCurve: Curves.fastOutSlowIn,
@@ -231,34 +244,35 @@ class _CarouselSlider extends StatelessWidget {
         return Builder(
           builder: (BuildContext context) {
             return Container(
-                width: Get.width,
-                margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF3C3C3C),
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: Row(
-                  children: [
-                    const SizedBox(width: 4),
-                    Image.asset(
-                      'assets/images/health_card_icon.png',
-                      width: 56.0, // 아이콘 크기
-                      height: 56.0,
-                    ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Obx(
-                        () => Text(
-                          "${viewModel.healthSentance[i]} 확률이 ${viewModel.healthPercent[i]}% 늘었어요.",
-                          style: FontSystem.KR16R.copyWith(color: Colors.white),
-                          softWrap: true,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
+              width: Get.width,
+              margin: const EdgeInsets.symmetric(horizontal: 5.0),
+              decoration: BoxDecoration(
+                color: const Color(0xFF3C3C3C),
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Row(
+                children: [
+                  const SizedBox(width: 4),
+                  Image.asset(
+                    'assets/images/health_card_icon.png',
+                    width: 56.0, // 아이콘 크기
+                    height: 56.0,
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Obx(
+                      () => Text(
+                        "${viewModel.healthSentance[i]} 확률이 ${viewModel.healthPercent[i]}% 늘었어요.",
+                        style: FontSystem.KR16R.copyWith(color: Colors.white),
+                        softWrap: true,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                  ],
-                ));
+                  ),
+                ],
+              ),
+            );
           },
         );
       }).toList(),
@@ -291,7 +305,7 @@ class _MyPieChart extends BaseWidget<HomeViewModel> {
           SizedBox(
             child: Obx(
               () => Text(
-                '${viewModel.sleepDebt.value}h',
+                '${viewModel.sleepDebt.value > 0 ? viewModel.sleepDebt.value : 0}h',
                 style:
                     FontSystem.KR50R.copyWith(color: const Color(0xFF755EBB)),
               ),

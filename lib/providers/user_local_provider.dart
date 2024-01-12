@@ -32,5 +32,7 @@ class UserLocalProvider {
     await _sharedPreferences.setInt(TargetSleepTime.startMinute.name, 00);
     await _sharedPreferences.setInt(TargetSleepTime.endHour.name, 6);
     await _sharedPreferences.setInt(TargetSleepTime.endMinute.name, 00);
+    await _sharedPreferences.setInt(AlarmTime.hour.name, 7);
+    await _sharedPreferences.setInt(AlarmTime.minute.name, 00);
   }
 }
