@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:nightary/utilities/font_system.dart';
 import 'package:nightary/viewModels/statistic/fragment/abstract_recent_viewmodel.dart';
 import 'package:nightary/views/base/base_widget.dart';
 import 'package:nightary/widgets/custom_time_chart/components/view_mode.dart';
@@ -23,11 +24,7 @@ class SleepTimeChart<T extends AbstractRecentViewModel> extends BaseWidget<T> {
         children: [
           Text(
             "최근 ${viewModel.runtimeType.toString() == "SevenRecentViewModel" ? "7" : "30"}번의 수면 시간",
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
+            style: FontSystem.KR18B.copyWith(color: Colors.white),
           ),
           const SizedBox(height: 20),
           CustomTimeChart(

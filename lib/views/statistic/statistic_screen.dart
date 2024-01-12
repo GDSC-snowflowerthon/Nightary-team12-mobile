@@ -1,3 +1,4 @@
+import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:flutter/material.dart';
 import 'package:nightary/viewModels/statistic/fragment/seven_recent_viewmodel.dart';
 import 'package:nightary/viewModels/statistic/fragment/thirty_recent_viewmodel.dart';
@@ -10,25 +11,43 @@ class StatisticScreen extends BaseScreen<StatisticViewModel> {
 
   @override
   Widget buildBody(BuildContext context) {
-    return CustomScrollView(
-      slivers: [
-        SliverFillRemaining(
-          hasScrollBody: true,
-          child: DefaultTabController(
-            animationDuration: const Duration(milliseconds: 300),
-            length: 2,
-            child: Column(
-              children: [
-                SizedBox.fromSize(size: const Size.fromHeight(20)),
-                _tabBar(context),
-                SizedBox.fromSize(size: const Size.fromHeight(20)),
-                _tabBarView(),
-                SizedBox.fromSize(size: const Size.fromHeight(20)),
-              ],
-            ),
-          ),
-        )
+    return ExtendedNestedScrollView(
+      headerSliverBuilder: (context, innerBoxIsScrolled) => [
+        const SliverToBoxAdapter(child: SizedBox(height: 20)),
+        SliverToBoxAdapter(child: _tabBar(context)),
+        const SliverToBoxAdapter(child: SizedBox(height: 20))
       ],
+      body: _tabBarView(),
+      // child: SizedBox(
+      //   child: Column(
+      //     children: [
+      //       _tabBar(context),
+      //       _tabBarView(),
+      //       // SliverToBoxAdapter(
+      //       //   child:
+      //       // ),
+      //       // SliverFillRemaining(
+      //       //   child:
+      //       // ),
+      //       // SliverFillRemaining(
+      //       //   hasScrollBody: true,
+      //       //   child: DefaultTabController(
+      //       //     animationDuration: const Duration(milliseconds: 300),
+      //       //     length: 2,
+      //       //     child: Column(
+      //       //       children: [
+      //       //         SizedBox.fromSize(size: const Size.fromHeight(20)),
+      //       //         _tabBar(context),
+      //       //         SizedBox.fromSize(size: const Size.fromHeight(20)),
+      //       //         _tabBarView(),
+      //       //         SizedBox.fromSize(size: const Size.fromHeight(20)),
+      //       //       ],
+      //       //     ),
+      //       //   ),
+      //       // )
+      //     ],
+      //   ),
+      // ),
     );
   }
 
@@ -42,6 +61,7 @@ class StatisticScreen extends BaseScreen<StatisticViewModel> {
   String? get backgroundImagePath => "assets/images/background_statistic.png";
 
   Widget _tabBar(BuildContext context) => Container(
+        margin: const EdgeInsets.symmetric(horizontal: 20),
         // 탭의 너비와 높이
         width: MediaQuery.of(context).size.width - 40,
         height: 60,
@@ -91,14 +111,12 @@ class StatisticScreen extends BaseScreen<StatisticViewModel> {
         ),
       );
 
-  Widget _tabBarView() => Expanded(
-        child: TabBarView(
-          controller: viewModel.tabController,
-          physics: const NeverScrollableScrollPhysics(),
-          children: const [
-            RecentFragment<SevenRecentViewModel>(),
-            RecentFragment<ThirtyRecentViewModel>(),
-          ],
-        ),
+  Widget _tabBarView() => TabBarView(
+        controller: viewModel.tabController,
+        physics: const NeverScrollableScrollPhysics(),
+        children: const [
+          RecentFragment<SevenRecentViewModel>(),
+          RecentFragment<ThirtyRecentViewModel>(),
+        ],
       );
 }

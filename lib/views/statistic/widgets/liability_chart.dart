@@ -24,11 +24,7 @@ class LiabilityChart<T extends AbstractRecentViewModel> extends BaseWidget<T> {
           // Widget Title
           Text(
             "최근 ${viewModel.runtimeType.toString() == "SevenRecentViewModel" ? "7" : "30"}번의 수면 빚 변화",
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
+            style: FontSystem.KR18B.copyWith(color: Colors.white),
           ),
 
           // 여백
