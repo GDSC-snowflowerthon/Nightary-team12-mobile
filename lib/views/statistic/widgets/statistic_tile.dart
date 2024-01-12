@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:nightary/utilities/font_system.dart';
 import 'package:nightary/viewModels/statistic/fragment/abstract_recent_viewmodel.dart';
 import 'package:nightary/views/base/base_widget.dart';
 
@@ -22,32 +23,36 @@ class StatisticTile<T extends AbstractRecentViewModel> extends BaseWidget<T> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(
-                    isBattery
-                        ? "${viewModel.changeAverageBattery.abs()} %"
-                        : "${viewModel.changeLiabilities.abs()} h",
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 55,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        isBattery
+                            ? "${viewModel.changeAverageBattery.abs()}"
+                            : "${viewModel.changeLiabilities.abs()}",
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 50,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Text(
+                        isBattery ? "%" : "h",
+                        style: FontSystem.KR42B.copyWith(color: Colors.white),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 10),
                   Text(
                     "최근 ${viewModel.runtimeType.toString() == "SevenRecentViewModel" ? "7" : "30"}번의 수면 동안",
-                    style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600),
+                    style: FontSystem.KR12SB.copyWith(color: Colors.white),
                   ),
                   Text(
                     isBattery
                         ? changeAverageBatteryText()
                         : changeLiabilitiesText(),
-                    style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600),
+                    style: FontSystem.KR12SB.copyWith(color: Colors.white),
                   ),
                 ],
               ),

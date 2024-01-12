@@ -23,6 +23,25 @@ class SleepRecordRepository extends GetxService {
     LogSystem.logger.d("${totalRecords.length} sleep records found");
 
     /**
+     * 최근 7개와 그 이전 7개의 평균 배터리 변화량 계산
+     */
+    List<int> processingBattery = totalRecords
+        .map((e) => ((e.endSleepDate.difference(e.startSleepDate).inHours * 60 +
+                    e.endSleepDate.difference(e.startSleepDate).inMinutes) /
+                480 *
+                100)
+            .toInt())
+        .toList();
+
+    int recentAverageBattery = (processingBattery
+                .sublist(0, limitCnt ~/ 2)
+                .reduce((value, element) => value + element) -
+            processingBattery
+                .sublist(limitCnt ~/ 2, limitCnt)
+                .reduce((value, element) => value + element)) ~/
+        100;
+
+    /**
      * 최근 7개와 그 이전 7개의 수면 빚 변화량 계산
      */
     int changeLiabilities = totalRecords.first.totalSleepDebt -
@@ -99,7 +118,7 @@ class SleepRecordRepository extends GetxService {
     // 결과 반환
     return {
       "averageSleepTime": averageSleepTimeOfDay,
-      "changeAverageBattery": 10,
+      "changeAverageBattery": recentAverageBattery,
       "changeLiabilities": changeLiabilities,
       "graphRange": graphRange,
       "sleepTimes": sleepTimes,
