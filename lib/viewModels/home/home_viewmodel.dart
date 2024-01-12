@@ -29,7 +29,9 @@ class HomeViewModel extends GetxController {
 
   RxInt get sleepDebtPercent {
     RxInt percent = 0.obs;
-    if (sleepDebt.value >= 24) {
+    if (sleepDebt.value <= 0) {
+      percent = 0.obs;
+    } else if (sleepDebt.value >= 24) {
       percent = 100.obs;
     } else {
       percent = ((sleepDebt.value / 24) * 100).toInt().obs;
