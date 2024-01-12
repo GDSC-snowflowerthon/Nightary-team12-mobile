@@ -45,10 +45,6 @@ class WhiteNoiseViewModel extends GetxController {
 
   final musics = [
     'assets/data/music_1.mp3',
-    'assets/data/music_1.mp3',
-    'assets/data/music_1.mp3',
-    'assets/data/music_1.mp3',
-    'assets/data/music_1.mp3',
   ];
 
   /* 음악 재생 관련 데이터 */
