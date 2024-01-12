@@ -103,21 +103,19 @@ class SleepRecordRepository extends GetxService {
   Future<Map<String, dynamic>> readRecentSleepRecord() async {
     SleepRecordData? sleepRecord = await _sleepRecordProvider.findRecentOne();
 
+    print("sleepRecord: $sleepRecord");
+
     if (sleepRecord == null) {
       return {
-        "sleepHour": 7,
-        "sleepMinutes": 50,
+        "todaySleepTime": 490,
         "totalDept": 23,
       };
     } else {
       return {
-        "sleepHour": sleepRecord.endSleepDate
-            .difference(sleepRecord.startSleepDate)
-            .inHours,
-        "sleepMinutes": sleepRecord.endSleepDate
+        "todaySleepTime": sleepRecord.endSleepDate
             .difference(sleepRecord.startSleepDate)
             .inMinutes,
-        "totalDept": sleepRecord.totalSleepDebt,
+        "totalDept": sleepRecord.totalSleepDebt ~/ 60,
       };
     }
   }

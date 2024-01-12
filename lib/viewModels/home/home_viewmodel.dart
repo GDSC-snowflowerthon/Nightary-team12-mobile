@@ -16,6 +16,8 @@ class HomeViewModel extends GetxController {
   RxInt sleepDebt = 5.obs;
   var healthPercent = [0.0, 0.0, 0.0].obs;
 
+  String get userName => _userName.value;
+
   final List<String> healthSentance = [
     '심장병',
     '조기사망',
@@ -32,17 +34,8 @@ class HomeViewModel extends GetxController {
     return percent;
   }
 
-  String get userName => _userName.value;
-
-  int get hourDifference {
-    int totalDiff = (goalHour.value * 60 + goalMin.value) - (todaySleep.value);
-    return (totalDiff / 60).floor();
-  }
-
-  int get minuteDifference {
-    int totalDiff = (goalHour.value * 60 + goalMin.value) - (todaySleep.value);
-    return (totalDiff % 60).abs();
-  }
+  int get differenceSleepTime =>
+      (goalHour.value * 60 + goalMin.value) - (todaySleep.value);
 
   void makeSentence(int hour) {
     double mind = mindPercent(hour);
@@ -65,14 +58,25 @@ class HomeViewModel extends GetxController {
 
     Map<TargetSleepTime, int> targetSleepTime =
         SharedPreferenceFactory.getTargetSleepTime();
-    goalHour.value = targetSleepTime[TargetSleepTime.startHour] ?? 0;
-    goalMin.value = targetSleepTime[TargetSleepTime.startMinute] ?? 0;
+    goalHour.value = targetSleepTime[TargetSleepTime.endHour]! <
+            targetSleepTime[TargetSleepTime.startHour]!
+        ? targetSleepTime[TargetSleepTime.endHour]! +
+            24 -
+            targetSleepTime[TargetSleepTime.startHour]!
+        : targetSleepTime[TargetSleepTime.endHour]! -
+            targetSleepTime[TargetSleepTime.startHour]!;
+    goalMin.value = targetSleepTime[TargetSleepTime.endMinute]! <
+            targetSleepTime[TargetSleepTime.endMinute]!
+        ? targetSleepTime[TargetSleepTime.endMinute]! +
+            60 -
+            targetSleepTime[TargetSleepTime.startMinute]!
+        : targetSleepTime[TargetSleepTime.endMinute]! -
+            targetSleepTime[TargetSleepTime.startMinute]!;
 
     _sleepRecordRepository
         .readRecentSleepRecord()
         .then((value) => {
-              todaySleep.value =
-                  value["sleepHour"]! * 60 + value["sleepMinutes"]!,
+              todaySleep.value = value["todaySleepTime"]!,
               sleepDebt.value = value["totalDept"]!,
             })
         .then((value) => makeSentence(todaySleep.value));
@@ -87,36 +91,7 @@ class HomeViewModel extends GetxController {
   }
 
   int batteryPercentage() {
-    return (todaySleep / 480 * 100).toInt(); //8시간자야 꽉차게
-  }
-
-  //오늘 잔 시간 받아오기
-  void fetchLatestSleepData() async {
-    HealthFactory health = HealthFactory();
-    bool accessGranted = await health.requestAuthorization([
-      HealthDataType.SLEEP_IN_BED,
-      HealthDataType.SLEEP_ASLEEP,
-    ]);
-
-    if (accessGranted) {
-      try {
-        List<HealthDataPoint> healthData = await health.getHealthDataFromTypes(
-          DateTime.now().subtract(Duration(days: 7)),
-          DateTime.now(),
-          [HealthDataType.SLEEP_IN_BED, HealthDataType.SLEEP_ASLEEP],
-        );
-        HealthDataPoint latestSleepData = healthData
-            .where((data) =>
-                data.type == HealthDataType.SLEEP_IN_BED ||
-                data.type == HealthDataType.SLEEP_ASLEEP)
-            .reduce((a, b) => a.dateTo.isAfter(b.dateTo) ? a : b);
-        print("가장 최근의 수면 데이터: ${latestSleepData.value}분");
-        todaySleep.value =
-            double.parse(latestSleepData.value.toString()).toInt();
-      } catch (error) {
-        print("에러 발생: $error");
-      }
-    }
+    return (todaySleep / (goalHour.value * 60 + goalMin.value) * 100).toInt();
   }
 
   double mindPercent(int hour) {

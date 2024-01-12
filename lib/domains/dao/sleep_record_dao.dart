@@ -40,8 +40,11 @@ class SleepRecordDao extends DatabaseAccessor<NightaryDatabase>
   // Read One
   Future<List<SleepRecordData>> findById(int id) =>
       (select(sleepRecord)..where((tbl) => tbl.id.equals(id))).get();
-  
-  Future<SleepRecordData> findRecentOne() => (select(sleepRecord)..orderBy([(tbl) => OrderingTerm.desc(tbl.endSleepDate)])).getSingle();
+
+  Future<SleepRecordData> findRecentOne() => (select(sleepRecord)
+        ..orderBy([(tbl) => OrderingTerm.desc(tbl.endSleepDate)])
+        ..limit(1))
+      .getSingle();
 
   // Read All
   Future<List<SleepRecordData>> findAll() => select(sleepRecord).get();
