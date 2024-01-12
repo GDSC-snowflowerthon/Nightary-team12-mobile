@@ -56,6 +56,7 @@ class RootScreen extends BaseScreen<RootViewModel> {
           highlightElevation: 2,
           shape: const CircleBorder(),
           backgroundColor: Colors.transparent,
+          splashColor: const Color(0xFFE8A1FD),
           child: SvgPicture.asset(
             'assets/icons/bed.svg',
             fit: BoxFit.scaleDown,

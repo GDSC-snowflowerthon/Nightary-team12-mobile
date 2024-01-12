@@ -1,7 +1,7 @@
 part of 'setting_screen.dart';
 
-class SetNoticeTime extends StatelessWidget {
-  const SetNoticeTime({super.key});
+class SetAlarmTimeDialog extends StatelessWidget {
+  const SetAlarmTimeDialog({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -10,26 +10,57 @@ class SetNoticeTime extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16.0),
       ),
-      child: Container(
-        height: 300,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: const Color(0xFF17191D),
-        ),
-        child: CupertinoTheme(
-          data: const CupertinoThemeData(brightness: Brightness.dark),
-          child: CupertinoDatePicker(
-            mode: CupertinoDatePickerMode.time,
-            onDateTimeChanged: (DateTime date) {
-              controller.noticeHour.value = date.hour;
-              controller.noticeMin.value = date.minute;
-              final now = DateTime.now();
-              SharedPreferenceFactory.setTargetSleepTime(
-                  date.hour, date.minute, now.hour, now.minute);
-              controller.updateGoalTime();
-            },
+      backgroundColor: const Color(0xFF0A0A25),
+      surfaceTintColor: const Color(0xFF0A0A25),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const SizedBox(height: 20),
+          Text(
+            "알림 시간 설정",
+            style: FontSystem.KR20B.copyWith(color: Colors.white),
           ),
-        ),
+          Container(
+            height: 280,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: const Color(0xFF0A0A25),
+            ),
+            child: CupertinoTheme(
+              data: const CupertinoThemeData(brightness: Brightness.dark),
+              child: CupertinoDatePicker(
+                mode: CupertinoDatePickerMode.time,
+                onDateTimeChanged: (DateTime date) {
+                  controller.onChangeAlarmTime(date.hour, date.minute);
+                },
+                initialDateTime: DateTime(
+                  2020,
+                  1,
+                  1,
+                  controller.alarmHour.value,
+                  controller.alarmMinute.value,
+                ),
+              ),
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Text(
+                    "완료",
+                    style: FontSystem.KR16B.copyWith(color: Colors.white),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
@@ -48,7 +79,7 @@ class CardButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: onTap, // 여기에서 콜백 함수를 사용
+      onTap: onTap,
       borderRadius: BorderRadius.circular(30),
       child: Container(
         width: Get.width - 60,
@@ -58,7 +89,8 @@ class CardButton extends StatelessWidget {
           color: const Color(0xFF2B2B2B),
         ),
         child: Container(
-          margin: const EdgeInsets.only(top: 17, left: 20),
+          padding: const EdgeInsets.only(left: 20),
+          alignment: Alignment.centerLeft,
           child: Text(
             text,
             style: FontSystem.KR16B.copyWith(color: Colors.white),
@@ -69,8 +101,8 @@ class CardButton extends StatelessWidget {
   }
 }
 
-class SetSleepTime extends StatelessWidget {
-  const SetSleepTime({super.key});
+class SetSleepTimeDialog extends StatelessWidget {
+  const SetSleepTimeDialog({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -149,8 +181,8 @@ class Header extends StatelessWidget {
   }
 }
 
-class SetTargetSleepTime extends StatelessWidget {
-  const SetTargetSleepTime({super.key});
+class SetTargetSleepTimeDialog extends StatelessWidget {
+  const SetTargetSleepTimeDialog({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -187,10 +219,10 @@ class SetTargetSleepTime extends StatelessWidget {
                       ),
                       Obx(() {
                         String isAm =
-                        controller.startHour.value < 12 ? "오전" : "오후";
+                            controller.startGoalHour.value < 12 ? "오전" : "오후";
 
                         return Text(
-                          "$isAm ${controller.startHour.value.toString().padLeft(2, '0')}:${controller.startMin.value.toString().padLeft(2, '0')}",
+                          "$isAm ${controller.startGoalHour.value.toString().padLeft(2, '0')}:${controller.startGoalMinute.value.toString().padLeft(2, '0')}",
                           style: FontSystem.KR20B.copyWith(color: Colors.white),
                         );
                       }),
@@ -204,9 +236,9 @@ class SetTargetSleepTime extends StatelessWidget {
                       ),
                       Obx(() {
                         String isAm =
-                        controller.endHour.value < 12 ? "오전" : "오후";
+                            controller.endGoalHour.value < 12 ? "오전" : "오후";
                         return Text(
-                          "$isAm ${controller.endHour.value.toString().padLeft(2, '0')}:${controller.endMin.value.toString().padLeft(2, '0')}",
+                          "$isAm ${controller.endGoalHour.value.toString().padLeft(2, '0')}:${controller.endGoalMinute.value.toString().padLeft(2, '0')}",
                           style: FontSystem.KR20B.copyWith(color: Colors.white),
                         );
                       }),
@@ -234,17 +266,17 @@ class SetTargetSleepTime extends StatelessWidget {
                   controller.onChangeEndTime(p0.hour, p0.minute);
                 },
                 labels: [
-                  ClockLabel(angle: 0, text: "06:00 pm"),
-                  ClockLabel(angle: math.pi / 2, text: "12:00 am"),
-                  ClockLabel(angle: math.pi, text: "06:00 am"),
-                  ClockLabel(angle: math.pi * 3 / 2, text: "12:00 pm"),
+                  ClockLabel(angle: 0, text: "오후 6시"),
+                  ClockLabel(angle: math.pi / 2, text: "오전 12시"),
+                  ClockLabel(angle: math.pi, text: "오전 6시"),
+                  ClockLabel(angle: math.pi * 3 / 2, text: "오후 12시"),
                 ],
                 start: TimeOfDay(
-                    hour: controller.startHour.value,
-                    minute: controller.startMin.value),
+                    hour: controller.startGoalHour.value,
+                    minute: controller.startGoalMinute.value),
                 end: TimeOfDay(
-                    hour: controller.endHour.value,
-                    minute: controller.endMin.value),
+                    hour: controller.endGoalHour.value,
+                    minute: controller.endGoalMinute.value),
                 labelOffset: -40,
                 clockRotation: 180,
                 rotateLabels: true,
@@ -271,6 +303,24 @@ class SetTargetSleepTime extends StatelessWidget {
                   ),
                 ),
               ),
+              Obx(() {
+                // 취침 시간과 기상 시간의 차이를 계산
+                int hour = controller.endGoalHour.value -
+                    controller.startGoalHour.value;
+                int min = controller.endGoalMinute.value -
+                    controller.startGoalMinute.value;
+                if (min < 0) {
+                  hour -= 1;
+                  min += 60;
+                }
+                if (hour < 0) {
+                  hour += 24;
+                }
+                return Text(
+                  "수면 목표 시간 : $hour시간 $min분",
+                  style: FontSystem.KR16M.copyWith(color: Colors.white),
+                );
+              }),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [

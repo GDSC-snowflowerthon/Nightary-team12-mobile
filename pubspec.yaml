@@ -20,6 +20,8 @@ dependencies:
   get: ^4.6.6
   flutter_svg: ^2.0.9
   intl: ^0.18.1
+  logger: ^2.0.2+1
+
   #based_battery_indicator: ^1.0.3
   based_battery_indicator:
     git:
@@ -49,6 +51,11 @@ dependencies:
   # Shared Preferences
   shared_preferences: ^2.2.1
   time_range_picker: ^2.2.0
+
+  url_launcher: ^6.2.3
+
+  # Extended Nested Scroll View
+  extended_nested_scroll_view: ^6.2.1
 
 
 dev_dependencies:

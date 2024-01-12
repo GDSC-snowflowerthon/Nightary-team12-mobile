@@ -3,7 +3,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:nightary/main_app.dart';
 import 'package:nightary/utilities/app_routes.dart';
-
 import 'apps/factory/database_factory.dart';
 import 'apps/factory/shared_preference_factory.dart';
 
@@ -16,7 +15,7 @@ void main() async {
 
   /* Initialize Factory */
   await SharedPreferenceFactory.init();
-  DatabaseFactory.init();
+  await DatabaseFactory.init();
 
   // Splash Screen Duration 1.0s
   await Future.delayed(const Duration(seconds: 1));

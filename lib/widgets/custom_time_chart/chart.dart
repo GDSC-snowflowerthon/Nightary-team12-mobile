@@ -571,9 +571,8 @@ class ChartState extends State<Chart>
         return TimeYLabelPainter(
           context: context,
           viewMode: widget.viewMode,
-          topHour: (topHour! - bottomHour!).abs() % 24 == 0 ? 0 : topHour!,
-          bottomHour:
-              (topHour! - bottomHour!).abs() % 24 == 0 ? 0 : bottomHour!,
+          topHour: 0,
+          bottomHour: 24,
           chartHeight: widget.height,
           topPosition: topPosition,
         );

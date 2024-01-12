@@ -14,7 +14,7 @@ class HomeViewModel extends GetxController {
 
   RxInt todaySleep = 0.obs;
   RxInt sleepDebt = 5.obs;
-  var healthPercent = [0.0,0.0,0.0].obs;
+  var healthPercent = [0.0, 0.0, 0.0].obs;
 
   final List<String> healthSentance = [
     '심장병',
@@ -30,7 +30,6 @@ class HomeViewModel extends GetxController {
       percent = ((sleepDebt.value / 24) * 100).toInt().obs;
     }
     return percent;
-
   }
 
   String get userName => _userName.value;
@@ -45,7 +44,7 @@ class HomeViewModel extends GetxController {
     return (totalDiff % 60).abs();
   }
 
-  void makeSentence(int hour){
+  void makeSentence(int hour) {
     double mind = mindPercent(hour);
     double die = diePercent(hour);
     double highblood = highBloodPressure(hour);
@@ -64,16 +63,19 @@ class HomeViewModel extends GetxController {
     // Init Fetch
     _userName = _userRepository.readNickname()!.obs;
 
-    Map<TargetSleepTime, int> targetSleepTime = SharedPreferenceFactory.getTargetSleepTime();
+    Map<TargetSleepTime, int> targetSleepTime =
+        SharedPreferenceFactory.getTargetSleepTime();
     goalHour.value = targetSleepTime[TargetSleepTime.startHour] ?? 0;
     goalMin.value = targetSleepTime[TargetSleepTime.startMinute] ?? 0;
 
-    _sleepRecordRepository.readRecentSleepRecord().then((value) => {
-      todaySleep.value = value["sleepHour"]! * 60 + value["sleepMinutes"]!,
-      sleepDebt.value = value["totalDept"]!,
-    }).then((value) =>
-      makeSentence(todaySleep.value)
-    );
+    _sleepRecordRepository
+        .readRecentSleepRecord()
+        .then((value) => {
+              todaySleep.value =
+                  value["sleepHour"]! * 60 + value["sleepMinutes"]!,
+              sleepDebt.value = value["totalDept"]!,
+            })
+        .then((value) => makeSentence(todaySleep.value));
   }
 
   void setGoalHour(int hour) {
@@ -104,19 +106,20 @@ class HomeViewModel extends GetxController {
           [HealthDataType.SLEEP_IN_BED, HealthDataType.SLEEP_ASLEEP],
         );
         HealthDataPoint latestSleepData = healthData
-            .where((data) => data.type == HealthDataType.SLEEP_IN_BED || data.type == HealthDataType.SLEEP_ASLEEP)
+            .where((data) =>
+                data.type == HealthDataType.SLEEP_IN_BED ||
+                data.type == HealthDataType.SLEEP_ASLEEP)
             .reduce((a, b) => a.dateTo.isAfter(b.dateTo) ? a : b);
         print("가장 최근의 수면 데이터: ${latestSleepData.value}분");
-        todaySleep.value = double.parse(latestSleepData.value.toString()).toInt();
-
+        todaySleep.value =
+            double.parse(latestSleepData.value.toString()).toInt();
       } catch (error) {
         print("에러 발생: $error");
       }
     }
-
   }
 
-  double mindPercent(int hour){
+  double mindPercent(int hour) {
     if (hour <= 4) {
       return 14;
     } else if (hour == 5) {
@@ -136,7 +139,7 @@ class HomeViewModel extends GetxController {
     }
   }
 
-  double diePercent(int hour){
+  double diePercent(int hour) {
     if (hour <= 5) {
       return 1.21;
     } else if (hour == 6) {
@@ -154,9 +157,10 @@ class HomeViewModel extends GetxController {
     }
   }
 
-  double highBloodPressure(int hour){
+  double highBloodPressure(int hour) {
     if (hour < 5) {
-      return 23.5;}
+      return 23.5;
+    }
     if (hour == 5) {
       return 14.1;
     } else if (hour == 6) {
@@ -172,5 +176,3 @@ class HomeViewModel extends GetxController {
     }
   }
 }
-
-

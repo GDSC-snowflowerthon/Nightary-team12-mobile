@@ -45,7 +45,7 @@ class SettingScreen extends BaseScreen<SettingViewModel> {
                 Obx(
                       () => Header(
                     goalHour: controller.goalHour.value,
-                    goalMin: controller.goalMin.value,
+                    goalMin: controller.goalMinute.value,
                     nickname: controller.nickname.value,
                   ),
                 ),
@@ -60,9 +60,9 @@ class SettingScreen extends BaseScreen<SettingViewModel> {
                   onTap: () => controller.onTapSetAlarm(context),
                 ),
                 const SizedBox(height: 14),
-                CardButton(text: "이용약관", onTap: () {}),
+                CardButton(text: "이용약관", onTap: controller.onTapTerm),
                 const SizedBox(height: 14),
-                CardButton(text: "회원탈퇴", onTap: () {}),
+                CardButton(text: "회원탈퇴", onTap: controller.onTapWithdrawal),
               ],
             ),
           ),
