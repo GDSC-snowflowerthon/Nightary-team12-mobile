@@ -71,7 +71,7 @@ class SettingScreen extends BaseScreen<SettingViewModel> {
                 const SizedBox(height: 14),
                 CardButton(text: "이용약관", onTap: controller.onTapTerm),
                 const SizedBox(height: 14),
-                CardButton(text: "회원탈퇴", onTap: controller.onTapWithdrawal),
+                CardButton(text: "데이터 초기화", onTap: controller.onTapWithdrawal),
               ],
             ),
           ),

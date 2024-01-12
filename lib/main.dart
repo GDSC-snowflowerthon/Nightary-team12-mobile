@@ -25,22 +25,7 @@ void main() async {
 
   /* Add Duration 1.0s In Splash Screen */
   await Future.delayed(const Duration(seconds: 1));
-  await initNotification();
 
   /* Run App */
   runApp(const MainApp(initialRoute: Routes.ROOT));
-}
-
-initNotification() async {
-  final notifications = FlutterLocalNotificationsPlugin();
-
-  //ios에서 앱 로드시 유저에게 권한요청하려면
-  const iosSetting = DarwinInitializationSettings(
-    requestAlertPermission: true,
-    requestBadgePermission: true,
-    requestSoundPermission: true,
-  );
-
-  const initializationSettings = InitializationSettings(iOS: iosSetting);
-  await notifications.initialize(initializationSettings);
 }

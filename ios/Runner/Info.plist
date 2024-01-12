@@ -32,6 +32,8 @@
 	<string>"Nightary"가 보다 정확한 수면 질 측정을 위해서는 건강 데이터가 필요해요.</string>
 	<key>NSHealthUpdateUsageDescription</key>
 	<string>"Nightary"가 보다 정확한 수면 질 측정을 위해서는 건강 데이터가 필요해요.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>"Nightary"가 보다 정확한 수면 질 측정을 위해서는 마이크 접근 권한이 필요해요.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>

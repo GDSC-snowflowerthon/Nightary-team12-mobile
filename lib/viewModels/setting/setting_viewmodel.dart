@@ -48,7 +48,6 @@ class SettingViewModel extends GetxController {
     updateGoalTime();
     updateAlarmTime();
     showNotification();
-    showNotification2();
   }
 
   void onChangeAlarmTime(int hour, int minute) {
@@ -56,7 +55,7 @@ class SettingViewModel extends GetxController {
       alarmHour.value = hour;
       alarmMinute.value = minute;
       showNotification();
-      showNotification2();
+
       SharedPreferenceFactory.setAlarmTime(hour, minute);
     });
   }
@@ -168,6 +167,19 @@ class SettingViewModel extends GetxController {
 
   showNotification() async {
     final notifications = FlutterLocalNotificationsPlugin();
+
+    //ios에서 앱 로드시 유저에게 권한요청하려면
+    const iosSetting = DarwinInitializationSettings(
+      requestAlertPermission: true,
+      requestBadgePermission: true,
+      requestSoundPermission: true,
+    );
+
+    const initializationSettings =
+        InitializationSettings(iOS: iosSetting, macOS: iosSetting);
+    await notifications.initialize(initializationSettings);
+
+    notifications.initialize(initializationSettings);
     tz.initializeTimeZones();
 
     var iosDetails = const DarwinNotificationDetails(
@@ -175,8 +187,8 @@ class SettingViewModel extends GetxController {
       presentBadge: true,
       presentSound: true,
     );
-
-    notifications.zonedSchedule(
+    notifications.cancel(1);
+    await notifications.zonedSchedule(
         1,
         '오늘의 배터리 양을 확인하세요!',
         '',
@@ -184,27 +196,6 @@ class SettingViewModel extends GetxController {
         NotificationDetails(iOS: iosDetails),
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime);
-  }
-
-  showNotification2() async {
-    final notifications = FlutterLocalNotificationsPlugin();
-    tz.initializeTimeZones();
-
-    var iosDetails = const DarwinNotificationDetails(
-      presentAlert: true,
-      presentBadge: true,
-      presentSound: true,
-    );
-    notifications.zonedSchedule(
-      2,
-      '오늘의 배터리 양을 확인하세요!',
-      '',
-      makeDate(alarmHour.value, alarmMinute.value, 0),
-      NotificationDetails(iOS: iosDetails),
-      uiLocalNotificationDateInterpretation:
-          UILocalNotificationDateInterpretation.absoluteTime,
-      matchDateTimeComponents: DateTimeComponents.time,
-    );
   }
 
   makeDate(int hour, int min, int sec) {
