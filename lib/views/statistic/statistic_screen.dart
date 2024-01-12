@@ -19,36 +19,6 @@ class StatisticScreen extends BaseScreen<StatisticViewModel> {
         const SliverToBoxAdapter(child: SizedBox(height: 20))
       ],
       body: _tabBarView(),
-      // child: SizedBox(
-      //   child: Column(
-      //     children: [
-      //       _tabBar(context),
-      //       _tabBarView(),
-      //       // SliverToBoxAdapter(
-      //       //   child:
-      //       // ),
-      //       // SliverFillRemaining(
-      //       //   child:
-      //       // ),
-      //       // SliverFillRemaining(
-      //       //   hasScrollBody: true,
-      //       //   child: DefaultTabController(
-      //       //     animationDuration: const Duration(milliseconds: 300),
-      //       //     length: 2,
-      //       //     child: Column(
-      //       //       children: [
-      //       //         SizedBox.fromSize(size: const Size.fromHeight(20)),
-      //       //         _tabBar(context),
-      //       //         SizedBox.fromSize(size: const Size.fromHeight(20)),
-      //       //         _tabBarView(),
-      //       //         SizedBox.fromSize(size: const Size.fromHeight(20)),
-      //       //       ],
-      //       //     ),
-      //       //   ),
-      //       // )
-      //     ],
-      //   ),
-      // ),
     );
   }
 
