@@ -4,7 +4,6 @@ import 'package:flutter_widgetkit/flutter_widgetkit.dart';
 import 'package:get/get.dart';
 import 'package:nightary/repositories/sleep_record_repository.dart';
 import 'package:nightary/repositories/user_repository.dart';
-import 'package:health/health.dart';
 import 'package:nightary/apps/factory/shared_preference_factory.dart';
 import 'package:nightary/utilities/home_widget.dart';
 
@@ -84,10 +83,14 @@ class HomeViewModel extends GetxController {
               sleepDebt.value = value["totalDept"]!,
               WidgetKit.setItem(
                   "widgetData",
-                  jsonEncode(WidgetData(todaySleep.value * 480 ~/ 100)),
+                  jsonEncode(
+                    WidgetData((todaySleep /
+                            (goalHour.value * 60 + goalMin.value) *
+                            100)
+                        .toInt()),
+                  ),
                   "group.nightary"),
               WidgetKit.reloadAllTimelines(),
-              print('DATA : ${WidgetData(todaySleep.value * 480 ~/ 100)}')
             })
         .then((value) => makeSentence(todaySleep.value));
   }

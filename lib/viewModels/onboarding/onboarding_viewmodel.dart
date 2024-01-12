@@ -11,8 +11,8 @@ class OnboardingViewModel extends GetxController {
 
   static final List<HealthDataType> types = [
     HealthDataType.SLEEP_IN_BED,
-    HealthDataType.SLEEP_ASLEEP,
-    HealthDataType.SLEEP_AWAKE,
+    // HealthDataType.SLEEP_ASLEEP,
+    // HealthDataType.SLEEP_AWAKE,
   ];
 
   late final TextEditingController _nicknameController;

@@ -229,154 +229,160 @@ class _SetTargetSleepTimeDialogState extends State<SetTargetSleepTimeDialog> {
             borderRadius: BorderRadius.circular(16.0),
           ),
           backgroundColor: const Color(0xFF0A0A25),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Column(
-                    children: [
-                      Text(
-                        "취침 시간",
-                        style: FontSystem.KR14M.copyWith(color: handlerColor),
-                      ),
-                      Obx(() {
-                        String isAm =
-                            controller.startGoalHour.value < 12 ? "오전" : "오후";
+          child: GestureDetector(
+            onTap: () {},
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Column(
+                      children: [
+                        Text(
+                          "취침 시간",
+                          style: FontSystem.KR14M.copyWith(color: handlerColor),
+                        ),
+                        Obx(() {
+                          String isAm =
+                              controller.startGoalHour.value < 12 ? "오전" : "오후";
 
-                        return Text(
-                          "$isAm ${controller.startGoalHour.value.toString().padLeft(2, '0')}:${controller.startGoalMinute.value.toString().padLeft(2, '0')}",
-                          style: FontSystem.KR20B.copyWith(color: Colors.white),
-                        );
-                      }),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      Text(
-                        "기상",
-                        style: FontSystem.KR14M.copyWith(color: handlerColor),
-                      ),
-                      Obx(() {
-                        String isAm =
-                            controller.endGoalHour.value < 12 ? "오전" : "오후";
-                        return Text(
-                          "$isAm ${controller.endGoalHour.value.toString().padLeft(2, '0')}:${controller.endGoalMinute.value.toString().padLeft(2, '0')}",
-                          style: FontSystem.KR20B.copyWith(color: Colors.white),
-                        );
-                      }),
-                    ],
-                  ),
-                ],
-              ),
-              TimeRangePicker(
-                fromText: "취침 시간",
-                toText: "기상",
-                selectedColor: selectedColor,
-                backgroundColor: disabledColor,
-                ticksColor: tickColor,
-                ticks: 90,
-                ticksLength: 24,
-                ticksWidth: 1.5,
-                ticksOffset: 5,
-                handlerColor: handlerColor,
-                strokeColor: const Color(0xFF232633).withOpacity(0.9),
-                strokeWidth: 25,
-                onStartChange: (p0) {
-                  final now = DateTime.now();
-                  if (now.isAfter(time.add(const Duration(milliseconds: 25)))) {
-                    HapticFeedback.lightImpact();
-                    time = now;
-                  }
-                  controller.onChangeStartTime(p0.hour, p0.minute);
-                },
-                onEndChange: (p0) {
-                  final now = DateTime.now();
-                  if (now.isAfter(time.add(const Duration(milliseconds: 25)))) {
-                    HapticFeedback.lightImpact();
-                    time = now;
-                  }
-                  controller.onChangeEndTime(p0.hour, p0.minute);
-                },
-                labels: [
-                  ClockLabel(angle: 0, text: "오후 6시"),
-                  ClockLabel(angle: math.pi / 2, text: "오전 12시"),
-                  ClockLabel(angle: math.pi, text: "오전 6시"),
-                  ClockLabel(angle: math.pi * 3 / 2, text: "오후 12시"),
-                ],
-                start: TimeOfDay(
-                    hour: controller.startGoalHour.value,
-                    minute: controller.startGoalMinute.value),
-                end: TimeOfDay(
-                    hour: controller.endGoalHour.value,
-                    minute: controller.endGoalMinute.value),
-                labelOffset: -40,
-                clockRotation: 180,
-                rotateLabels: true,
-                labelStyle: FontSystem.KR14SB.copyWith(color: Colors.white),
-                minDuration: const Duration(hours: 4),
-                maxDuration: const Duration(hours: 20),
-                use24HourFormat: false,
-                hideButtons: true,
-                // hideTimes: true,
-
-                activeTimeTextStyle:
-                    FontSystem.KR14M.copyWith(color: handlerColor),
-                timeTextStyle: FontSystem.KR20B.copyWith(color: Colors.white),
-                backgroundWidget: Container(
-                  decoration: const BoxDecoration(
-                    color: disabledColor,
-                    shape: BoxShape.circle,
-                  ),
-                  padding: const EdgeInsets.all(40),
-                  child: Container(
-                    width: 180,
-                    height: 180,
+                          return Text(
+                            "$isAm ${controller.startGoalHour.value.toString().padLeft(2, '0')}:${controller.startGoalMinute.value.toString().padLeft(2, '0')}",
+                            style:
+                                FontSystem.KR20B.copyWith(color: Colors.white),
+                          );
+                        }),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        Text(
+                          "기상",
+                          style: FontSystem.KR14M.copyWith(color: handlerColor),
+                        ),
+                        Obx(() {
+                          String isAm =
+                              controller.endGoalHour.value < 12 ? "오전" : "오후";
+                          return Text(
+                            "$isAm ${controller.endGoalHour.value.toString().padLeft(2, '0')}:${controller.endGoalMinute.value.toString().padLeft(2, '0')}",
+                            style:
+                                FontSystem.KR20B.copyWith(color: Colors.white),
+                          );
+                        }),
+                      ],
+                    ),
+                  ],
+                ),
+                TimeRangePicker(
+                  fromText: "취침 시간",
+                  toText: "기상",
+                  selectedColor: selectedColor,
+                  backgroundColor: disabledColor,
+                  ticksColor: tickColor,
+                  ticks: 90,
+                  ticksLength: 24,
+                  ticksWidth: 1.5,
+                  ticksOffset: 5,
+                  handlerColor: handlerColor,
+                  strokeColor: const Color(0xFF232633).withOpacity(0.9),
+                  strokeWidth: 25,
+                  onStartChange: (p0) {
+                    final now = DateTime.now();
+                    if (now
+                        .isAfter(time.add(const Duration(milliseconds: 25)))) {
+                      HapticFeedback.lightImpact();
+                      time = now;
+                    }
+                    controller.onChangeStartTime(p0.hour, p0.minute);
+                  },
+                  onEndChange: (p0) {
+                    final now = DateTime.now();
+                    if (now
+                        .isAfter(time.add(const Duration(milliseconds: 25)))) {
+                      HapticFeedback.lightImpact();
+                      time = now;
+                    }
+                    controller.onChangeEndTime(p0.hour, p0.minute);
+                  },
+                  labels: [
+                    ClockLabel(angle: 0, text: "오후 6시"),
+                    ClockLabel(angle: math.pi / 2, text: "오전 12시"),
+                    ClockLabel(angle: math.pi, text: "오전 6시"),
+                    ClockLabel(angle: math.pi * 3 / 2, text: "오후 12시"),
+                  ],
+                  start: TimeOfDay(
+                      hour: controller.startGoalHour.value,
+                      minute: controller.startGoalMinute.value),
+                  end: TimeOfDay(
+                      hour: controller.endGoalHour.value,
+                      minute: controller.endGoalMinute.value),
+                  labelOffset: -40,
+                  clockRotation: 180,
+                  rotateLabels: true,
+                  labelStyle: FontSystem.KR14SB.copyWith(color: Colors.white),
+                  minDuration: const Duration(hours: 4),
+                  maxDuration: const Duration(hours: 20),
+                  use24HourFormat: false,
+                  hideButtons: true,
+                  hideTimes: true,
+                  activeTimeTextStyle:
+                      FontSystem.KR14M.copyWith(color: handlerColor),
+                  timeTextStyle: FontSystem.KR20B.copyWith(color: Colors.white),
+                  backgroundWidget: Container(
                     decoration: const BoxDecoration(
+                      color: disabledColor,
                       shape: BoxShape.circle,
-                      color: backgroundColor,
+                    ),
+                    padding: const EdgeInsets.all(40),
+                    child: Container(
+                      width: 180,
+                      height: 180,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: backgroundColor,
+                      ),
                     ),
                   ),
                 ),
-              ),
-              Obx(() {
-                // 취침 시간과 기상 시간의 차이를 계산
-                int hour = controller.endGoalHour.value -
-                    controller.startGoalHour.value;
-                int min = controller.endGoalMinute.value -
-                    controller.startGoalMinute.value;
-                if (min < 0) {
-                  hour -= 1;
-                  min += 60;
-                }
-                if (hour < 0) {
-                  hour += 24;
-                }
-                return Text(
-                  "수면 목표 시간 : $hour시간 $min분",
-                  style: FontSystem.KR16M.copyWith(color: Colors.white),
-                );
-              }),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: Text(
-                        "닫기",
-                        style: FontSystem.KR16B.copyWith(color: Colors.white),
+                // Obx(() {
+                //   // 취침 시간과 기상 시간의 차이를 계산
+                //   int hour = controller.endGoalHour.value -
+                //       controller.startGoalHour.value;
+                //   int min = controller.endGoalMinute.value -
+                //       controller.startGoalMinute.value;
+                //   if (min < 0) {
+                //     hour -= 1;
+                //     min += 60;
+                //   }
+                //   if (hour < 0) {
+                //     hour += 24;
+                //   }
+                //   return Text(
+                //     "수면 목표 시간 : $hour시간 $min분",
+                //     style: FontSystem.KR16M.copyWith(color: Colors.white),
+                //   );
+                // }),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: Text(
+                          "닫기",
+                          style: FontSystem.KR16B.copyWith(color: Colors.white),
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              )
-            ],
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       ),
@@ -443,214 +449,6 @@ class _SetTargetSleepTimeDialogState extends State<SetTargetSleepTimeDialog> {
 //             ],
 //           ),
 //         ],
-//       ),
-//     );
-//   }
-// }
-
-// class SetSpecificDateSleepTime extends StatefulWidget {
-//   final DateTime startTime;
-//   final DateTime endTime;
-//   final Function(DateTime, DateTime) onSubmitDate;
-//   const SetSpecificDateSleepTime(
-//       {required this.startTime,
-//       required this.endTime,
-//       required this.onSubmitDate,
-//       super.key});
-
-//   @override
-//   State<SetSpecificDateSleepTime> createState() =>
-//       _SetSpecificDateSleepTimeState();
-// }
-
-// class _SetSpecificDateSleepTimeState extends State<SetSpecificDateSleepTime> {
-//   late DateTime startTime;
-//   late DateTime endTime;
-//   final controller = Get.find<SettingViewModel>();
-//   DateTime time = DateTime.now();
-
-//   Debouncer debouncer = Debouncer(milliseconds: 100);
-
-//   @override
-//   void initState() {
-//     super.initState();
-//     startTime = widget.startTime;
-//     endTime = widget.endTime;
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     const backgroundColor = Color(0xFF24282F);
-//     const disabledColor = Colors.black;
-//     const handlerColor = Color(0xFF9CA2AC);
-//     const selectedColor = Color(0xFF363C46);
-//     const tickColor = Color(0xFF24282F);
-
-//     return GestureDetector(
-//       onTap: () {
-//         Navigator.pop(context);
-//       },
-//       child: Container(
-//         color: Colors.transparent.withOpacity(0.5),
-//         child: Dialog(
-//           shape: RoundedRectangleBorder(
-//             borderRadius: BorderRadius.circular(16.0),
-//           ),
-//           backgroundColor: const Color(0xFF0A0A25),
-//           child: Column(
-//             mainAxisSize: MainAxisSize.min,
-//             children: [
-//               const SizedBox(height: 20),
-//               Row(
-//                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//                 children: [
-//                   Column(
-//                     children: [
-//                       Text(
-//                         "취침 시간",
-//                         style: FontSystem.KR14M.copyWith(color: handlerColor),
-//                       ),
-//                       () {
-//                         String isAm = startTime.hour < 12 ? "오전" : "오후";
-
-//                         return Text(
-//                           "$isAm ${startTime.hour.toString().padLeft(2, '0')}:${startTime.minute.toString().padLeft(2, '0')}",
-//                           style: FontSystem.KR20B.copyWith(color: Colors.white),
-//                         );
-//                       }(),
-//                     ],
-//                   ),
-//                   Column(
-//                     children: [
-//                       Text(
-//                         "기상",
-//                         style: FontSystem.KR14M.copyWith(color: handlerColor),
-//                       ),
-//                       () {
-//                         String isAm = endTime.hour < 12 ? "오전" : "오후";
-//                         return Text(
-//                           "$isAm ${endTime.hour.toString().padLeft(2, '0')}:${endTime.minute.toString().padLeft(2, '0')}",
-//                           style: FontSystem.KR20B.copyWith(color: Colors.white),
-//                         );
-//                       }(),
-//                     ],
-//                   ),
-//                 ],
-//               ),
-//               TimeRangePicker(
-//                 fromText: "취침 시간",
-//                 toText: "기상",
-//                 selectedColor: selectedColor,
-//                 backgroundColor: disabledColor,
-//                 ticksColor: tickColor,
-//                 ticks: 90,
-//                 ticksLength: 24,
-//                 ticksWidth: 1.5,
-//                 ticksOffset: 5,
-//                 handlerColor: handlerColor,
-//                 strokeColor: const Color(0xFF232633).withOpacity(0.9),
-//                 strokeWidth: 25,
-//                 onStartChange: (p0) {
-//                   final now = DateTime.now();
-//                   if (now.isAfter(time.add(const Duration(milliseconds: 20)))) {
-//                     HapticFeedback.lightImpact();
-//                     time = now;
-//                   }
-//                   debouncer.run(() {
-//                     startTime = DateTime(
-//                       startTime.year,
-//                       startTime.month,
-//                       startTime.day,
-//                       p0.hour,
-//                       p0.minute,
-//                     );
-//                     setState(() {});
-//                   });
-//                 },
-//                 onEndChange: (p0) {
-//                   debouncer.run(() {
-//                     endTime = DateTime(
-//                       endTime.year,
-//                       endTime.month,
-//                       endTime.day,
-//                       p0.hour,
-//                       p0.minute,
-//                     );
-//                     setState(() {});
-//                   });
-//                 },
-//                 labels: [
-//                   ClockLabel(angle: 0, text: "오후 6시"),
-//                   ClockLabel(angle: math.pi / 2, text: "오전 12시"),
-//                   ClockLabel(angle: math.pi, text: "오전 6시"),
-//                   ClockLabel(angle: math.pi * 3 / 2, text: "오후 12시"),
-//                 ],
-//                 start:
-//                     TimeOfDay(hour: startTime.hour, minute: startTime.minute),
-//                 end: TimeOfDay(hour: endTime.hour, minute: endTime.minute),
-//                 labelOffset: -40,
-//                 clockRotation: 180,
-//                 rotateLabels: true,
-//                 labelStyle: FontSystem.KR14SB.copyWith(color: Colors.white),
-//                 minDuration: const Duration(hours: 4),
-//                 maxDuration: const Duration(hours: 20),
-//                 use24HourFormat: false,
-//                 hideButtons: true,
-//                 hideTimes: true,
-//                 timeTextStyle: FontSystem.KR20B.copyWith(color: Colors.white),
-//                 backgroundWidget: Container(
-//                   decoration: const BoxDecoration(
-//                     color: disabledColor,
-//                     shape: BoxShape.circle,
-//                   ),
-//                   padding: const EdgeInsets.all(40),
-//                   child: Container(
-//                     width: 180,
-//                     height: 180,
-//                     decoration: const BoxDecoration(
-//                       shape: BoxShape.circle,
-//                       color: backgroundColor,
-//                     ),
-//                   ),
-//                 ),
-//               ),
-//               () {
-//                 // 취침 시간과 기상 시간의 차이를 계산
-//                 int hour = endTime.hour - startTime.hour;
-//                 int min = endTime.minute - startTime.minute;
-//                 if (min < 0) {
-//                   hour -= 1;
-//                   min += 60;
-//                 }
-//                 if (hour < 0) {
-//                   hour += 24;
-//                 }
-//                 return Text(
-//                   "수면 시간 : $hour시간 $min분",
-//                   style: FontSystem.KR16M.copyWith(color: Colors.white),
-//                 );
-//               }(),
-//               Row(
-//                 mainAxisAlignment: MainAxisAlignment.end,
-//                 children: [
-//                   TextButton(
-//                     onPressed: () {
-//                       Get.back(result: true);
-//                       widget.onSubmitDate(startTime, endTime);
-//                     },
-//                     child: Padding(
-//                       padding: const EdgeInsets.all(8),
-//                       child: Text(
-//                         "수정하기",
-//                         style: FontSystem.KR16B.copyWith(color: Colors.white),
-//                       ),
-//                     ),
-//                   ),
-//                 ],
-//               )
-//             ],
-//           ),
-//         ),
 //       ),
 //     );
 //   }

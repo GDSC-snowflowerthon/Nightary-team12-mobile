@@ -88,7 +88,7 @@ struct iosWidgetView: View {
                         .cornerRadius(20, corners: [.topLeft, .topRight])
                         .cornerRadius(4, corners: [.bottomLeft, .bottomRight])
                         .padding(0)
-                        .foregroundStyle(Color(hex: 0x363C46))
+                        .foregroundStyle((entry.widgetData!.data) > 100 ? .green :  Color(hex: 0x363C46))
                     ZStack(
                         alignment: .bottom,
                         content: {
@@ -106,7 +106,7 @@ struct iosWidgetView: View {
                                 .foregroundStyle(Color(hex: 0x363C46))
                             
                             Rectangle()
-                                .frame(width: 60, height: Double(entry.widgetData!.data))
+                                .frame(width: 60, height: entry.widgetData!.data > 100 ? 100.0 : Double(entry.widgetData!.data))
                                 .clipShape(
                                     .rect(
                                         topLeadingRadius: 10,
@@ -120,12 +120,12 @@ struct iosWidgetView: View {
                         })
                     Text("\(entry.widgetData!.data)%")
                         .font(.caption)
-                        .foregroundStyle(.gray)
+                        .foregroundStyle(.white)
                 }
                 .padding()
             }
         }
-        .widgetBackground(Color(hex: 0x3C3C3C))
+        .widgetBackground(Color(hex: 0x121417))
     }
 }
     

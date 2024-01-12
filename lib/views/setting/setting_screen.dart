@@ -44,7 +44,7 @@ class SettingScreen extends BaseScreen<SettingViewModel> {
             child: Column(
               children: [
                 Obx(
-                      () => Header(
+                  () => Header(
                     goalHour: controller.goalHour.value,
                     goalMin: controller.goalMinute.value,
                     nickname: controller.nickname.value,
