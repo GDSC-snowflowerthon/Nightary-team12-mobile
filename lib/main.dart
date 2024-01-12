@@ -17,8 +17,14 @@ void main() async {
   await SharedPreferenceFactory.init();
   await DatabaseFactory.init();
 
-  // Splash Screen Duration 1.0s
+  /* Loading Recent Sleep Record */
+  if (SharedPreferenceFactory.instance.getString("nickname") != null) {
+    // 헬스 킷에서 데이터 들고오기
+  }
+
+  /* Add Duration 1.0s In Splash Screen */
   await Future.delayed(const Duration(seconds: 1));
 
+  /* Run App */
   runApp(const MainApp(initialRoute: Routes.ROOT));
 }

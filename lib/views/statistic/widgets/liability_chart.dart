@@ -16,7 +16,7 @@ class LiabilityChart<T extends AbstractRecentViewModel> extends BaseWidget<T> {
               aspectRatio: 1.50,
             )
           : Container(
-              width: Get.width - 40,
+              width: Get.width - 30,
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),

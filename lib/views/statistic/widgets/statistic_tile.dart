@@ -62,8 +62,8 @@ class StatisticTile<T extends AbstractRecentViewModel> extends BaseWidget<T> {
 
   Widget roundTile({required BuildContext context, required Widget widget}) =>
       Container(
-        width: (Get.width - 60) * 0.5,
-        height: (Get.width - 60) * 0.5,
+        width: (Get.width - 50) * 0.5,
+        height: (Get.width - 50) * 0.5,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           color: const Color(0xFF0D0B26),
