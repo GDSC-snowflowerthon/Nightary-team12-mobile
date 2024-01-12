@@ -19,7 +19,7 @@ class RecentFragment<T extends AbstractRecentViewModel> extends BaseScreen<T> {
   @override
   Widget buildBody(BuildContext context) {
     return SingleChildScrollView(
-      physics: const ClampingScrollPhysics(),
+      physics: const BouncingScrollPhysics(),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: Column(
