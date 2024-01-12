@@ -320,7 +320,10 @@ class _SetTargetSleepTimeDialogState extends State<SetTargetSleepTimeDialog> {
                 maxDuration: const Duration(hours: 20),
                 use24HourFormat: false,
                 hideButtons: true,
-                hideTimes: true,
+                // hideTimes: true,
+
+                activeTimeTextStyle:
+                    FontSystem.KR14M.copyWith(color: handlerColor),
                 timeTextStyle: FontSystem.KR20B.copyWith(color: Colors.white),
                 backgroundWidget: Container(
                   decoration: const BoxDecoration(

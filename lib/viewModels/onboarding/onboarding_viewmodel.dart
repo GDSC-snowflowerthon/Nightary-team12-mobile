@@ -18,6 +18,7 @@ class OnboardingViewModel extends GetxController {
   late final TextEditingController _nicknameController;
 
   TextEditingController get nicknameController => _nicknameController;
+  FocusNode focusNode = FocusNode();
 
   @override
   void onInit() {
@@ -32,12 +33,15 @@ class OnboardingViewModel extends GetxController {
   }
 
   @override
-  void dispose() {
-    super.dispose();
+  void onClose() {
+    super.onClose();
     _nicknameController.dispose();
+    focusNode.unfocus();
+    focusNode.dispose();
   }
 
   Future<bool> onTapContinue() async {
+    focusNode.unfocus();
     /**
      * text 검증 로직
      */

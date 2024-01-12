@@ -55,6 +55,7 @@ class _InputSample extends BaseWidget<OnboardingViewModel> {
           style: const TextStyle(fontSize: 18, color: Colors.white),
           textAlign: TextAlign.center,
           controller: viewModel.nicknameController,
+          focusNode: viewModel.focusNode,
           decoration: const InputDecoration(
             hintText: '',
             border: UnderlineInputBorder(

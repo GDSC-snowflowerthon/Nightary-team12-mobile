@@ -6,6 +6,8 @@ PODS:
   - Flutter (1.0.0)
   - flutter_native_splash (0.0.1):
     - Flutter
+  - flutter_widgetkit (0.0.1):
+    - Flutter
   - health (1.0.4):
     - Flutter
   - just_audio (0.0.1):
@@ -39,6 +41,7 @@ DEPENDENCIES:
   - device_info_plus (from `.symlinks/plugins/device_info_plus/ios`)
   - Flutter (from `Flutter`)
   - flutter_native_splash (from `.symlinks/plugins/flutter_native_splash/ios`)
+  - flutter_widgetkit (from `.symlinks/plugins/flutter_widgetkit/ios`)
   - health (from `.symlinks/plugins/health/ios`)
   - just_audio (from `.symlinks/plugins/just_audio/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
@@ -59,6 +62,8 @@ EXTERNAL SOURCES:
     :path: Flutter
   flutter_native_splash:
     :path: ".symlinks/plugins/flutter_native_splash/ios"
+  flutter_widgetkit:
+    :path: ".symlinks/plugins/flutter_widgetkit/ios"
   health:
     :path: ".symlinks/plugins/health/ios"
   just_audio:
@@ -77,13 +82,14 @@ SPEC CHECKSUMS:
   device_info_plus: c6fb39579d0f423935b0c9ce7ee2f44b71b9fce6
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   flutter_native_splash: 52501b97d1c0a5f898d687f1646226c1f93c56ef
+  flutter_widgetkit: a0e9b0d50ee9bec366dad36c639509daaafc397a
   health: 5a380c0f6c4f619535845992993964293962e99e
   just_audio: baa7252489dbcf47a4c7cc9ca663e9661c99aafa
   path_provider_foundation: 29f094ae23ebbca9d3d0cec13889cd9060c0e943
   shared_preferences_foundation: 5b919d13b803cadd15ed2dc053125c68730e5126
   sqlite3: 6e2d4a4879854d0ec86b476bf3c3e30870bac273
   sqlite3_flutter_libs: eb769059df0356dc52ddda040f09cacc9391a7cf
-  url_launcher_ios: bbd758c6e7f9fd7b5b1d4cde34d2b95fcce5e812
+  url_launcher_ios: bf5ce03e0e2088bad9cc378ea97fa0ed5b49673b
 
 PODFILE CHECKSUM: 3f3697c847c52bb2f1c7146b71ef2faef67d110f
 
