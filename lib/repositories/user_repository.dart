@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:health/health.dart';
 import 'package:nightary/providers/user_local_provider.dart';
 
 class UserRepository extends GetxService {
@@ -14,7 +15,11 @@ class UserRepository extends GetxService {
     return _provider.findNickname();
   }
 
-  void writeNickname(String nickname) {
-    _provider.writeNickname(nickname);
+  int readTargetSleepTime() {
+    return _provider.findTargetSleepTime();
+  }
+
+  Future<void> writeNickname(String nickname) async {
+    await _provider.writeNickname(nickname);
   }
 }

@@ -14,7 +14,7 @@ class SleepTimeChart<T extends AbstractRecentViewModel> extends BaseWidget<T> {
     return Obx(
       () => viewModel.isLoading
           ? Container(
-              width: Get.width - 40,
+              width: Get.width - 30,
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
@@ -22,7 +22,7 @@ class SleepTimeChart<T extends AbstractRecentViewModel> extends BaseWidget<T> {
               ),
             )
           : Container(
-              width: Get.width - 40,
+              width: Get.width - 30,
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),

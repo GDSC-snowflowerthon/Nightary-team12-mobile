@@ -5,10 +5,10 @@ class TimeSlice extends Table {
   @override
   String get tableName => 'TimeSlice';
 
-  @override
-  List<Set<Column<Object>>>? get uniqueKeys => [
-        {startSleepDate, endSleepDate}
-      ];
+  // @override
+  // List<Set<Column<Object>>>? get uniqueKeys => [
+  //       {startSleepDate, endSleepDate}
+  //     ];
 
   IntColumn get id => integer().named('id').autoIncrement()();
   IntColumn get recordId =>

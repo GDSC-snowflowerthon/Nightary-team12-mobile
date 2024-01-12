@@ -8,4 +8,8 @@ part 'time_slice_dao.g.dart';
 class TimeSliceDao extends DatabaseAccessor<NightaryDatabase>
     with _$TimeSliceDaoMixin {
   TimeSliceDao(super.db);
+
+  saveAll(List<TimeSliceCompanion> list) async {
+    await batch((batch) => batch.insertAllOnConflictUpdate(timeSlice, list));
+  }
 }

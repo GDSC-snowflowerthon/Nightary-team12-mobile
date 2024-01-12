@@ -675,10 +675,6 @@ class $TimeSliceTable extends TimeSlice
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  List<Set<GeneratedColumn>> get uniqueKeys => [
-        {startSleepDate, endSleepDate},
-      ];
-  @override
   TimeSliceData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return TimeSliceData(

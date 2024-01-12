@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:health/health.dart';
+import 'package:nightary/repositories/sleep_record_repository.dart';
 import 'package:nightary/repositories/user_repository.dart';
 
 class OnboardingViewModel extends GetxController {
-  late final UserRepository _repository;
+  late final UserRepository _userRepository;
+  late final SleepRecordRepository _sleepRecordRepository;
+  late final HealthFactory _health;
+
+  static final List<HealthDataType> types = [
+    HealthDataType.SLEEP_IN_BED,
+    HealthDataType.SLEEP_ASLEEP,
+    HealthDataType.SLEEP_AWAKE,
+  ];
 
   late final TextEditingController _nicknameController;
 
@@ -13,7 +22,12 @@ class OnboardingViewModel extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    _repository = Get.find<UserRepository>();
+    // Dependency Injection
+    _userRepository = Get.find<UserRepository>();
+    _sleepRecordRepository = Get.find<SleepRecordRepository>();
+    _health = HealthFactory(useHealthConnectIfAvailable: true);
+
+    // Initialize
     _nicknameController = TextEditingController();
   }
 
@@ -24,39 +38,37 @@ class OnboardingViewModel extends GetxController {
   }
 
   Future<bool> onTapContinue() async {
-    final now = DateTime.now();
-    HealthFactory health = HealthFactory(useHealthConnectIfAvailable: true);
-
-    final List<HealthDataType> types = [
-      HealthDataType.SLEEP_IN_BED,
-      HealthDataType.SLEEP_AWAKE,
-      HealthDataType.SLEEP_ASLEEP,
-      HealthDataType.SLEEP_DEEP,
-      HealthDataType.SLEEP_REM,
-    ];
-
-    bool requested = await health.requestAuthorization(types);
-    if (!requested) {
-      return false;
-    }
-
-    List<HealthDataPoint> healthData = await health.getHealthDataFromTypes(
-      now.subtract(const Duration(days: 10)),
-      now,
-      types,
-    );
-
-    // text 검증 로직
-    // 추가 해야함
+    /**
+     * text 검증 로직
+     */
     if (_nicknameController.text.isEmpty) {
       return false;
     }
 
-    // text 저장
-    _repository.writeNickname(_nicknameController.text);
+    await _userRepository.writeNickname(_nicknameController.text);
 
-    for (var data in healthData) {
-      print(data);
+    /**
+     * healthkit 권한 요청
+     * 권한이 없으면 false 반환
+     * 권한이 있으면 데이터를 가져와서 저장
+     */
+    final now = DateTime.now();
+
+    bool requested = await _health.requestAuthorization(types);
+    if (!requested) {
+      return false;
+    }
+
+    List<HealthDataPoint> healthData = await _health.getHealthDataFromTypes(
+      now.subtract(const Duration(days: 180)),
+      now,
+      types,
+    );
+
+    if (healthData.isNotEmpty) {
+      await _sleepRecordRepository.saveSleepRecordsByHealthData(
+          healthData.reversed.map((e) => e.toJson()).toList(),
+          _userRepository.readTargetSleepTime());
     }
 
     return true;

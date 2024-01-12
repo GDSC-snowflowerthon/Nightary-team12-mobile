@@ -99,6 +99,7 @@ class _ContinueButton extends BaseWidget<OnboardingViewModel> {
         color: Colors.transparent,
         child: InkWell(
           onTap: () => {
+            FocusScope.of(context).unfocus(),
             viewModel.onTapContinue().then(
                   (value) => {
                     if (value)

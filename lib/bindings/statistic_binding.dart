@@ -10,7 +10,7 @@ class StatisticBinding extends Bindings {
     Get.lazyPut(() => StatisticViewModel());
 
     // ChildViewModel
-    Get.lazyPut(() => SevenRecentViewModel());
-    Get.lazyPut(() => ThirtyRecentViewModel());
+    Get.put(SevenRecentViewModel());
+    Get.put(ThirtyRecentViewModel());
   }
 }
