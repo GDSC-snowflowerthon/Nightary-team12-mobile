@@ -15,7 +15,6 @@ import 'package:timezone/timezone.dart' as tz;
 class SettingViewModel extends GetxController {
   RxInt alarmHour = 8.obs;
   RxInt alarmMinute = 0.obs;
-
   RxInt startGoalHour = 23.obs;
   RxInt startGoalMinute = 0.obs;
   RxInt endGoalHour = 7.obs;
