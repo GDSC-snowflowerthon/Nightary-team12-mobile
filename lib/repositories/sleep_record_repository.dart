@@ -16,9 +16,32 @@ class SleepRecordRepository extends GetxService {
     _provider = Get.find<SleepRecordLocalProvider>();
   }
 
+  Future<Map<String, dynamic>> readRecentSleepRecord() async {
+    SleepRecordData? sleepRecord = await _provider.findRecentOne();
+
+    if (sleepRecord == null) {
+      return {
+        "sleepHour": 7,
+        "sleepMinutes": 50,
+        "totalDept": 23,
+      };
+    } else {
+      return {
+        "sleepHour": sleepRecord.endSleepDate
+            .difference(sleepRecord.startSleepDate)
+            .inHours,
+        "sleepMinutes": sleepRecord.endSleepDate
+            .difference(sleepRecord.startSleepDate)
+            .inMinutes,
+        "totalDept": sleepRecord.totalSleepDebt,
+      };
+    }
+
+  }
+
   Future<Map<String, dynamic>> loadSleepTimesLimit(int limitCnt) async {
     List<SleepRecordData> totalRecords =
-        await _provider.readSleepRecordsLimit(limitCnt);
+    await _provider.readSleepRecordsLimit(limitCnt);
 
     LogSystem.logger.d("${totalRecords.length} sleep records found");
 
@@ -27,18 +50,18 @@ class SleepRecordRepository extends GetxService {
      */
     List<int> processingBattery = totalRecords
         .map((e) => ((e.endSleepDate.difference(e.startSleepDate).inHours * 60 +
-                    e.endSleepDate.difference(e.startSleepDate).inMinutes) /
-                480 *
-                100)
-            .toInt())
+        e.endSleepDate.difference(e.startSleepDate).inMinutes) /
+        480 *
+        100)
+        .toInt())
         .toList();
 
     int recentAverageBattery = (processingBattery
-                .sublist(0, limitCnt ~/ 2)
-                .reduce((value, element) => value + element) -
-            processingBattery
-                .sublist(limitCnt ~/ 2, limitCnt)
-                .reduce((value, element) => value + element)) ~/
+        .sublist(0, limitCnt ~/ 2)
+        .reduce((value, element) => value + element) -
+        processingBattery
+            .sublist(limitCnt ~/ 2, limitCnt)
+            .reduce((value, element) => value + element)) ~/
         100;
 
     /**
@@ -51,18 +74,18 @@ class SleepRecordRepository extends GetxService {
      * 최근 7개에 대한 수면 빚 변화량 및 그래프용 데이터(시간 역순)
      */
     List<SleepRecordData> recentRecords =
-        totalRecords.sublist(0, limitCnt ~/ 2);
+    totalRecords.sublist(0, limitCnt ~/ 2);
     List<SleepRecordData> reversedRecentRecords =
-        recentRecords.reversed.toList();
+    recentRecords.reversed.toList();
 
     /**
      * 평균 수면 시간 계산
      */
     int averageSleepMinutes = (recentRecords
-                .map((e) =>
-                    e.endSleepDate.difference(e.startSleepDate).inMinutes)
-                .reduce((value, element) => value + element) /
-            totalRecords.length)
+        .map((e) =>
+    e.endSleepDate.difference(e.startSleepDate).inMinutes)
+        .reduce((value, element) => value + element) /
+        totalRecords.length)
         .floor();
 
     TimeOfDay averageSleepTimeOfDay = TimeOfDay(
@@ -80,9 +103,9 @@ class SleepRecordRepository extends GetxService {
      */
     List<FlSpot> liabilities = reversedRecentRecords
         .map((e) => FlSpot(
-            reversedRecentRecords.indexOf(e).toDouble() +
-                (e.endSleepDate.difference(e.startSleepDate).inDays / 2),
-            e.totalSleepDebt.toDouble()))
+        reversedRecentRecords.indexOf(e).toDouble() +
+            (e.endSleepDate.difference(e.startSleepDate).inDays / 2),
+        e.totalSleepDebt.toDouble()))
         .toList();
 
     /**
@@ -96,13 +119,13 @@ class SleepRecordRepository extends GetxService {
         .reduce((value, element) => value.isAfter(element) ? value : element);
     int firstHour = min(
         recentRecords
-                .map((e) => e.totalSleepDebt)
-                .reduce((value, element) => value < element ? value : element) -
+            .map((e) => e.totalSleepDebt)
+            .reduce((value, element) => value < element ? value : element) -
             5,
         0);
     int lastHour = recentRecords
-            .map((e) => e.totalSleepDebt)
-            .reduce((value, element) => value > element ? value : element) +
+        .map((e) => e.totalSleepDebt)
+        .reduce((value, element) => value > element ? value : element) +
         1;
 
     int graphRangeX = lastDate.difference(firstDate).inDays + 1;

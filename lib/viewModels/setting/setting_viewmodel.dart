@@ -19,21 +19,21 @@ class SettingViewModel extends GetxController {
   Debouncer debouncer = Debouncer(milliseconds: 100);
 
   RxInt get goalHour => () {
-        int hour = endGoalHour.value - startGoalHour.value;
-        int min = endGoalMinute.value - startGoalMinute.value;
-        if (min < 0) {
-          hour -= 1;
-          min += 60;
-        }
-        if (hour < 0) hour += 24;
-        return hour.obs;
-      }();
+    int hour = endGoalHour.value - startGoalHour.value;
+    int min = endGoalMinute.value - startGoalMinute.value;
+    if (min < 0) {
+      hour -= 1;
+      min += 60;
+    }
+    if (hour < 0) hour += 24;
+    return hour.obs;
+  }();
 
   RxInt get goalMinute => () {
-        int min = endGoalMinute.value - startGoalMinute.value;
-        if (min < 0) min += 60;
-        return min.obs;
-      }();
+    int min = endGoalMinute.value - startGoalMinute.value;
+    if (min < 0) min += 60;
+    return min.obs;
+  }();
 
   RxString nickname = "".obs;
 
@@ -75,7 +75,7 @@ class SettingViewModel extends GetxController {
 
   void updateGoalTime() {
     Map<TargetSleepTime, int> targetSleepTime =
-        SharedPreferenceFactory.getTargetSleepTime();
+    SharedPreferenceFactory.getTargetSleepTime();
     startGoalHour.value = targetSleepTime[TargetSleepTime.startHour] ?? 0;
     startGoalMinute.value = targetSleepTime[TargetSleepTime.startMinute] ?? 0;
     endGoalHour.value = targetSleepTime[TargetSleepTime.endHour] ?? 0;

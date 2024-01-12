@@ -57,11 +57,16 @@ class _TopPart extends BaseWidget<HomeViewModel> {
             child: Column(
               children: [
                 Container(
+                  height: 5,
+                  child: ElevatedButton(onPressed: (){
+                  }, child: Text('')),
+                ),
+                Container(
                   margin: const EdgeInsets.only(left: 20, top: 20),
                   alignment: Alignment.centerLeft,
                   child: Obx(
                     () => Text(
-                      "${viewModel.userName.value}님 반가워요.",
+                      "${viewModel.userName}님 반가워요.",
                       style: FontSystem.KR20B.copyWith(color: Colors.white),
                     ),
                   ),
@@ -69,8 +74,8 @@ class _TopPart extends BaseWidget<HomeViewModel> {
                 const _BatteryPart(),
                 Obx(() {
                   String message;
-                  int minuteDifference = viewModel.minuteDifference.value;
-                  int hourDifference = viewModel.hourDifference.value;
+                  int minuteDifference = viewModel.minuteDifference;
+                  int hourDifference = viewModel.hourDifference;
 
                   if (hourDifference > 0) {
                     message =
@@ -140,10 +145,11 @@ class _MiddlePart extends BaseWidget<HomeViewModel> {
                             height: 16.0,
                           ),
                           const SizedBox(width: 4),
-                          Text(
-                            "${viewModel.sleepHour.value}h ${viewModel.sleepMin.value}m",
+                          Obx(() => Text(
+                            "${viewModel.todaySleep.value ~/ 60}h ${viewModel.todaySleep.value % 60}m",
                             style:
-                                FontSystem.KR20B.copyWith(color: Colors.white),
+                            FontSystem.KR20B.copyWith(color: Colors.white),
+                          ),
                           ),
                         ],
                       ),
@@ -201,7 +207,7 @@ class _BatteryPart extends StatelessWidget {
       child: Obx(
         () => BasedBatteryIndicator(
           status: BasedBatteryStatus(
-            value: viewModel.batteryPercentage(),
+            value: viewModel.todaySleep.value * 480 ~/ 100,
             type: BasedBatteryStatusType.normal,
           ),
           trackHeight: 40.0,
@@ -228,7 +234,7 @@ class _CarouselSlider extends StatelessWidget {
         autoPlayAnimationDuration: const Duration(milliseconds: 600),
         autoPlayCurve: Curves.fastOutSlowIn,
       ),
-      items: [1, 2, 3, 4, 5].map((i) {
+      items: [0, 1, 2].map((i) {
         return Builder(
           builder: (BuildContext context) {
             return Container(
@@ -248,13 +254,13 @@ class _CarouselSlider extends StatelessWidget {
                     ),
                     const SizedBox(width: 8),
                     Expanded(
-                      child: Text(
-                        viewModel.healthSentance[i].toString(),
+                      child: Obx(() =>  Text(
+                        "${viewModel.healthSentance[i]} 확률이 ${viewModel.healthPercent[i]}% 늘었어요.",
                         style: FontSystem.KR16R.copyWith(color: Colors.white),
                         softWrap: true,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
-                      ),
+                      ),),
                     ),
                   ],
                 ));
@@ -265,19 +271,13 @@ class _CarouselSlider extends StatelessWidget {
   }
 }
 
-class _MyPieChart extends StatefulWidget {
+class _MyPieChart extends BaseWidget<HomeViewModel> {
   final List<double> data;
 
   const _MyPieChart({required this.data});
 
   @override
-  State<StatefulWidget> createState() => MyPieChartState();
-}
-
-class MyPieChartState extends State<_MyPieChart> {
-  @override
-  Widget build(BuildContext context) {
-    final viewModel = Get.find<HomeViewModel>();
+  Widget buildView(BuildContext context) {
     return SizedBox(
       width: 260,
       height: 260,
@@ -285,9 +285,9 @@ class MyPieChartState extends State<_MyPieChart> {
         alignment: Alignment.center,
         children: [
           Obx(
-            () => PieChart(
+                () => PieChart(
               PieChartData(
-                sections: getSections(widget.data),
+                sections: getSections(data),
                 centerSpaceRadius: 100,
                 sectionsSpace: 0,
               ),
@@ -295,10 +295,10 @@ class MyPieChartState extends State<_MyPieChart> {
           ),
           SizedBox(
             child: Obx(
-              () => Text(
+                  () => Text(
                 '${viewModel.sleepDebt.value}h',
                 style:
-                    FontSystem.KR50R.copyWith(color: const Color(0xFF755EBB)),
+                FontSystem.KR50R.copyWith(color: const Color(0xFF755EBB)),
               ),
             ),
           ),
@@ -308,10 +308,6 @@ class MyPieChartState extends State<_MyPieChart> {
   }
 
   List<PieChartSectionData> getSections(List<double> values) {
-    final viewModel = Get.find<HomeViewModel>();
-    // final isNotEmpty = values.isNotEmpty;
-    // final total = isNotEmpty ? values.reduce((a, b) => a + b) : 1;
-
     return [
       PieChartSectionData(
           gradient: const LinearGradient(
@@ -335,3 +331,9 @@ class MyPieChartState extends State<_MyPieChart> {
     ];
   }
 }
+
+
+//건강 그래프 출력
+
+
+//내가 가진 수면 빚
