@@ -595,19 +595,285 @@ class WhiteNoiseCompanion extends UpdateCompanion<WhiteNoiseData> {
   }
 }
 
+class $TimeSliceTable extends TimeSlice
+    with TableInfo<$TimeSliceTable, TimeSliceData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $TimeSliceTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _recordIdMeta =
+      const VerificationMeta('recordId');
+  @override
+  late final GeneratedColumn<int> recordId = GeneratedColumn<int>(
+      'recordId', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: true,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('REFERENCES SleepRecord (id)'));
+  static const VerificationMeta _startSleepDateMeta =
+      const VerificationMeta('startSleepDate');
+  @override
+  late final GeneratedColumn<DateTime> startSleepDate =
+      GeneratedColumn<DateTime>('startSleepDate', aliasedName, false,
+          type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  static const VerificationMeta _endSleepDateMeta =
+      const VerificationMeta('endSleepDate');
+  @override
+  late final GeneratedColumn<DateTime> endSleepDate = GeneratedColumn<DateTime>(
+      'endSleepDate', aliasedName, false,
+      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, recordId, startSleepDate, endSleepDate];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'TimeSlice';
+  @override
+  VerificationContext validateIntegrity(Insertable<TimeSliceData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('recordId')) {
+      context.handle(_recordIdMeta,
+          recordId.isAcceptableOrUnknown(data['recordId']!, _recordIdMeta));
+    } else if (isInserting) {
+      context.missing(_recordIdMeta);
+    }
+    if (data.containsKey('startSleepDate')) {
+      context.handle(
+          _startSleepDateMeta,
+          startSleepDate.isAcceptableOrUnknown(
+              data['startSleepDate']!, _startSleepDateMeta));
+    } else if (isInserting) {
+      context.missing(_startSleepDateMeta);
+    }
+    if (data.containsKey('endSleepDate')) {
+      context.handle(
+          _endSleepDateMeta,
+          endSleepDate.isAcceptableOrUnknown(
+              data['endSleepDate']!, _endSleepDateMeta));
+    } else if (isInserting) {
+      context.missing(_endSleepDateMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  List<Set<GeneratedColumn>> get uniqueKeys => [
+        {startSleepDate, endSleepDate},
+      ];
+  @override
+  TimeSliceData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return TimeSliceData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      recordId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}recordId'])!,
+      startSleepDate: attachedDatabase.typeMapping.read(
+          DriftSqlType.dateTime, data['${effectivePrefix}startSleepDate'])!,
+      endSleepDate: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}endSleepDate'])!,
+    );
+  }
+
+  @override
+  $TimeSliceTable createAlias(String alias) {
+    return $TimeSliceTable(attachedDatabase, alias);
+  }
+}
+
+class TimeSliceData extends DataClass implements Insertable<TimeSliceData> {
+  final int id;
+  final int recordId;
+  final DateTime startSleepDate;
+  final DateTime endSleepDate;
+  const TimeSliceData(
+      {required this.id,
+      required this.recordId,
+      required this.startSleepDate,
+      required this.endSleepDate});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['recordId'] = Variable<int>(recordId);
+    map['startSleepDate'] = Variable<DateTime>(startSleepDate);
+    map['endSleepDate'] = Variable<DateTime>(endSleepDate);
+    return map;
+  }
+
+  TimeSliceCompanion toCompanion(bool nullToAbsent) {
+    return TimeSliceCompanion(
+      id: Value(id),
+      recordId: Value(recordId),
+      startSleepDate: Value(startSleepDate),
+      endSleepDate: Value(endSleepDate),
+    );
+  }
+
+  factory TimeSliceData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return TimeSliceData(
+      id: serializer.fromJson<int>(json['id']),
+      recordId: serializer.fromJson<int>(json['recordId']),
+      startSleepDate: serializer.fromJson<DateTime>(json['startSleepDate']),
+      endSleepDate: serializer.fromJson<DateTime>(json['endSleepDate']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'recordId': serializer.toJson<int>(recordId),
+      'startSleepDate': serializer.toJson<DateTime>(startSleepDate),
+      'endSleepDate': serializer.toJson<DateTime>(endSleepDate),
+    };
+  }
+
+  TimeSliceData copyWith(
+          {int? id,
+          int? recordId,
+          DateTime? startSleepDate,
+          DateTime? endSleepDate}) =>
+      TimeSliceData(
+        id: id ?? this.id,
+        recordId: recordId ?? this.recordId,
+        startSleepDate: startSleepDate ?? this.startSleepDate,
+        endSleepDate: endSleepDate ?? this.endSleepDate,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('TimeSliceData(')
+          ..write('id: $id, ')
+          ..write('recordId: $recordId, ')
+          ..write('startSleepDate: $startSleepDate, ')
+          ..write('endSleepDate: $endSleepDate')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, recordId, startSleepDate, endSleepDate);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is TimeSliceData &&
+          other.id == this.id &&
+          other.recordId == this.recordId &&
+          other.startSleepDate == this.startSleepDate &&
+          other.endSleepDate == this.endSleepDate);
+}
+
+class TimeSliceCompanion extends UpdateCompanion<TimeSliceData> {
+  final Value<int> id;
+  final Value<int> recordId;
+  final Value<DateTime> startSleepDate;
+  final Value<DateTime> endSleepDate;
+  const TimeSliceCompanion({
+    this.id = const Value.absent(),
+    this.recordId = const Value.absent(),
+    this.startSleepDate = const Value.absent(),
+    this.endSleepDate = const Value.absent(),
+  });
+  TimeSliceCompanion.insert({
+    this.id = const Value.absent(),
+    required int recordId,
+    required DateTime startSleepDate,
+    required DateTime endSleepDate,
+  })  : recordId = Value(recordId),
+        startSleepDate = Value(startSleepDate),
+        endSleepDate = Value(endSleepDate);
+  static Insertable<TimeSliceData> custom({
+    Expression<int>? id,
+    Expression<int>? recordId,
+    Expression<DateTime>? startSleepDate,
+    Expression<DateTime>? endSleepDate,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (recordId != null) 'recordId': recordId,
+      if (startSleepDate != null) 'startSleepDate': startSleepDate,
+      if (endSleepDate != null) 'endSleepDate': endSleepDate,
+    });
+  }
+
+  TimeSliceCompanion copyWith(
+      {Value<int>? id,
+      Value<int>? recordId,
+      Value<DateTime>? startSleepDate,
+      Value<DateTime>? endSleepDate}) {
+    return TimeSliceCompanion(
+      id: id ?? this.id,
+      recordId: recordId ?? this.recordId,
+      startSleepDate: startSleepDate ?? this.startSleepDate,
+      endSleepDate: endSleepDate ?? this.endSleepDate,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (recordId.present) {
+      map['recordId'] = Variable<int>(recordId.value);
+    }
+    if (startSleepDate.present) {
+      map['startSleepDate'] = Variable<DateTime>(startSleepDate.value);
+    }
+    if (endSleepDate.present) {
+      map['endSleepDate'] = Variable<DateTime>(endSleepDate.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('TimeSliceCompanion(')
+          ..write('id: $id, ')
+          ..write('recordId: $recordId, ')
+          ..write('startSleepDate: $startSleepDate, ')
+          ..write('endSleepDate: $endSleepDate')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$NightaryDatabase extends GeneratedDatabase {
   _$NightaryDatabase(QueryExecutor e) : super(e);
   late final $SleepRecordTable sleepRecord = $SleepRecordTable(this);
   late final $WhiteNoiseTable whiteNoise = $WhiteNoiseTable(this);
+  late final $TimeSliceTable timeSlice = $TimeSliceTable(this);
   late final Index id = Index('id', 'CREATE INDEX id ON SleepRecord (id)');
   late final SleepRecordDao sleepRecordDao =
       SleepRecordDao(this as NightaryDatabase);
   late final WhiteNoiseDao whiteNoiseDao =
       WhiteNoiseDao(this as NightaryDatabase);
+  late final TimeSliceDao timeSliceDao = TimeSliceDao(this as NightaryDatabase);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities =>
-      [sleepRecord, whiteNoise, id];
+      [sleepRecord, whiteNoise, timeSlice, id];
 }

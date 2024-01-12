@@ -1,7 +1,9 @@
 import 'package:drift/native.dart';
 import 'package:nightary/domains/dao/sleep_record_dao.dart';
+import 'package:nightary/domains/dao/time_slice_dao.dart';
 import 'package:nightary/domains/dao/white_noise_dao.dart';
 import 'package:nightary/domains/entities/sleep_record.dart';
+import 'package:nightary/domains/entities/time_slice.dart';
 import 'package:nightary/domains/entities/white_noise.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
@@ -32,17 +34,19 @@ LazyDatabase _openConnection() {
   tables: [
     SleepRecord,
     WhiteNoise,
+    TimeSlice,
   ],
   daos: [
     SleepRecordDao,
     WhiteNoiseDao,
+    TimeSliceDao,
   ],
 )
 class NightaryDatabase extends _$NightaryDatabase {
   NightaryDatabase() : super(_openConnection());
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
 }
 
 // class DatabaseHelper {
